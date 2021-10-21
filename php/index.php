@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
+<?php
 
-        <meta charset="utf-8">
-        <title>Pixel Perfect</title>
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="">
+$title = "Page d'accueil";
+require 'header.php';
+?>
 
-    </head>
-    
-    <body>
+<body>
         <form class="" action="https://ressources.site/" method="post">
 
             <div class="">
