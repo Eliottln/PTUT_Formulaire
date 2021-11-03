@@ -20,7 +20,7 @@ function newForm(){
         }
     }
 
-    xhr.open("GET", "/php/Form.php", true)
+    xhr.open("GET", "/modules/baseNewForm.modules", true)
     xhr.send()
 }
 
