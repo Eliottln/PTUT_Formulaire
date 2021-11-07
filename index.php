@@ -13,7 +13,10 @@
 
         <button type="button" id="new-element">Nouveau</button>
 
-        <form id="form-document" action="https://ressources.site/" method="post"></form>
+        <form id="form-document" action="https://ressources.site/" method="post">
+
+            <button id="submit" type="submit" disabled>Enregistrer</button>
+        </form>
 
         <script src="/js/newForm.js"></script>
 

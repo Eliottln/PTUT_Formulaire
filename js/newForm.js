@@ -1,7 +1,8 @@
 const newElement=document.getElementById('new-element')
 newElement.addEventListener('click',newForm)
 
-let content = document.getElementById("form-document")
+const content = document.getElementById("form-document")
+const button = document.getElementById('submit')
 
 let nbForms = 1
 
@@ -13,6 +14,8 @@ function newForm(){
         if (this.readyState === 4 && this.status === 200)
         {
             addDivElement().innerHTML = this.responseText
+            button.removeAttribute('disabled')
+
         }
         else if (this.readyState === 4 && this.status === 404)
         {
@@ -20,7 +23,7 @@ function newForm(){
         }
     }
 
-    xhr.open("GET", "/modules/baseNewForm.modules", true)
+    xhr.open("GET", "/modules/baseNewForm.php", true)
     xhr.send()
 }
 
