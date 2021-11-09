@@ -12,14 +12,11 @@
 
     <body>
 
-        <header>
-
-        </header>
-
+        <?php require 'modules/header.php'; ?>
 
         <main>
 
-            <form id="form-sign-in" action="https://ressources.site/" method="post">
+            <form id="form-signin" action="https://ressources.site/" method="post">
 
                 <input id="fname1" type="text" name="fname1">
                 <label for="fname1">Prénom</label>
@@ -33,14 +30,14 @@
                 <input id="password1" type="password" name="password1">
                 <label for="password1">Mot de passe</label>
 
-                <input id="password-repeat" type="password" name="password-repeat">
-                <label for="password-repeat">Répéter mot de passe</label>
+                <input id="repeat-password" type="password" name="repeat-password">
+                <label for="repeat-password">Répéter mot de passe</label>
 
                 <button id="b-sign-in" type="submit">S'inscrire</button>
 
             </form>
 
-            <form id="form-log-in" action="https://ressources.site/" method="post">
+            <form id="form-login" action="https://ressources.site/" method="post">
 
                 <input id="email2" type="email" name="email2">
                 <label for="email2">Email</label>
@@ -48,15 +45,13 @@
                 <input id="password2" type="password" name="password2">
                 <label for="password2">Mot de passe</label>
 
-                <button id="b-log-in" type="submit">Se connecter</button>
+                <button id="b-login" type="submit">Se connecter</button>
 
             </form>
 
         </main>
 
-        <footer>
-
-        </footer>
+        <?php require 'modules/footer.php'; ?>
 
     </body>
 

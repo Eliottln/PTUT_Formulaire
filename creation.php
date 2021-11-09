@@ -11,14 +11,22 @@
 
     <body>
 
-        <button type="button" id="new-element">Nouveau</button>
+        <?php require 'modules/header.php'; ?>
 
-        <form id="form-document" action="https://ressources.site/" method="post">
+        <main>
+            <button type="button" id="new-text">Texte</button>
+            <button type="button" id="new-radio">Radio</button>
+            <button type="button" id="new-checkbox">Checkbox</button>
 
-            <button id="submit" type="submit" disabled>Enregistrer</button>
-        </form>
+            <form id="form-document" action="https://ressources.site/" method="post">
 
-        <script src="/js/newForm.js"></script>
+                <button id="submit" type="submit" disabled>Enregistrer</button>
+            </form>
+        </main>
+
+        <?php require 'modules/footer.php'; ?>
+
+        <script src="/js/newQuestion.js"></script>
 
     </body>
 
