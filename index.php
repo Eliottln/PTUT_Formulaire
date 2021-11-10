@@ -30,36 +30,7 @@ require 'header.php';
                     </div>
 
                 </div>
-
-
-
-                <div class="">
-
-                    <div>
-                        <label for="adress">Adresse :</label>
-                        <input id="adress" type="text" name="adress" required>
-                    </div>
-
-                    <div>
-                        <label for="postal">Code postal :</label>
-                        <input id="postal" type="text" name="postal" required pattern="[0-9]{5}">
-                    </div>
-
-                    <div>
-                        <label for="city">Ville :</label>
-                        <input id="city" type="text" name="city" required>
-                    </div>
-
-
-                    <div>
-                        <label for="surname">Nom :</label>
-                        <input id="surname" type="text" name="surname" required>
-                    </div>
-
-                </div>
-            </div>
-
-
+                
 
 
             <div class="buttonSR">
