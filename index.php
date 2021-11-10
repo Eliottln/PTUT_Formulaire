@@ -1,46 +1,49 @@
 <?php
 
-$title = "Page d'accueil";
-require 'header.php';
+
+
+
 ?>
 
-<body>
-        <form class="" action="https://ressources.site/" method="post">
+<html>
 
-            <div class="">
+    <body>
+            <form class="" action="/afterSubmitForm.php" method="post">
+
                 <div class="">
-                    <div>
-                        <label for="email">Adresse mail :</label>
-                        <input id="email" type="email" name="email" required>
+                    <div class="">
+                        <div>
+                            <label for="q1">Question 1</label>
+                            <input id="q1" type="text" name="q1" required>
+                        </div>
+
+                        <div>
+                            <label for="q2">Question 2</label>
+                            <input id="q2" type="text" name="q2" required>
+                        </div>
+
+                        <div>
+                            <label for="q3">Question 3</label>
+                            <input id="q3" type="text" name="q3" required>
+                        </div>
+
+                        <div>
+                            <label for="q4">Question 4</label>
+                            <input id="q4" type="text" name="q4" required>
+                        </div>
+
                     </div>
 
-                    <div>
-                        <label for="password">Mot de passe :</label>
-                        <input id="password" type="password" name="password" required>
-                    </div>
 
-                    <div>
-                        <label for="verifpassword">Retaper le mdp :</label>
-                        <input id="verifpassword" type="password" name="verifpassword" required>
-                    </div>
 
-                    <div>
-                        <label for="firstname">Prénom :</label>
-                        <input id="firstname" type="text" name="firstname" required>
-                    </div>
-
+                <div class="buttonSR">
+                    <button type="submit">Envoyer</button>
+                    <button type="reset">Effacer</button>
                 </div>
-                
 
 
-            <div class="buttonSR">
-                <button type="submit">Envoyer</button>
-                <button type="reset">Effacer</button>
-            </div>
-
-
-        </form>
-    </body>
+            </form>
+        </body>
 
 
 </html>
