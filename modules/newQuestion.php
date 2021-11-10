@@ -1,22 +1,37 @@
 <?php
-var_dump($_POST);
 $numQuestion=$_POST['numQuestion'];
 $inputType=$_POST['id'];
 
-function inputGenerator($input){
+function inputGenerator($input,$question){
     if ($input=='new-text'){
         return '<label for="response-text">Réponse</label>
                 <input id="response-text" type="text" name="response" disabled>';
     }
     elseif ($input=='new-radio'){
-        return '<label for="response-radio1">Réponse</label>
-                <input id="response-radio1" type="radio" name="response" disabled>
-                <label for="response-radio2">Réponse</label>
-                <input id="response-radio2" type="radio" name="response" disabled>';
+        return '<p>Réponses</p>
+
+                <label for="q'.$question.'-radio-choice1">Choix 1</label>
+                <input id="q'.$question.'-radio-choice1" type="text" name="q'.$question.'-radio-choice1">
+                <input id="response-radio1" type="radio" name="q'.$question.'-response" disabled>
+                
+                <label for="q'.$question.'-radio-choice2">Choix 2</label>
+                <input id="q'.$question.'-radio-choice2" type="text" name="q'.$question.'-radio-choice2">
+                <input id="response-radio2" type="radio" name="q'.$question.'-response" disabled>
+                
+                <button id="q'.$question.'-button" class="b-add-radio" type="button">Ajouter</button>';
     }
     elseif ($input=='new-checkbox'){
-        return '<label for="response-checkbox">Réponse</label>
-                <input id="response-checkbox" type="checkbox" name="response" disabled>';
+        return '<p>Réponses</p>
+
+                <label for="q'.$question.'-checkbox-choice1">Choix 1</label>
+                <input id="q'.$question.'-checkbox-choice1" type="text" name="q'.$question.'-checkbox-choice1">
+                <input id="response-checkbox1" type="checkbox" name="q'.$question.'-response" disabled>
+                
+                <label for="q'.$question.'-checkbox-choice2">Choix 2</label>
+                <input id="q'.$question.'-checkbox-choice2" type="text" name="q'.$question.'-checkbox-choice2">
+                <input id="response-checkbox2" type="checkbox" name="q'.$question.'-response" disabled>
+                
+                <button id="q'.$question.'-button" class="b-add-checkbox" type="button">Ajouter</button>';
     }
     else
         return 'Error';
@@ -30,5 +45,5 @@ function inputGenerator($input){
 </div>
 
 <div>
-    <?=inputGenerator($inputType)?>
+    <?=inputGenerator($inputType,$numQuestion)?>
 </div>

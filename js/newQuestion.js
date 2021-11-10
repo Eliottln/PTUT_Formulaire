@@ -3,9 +3,18 @@ newText.addEventListener('click',newForm)
 
 const newRadio=document.getElementById('new-radio')
 newRadio.addEventListener('click',newForm)
+newRadio.addEventListener('click',() => {
+    const addRadio=document.querySelector('.b-add-radio')
+    addRadio.addEventListener('click',newChoice)
+})
 
 const newCheckbox=document.getElementById('new-checkbox')
 newCheckbox.addEventListener('click',newForm)
+newCheckbox.addEventListener('click',() => {
+    const addCheckbox=document.querySelector('.b-add-checkbox')
+    addCheckbox.addEventListener('click',newChoice)
+})
+
 
 const content = document.getElementById("form-document")
 
@@ -15,11 +24,12 @@ let numForm = 0
 let numQuestion = 0
 
 
-function newForm(){
+function newForm(){ //create a question input with response input in html
 
-    let xhr = new XMLHttpRequest()
+    let xhr1 = new XMLHttpRequest()
 
-    xhr.onreadystatechange = function() {
+
+    xhr1.onreadystatechange = function() {
         console.log(this)
         if (this.readyState === 4 && this.status === 200)
         {
@@ -38,20 +48,58 @@ function newForm(){
 
     let data = 'numQuestion=' + numQuestion + '&id=' + this.getAttribute('id')
 
-    xhr.open("POST", "/modules/newQuestion.php")
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(data)
-    xhr.onload = () => {
-        console.log(xhr.responseText);
-    }
+    xhr1.open("POST", "/modules/newQuestion.php")
+    xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr1.send(data)
+    /*xhr1.onload = () => {
+        console.log(xhr1.responseText);
+    }*/
+
 }
 
 
-function addDivElement(){
+function addDivElement(){ //create the div element for the question
     numForm++
     let div = document.createElement("div")
     content.appendChild(div)
     div.setAttribute('id', 'form'+numForm)
 
     return div
+}
+
+
+/*------------------------------*/
+
+
+
+
+
+
+function newChoice(){ //add a choice for radio or checkbox input
+
+    let xhr2 = new XMLHttpRequest()
+
+    let h = this
+
+
+    xhr2.onreadystatechange = function() {
+        console.log(this)
+        if (this.readyState === 4 && this.status === 200)
+        {
+            h.insertAdjacentHTML("beforebegin", this.responseText);
+        }
+        else if (this.readyState === 4 && this.status === 404)
+        {
+            alert('Erreur chargement')
+        }
+    }
+
+    let data = 'numQuestion=' + numQuestion + '&class=' + this.getAttribute("class")
+
+    xhr2.open("POST", "/modules/newChoice.php")
+    xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr2.send(data)
+    xhr2.onload = () => {
+        console.log(xhr2.responseText);
+    }
 }
