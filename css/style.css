@@ -1,0 +1,130 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#palette{
+    padding-block: 10px;
+    background-color: orange;
+}
+
+#palette ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.button{
+    padding: 7px;
+    background-color: gray;
+    border-radius: 5px;
+}
+
+.button:hover{
+    background-color: rgb(58, 58, 58);
+    cursor: pointer;
+}
+
+/*########################################*/
+/*Dialog*/
+
+#bgGrey{
+    display: none;
+    top: 0;
+    position: absolute;
+    background: rgba(66, 66, 66, 0.75);
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+dialog{
+    display: none;
+    flex-direction: column;
+    left: 25vw;
+    top: 25vh;
+    width: 50vw;
+    border: none;
+    background: rgb(41, 41, 41);
+    color: white;
+    max-height: 75.5vh;
+    transition: top 0.5s, height 0.5s;
+}
+
+dialog>form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-block: 10px;
+    flex-direction: column;
+}
+
+dialog>form>input{
+    font-size: larger;
+    border-bottom: 3px solid white;
+    padding: 5px;
+}
+
+dialog>form>button{
+    width: 25%;
+    font-size: larger;
+    margin: 10px;
+}
+
+dialog>pre{
+    display: none;
+    width: 80%;
+    padding-block: 10px;
+    padding-inline: 10%;
+    background-color: orange;
+    color: black;
+    height: 80%;
+    justify-content: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+dialog>pre>label{
+    font-size: x-large;
+    font-weight: bold;
+    color: #222222;
+}
+
+dialog>pre>code{
+    background: #222222;
+    color: lightgrey;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-table;
+}
+
+/*Avec du contenu*/
+
+dialog[class = "content"]{
+    top: 12.5vh;
+}
+
+dialog[class = "content"] pre{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+/*########################################*/
+/*Section*/
+
+section{
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+    border-radius: 5px;
+    margin-block: 10px;
+    margin-inline: 50px;
+    padding: 10px;
+}
+
+section{
+    font-size: larger;
+}
