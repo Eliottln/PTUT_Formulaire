@@ -1,10 +1,11 @@
 <?php
 
+include "dom.sol";
 
-$servername = "iutbg-lamp.univ-lyon1.fr";
-$username = "p2008444";
-$password = "12008444";
-$dbname = "p2008444";
+$servername = "localhost";
+$username = "Hedi";
+$password = "hedizair120";
+$dbname = "ptut_site_gestion_form";
 
 
 
@@ -17,24 +18,11 @@ if (!$conn) {
 }
 echo "Connected successfully";
 
+echo "<br>";
 
-/*foreach ($_POST as $key => $value) {
-    echo "<tr> <th>$key</th> <td>$value</td> </tr>";
-} ?>*/
-
-//Récupérer le numéro du formulaire
-//Insérer le formulaire dans la table Form et insérer son nombre de champs (count)
-//Selectionner la clé primaire du formulaire inséré
-//Insérer les questions dans la table Questions avec la clé primaire du formualaire
-//
 
 $nbChamps = count($_POST);
-
-
-$sql = "INSERT INTO Form VALUES (null,". $nbChamps.")";
-
-
-
+$sql = "INSERT INTO Form VALUES (null,". $nbChamps.");";
 
 if (mysqli_query($conn, $sql)) {
     $last_id = mysqli_insert_id($conn);
@@ -43,19 +31,24 @@ if (mysqli_query($conn, $sql)) {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 
-//faire ici la boucle pour remplir la table question
-
+echo " <br>";
 
 $count = '0';
+$sql = "";
+print_r($_POST) ;
+foreach ($_POST as $key => $value){ // On renomme la clé et la valeur en key et value, faire un print_R pour + de detail.
 
-foreach ($_POST as $key => $value){
+    $sql .= "INSERT INTO Questions VALUES(" . $count . "," . $last_id . ",'le_type'," ."'".(string)$value. "');";
+    $count ++;
 
-    /*$sql .= "INSERT INTO Questions VALUES("",".$last_id.", , );
-    $count ++;*/
-    //TODO
 }
 
 
+if (mysqli_multi_query($conn, $sql)) {
+    echo "New records created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
 
 mysqli_close($conn);
 
