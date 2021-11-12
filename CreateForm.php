@@ -1,10 +1,35 @@
 <?php
-    //var_dump($_FILES['importedFile']);
-    
+    include "class/input.php";
+    echo "<pre id=\"debug\">";
+    $arrayStringForm = explode("<",$_POST["fileToString"]);
+    $arrayObjectInput = array();
+
+    $arrayStringInput = array();
+    foreach($arrayStringForm as $key => $value){
+        if(str_contains($value, "input ")){
+            array_push($arrayStringInput,explode("\"",$value));
+            array_push($arrayObjectInput, new Input());
+        }
+    }
+
+    for($i = 0; $i < count($arrayStringInput); $i++){
+        for($j = 0; $j < count($arrayStringInput[$i]); $j++){
+            if(str_contains($arrayStringInput[$i][$j], "name=")){
+                $arrayObjectInput[$i]->set_name($arrayStringInput[$i][$j+1]);
+            }
+            if(str_contains($arrayStringInput[$i][$j], "type=")){
+                $arrayObjectInput[$i]->set_type($arrayStringInput[$i][$j+1]);
+            }
+        }
+    }
+    echo "Object : ";
+    var_dump($arrayObjectInput);
+    echo "</pre>";
 ?>
 
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <title>Createur de Formulaires</title>
     <meta charset="UTF-8">
@@ -33,6 +58,8 @@
                 <form action="CreateForm.php" method="post">
                     <input onchange="ImportedFiles(event,this)" type="file" name="importedFile" id="file">
 
+                    <input type="textarea" name="fileToString" id="fileToString">
+
                     <button id="confirm" type="submit" disabled>Confirmer</button>
                     <button id="cancel" type="reset">Annuler</button>
                 </form>
@@ -46,16 +73,19 @@
 
         </div>
     </main>
-    <script type="text/javascript">
+    <script>
         const FORM = document.getElementById("Form");
 
         function addSection(){
             let newSection = document.createElement("section");
-            let newTitle = document.createElement("label");
-            let title = document.createTextNode("Title");
+            let newTitle = document.createElement("input");
+            newTitle.setAttribute("value", "New Title");
+            newTitle.classList.add("title")
+        
             let newInput = document.createElement("input");
+            newInput.setAttribute("disabled", true);
 
-            newTitle.appendChild(title)
+            
             newSection.appendChild(newTitle);
             newSection.appendChild(newInput);
 
@@ -119,6 +149,12 @@
         }
 
         //document.getElementById("file").addEventListener('change',ImportedFiles);
+
+        function sendConfirm(){
+            document.getElementById("fileToString").value = OUTPUT.textContent;
+        }
+
+        document.getElementById("confirm").addEventListener('click',sendConfirm);
     </script>
 </body>
 </html>
