@@ -91,8 +91,37 @@
 
             FORM.appendChild(newSection);
         }
-
+        
         document.getElementById("addSection").addEventListener('click',addSection);
+
+        //With parameters
+        function addSectionFromObject(name,type){
+            let newSection = document.createElement("section");
+            let newTitle = document.createElement("input");
+            newTitle.setAttribute("value", name);
+            newTitle.classList.add("title")
+        
+            let newInput = document.createElement("input");
+            newInput.setAttribute("name", name);
+            newInput.setAttribute("type", type);
+            newInput.setAttribute("disabled", true);
+
+            
+            newSection.appendChild(newTitle);
+            newSection.appendChild(newInput);
+
+            FORM.appendChild(newSection);
+        }
+
+        <?php
+            if($arrayObjectInput[0]->get_name() != null ){
+                for($i=0;$i<count($arrayObjectInput);$i++){
+                    echo "addSectionFromObject(\"".$arrayObjectInput[$i]->get_name()."\",\"".$arrayObjectInput[$i]->get_type()."\")\n";
+                }
+            }
+        ?>
+
+        
 
         function newForm(){
             let formContent = document.querySelectorAll('#Form section');
@@ -155,11 +184,8 @@
         }
 
         document.getElementById("confirm").addEventListener('click',sendConfirm);
+
+
     </script>
 </body>
 </html>
-
-<?php
-if($_FILES){
-    echo 'ok';
-}

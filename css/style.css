@@ -9,7 +9,7 @@ textarea:focus, input:focus{
 }
 
 #debug{
-    display: inherit;
+    display: none;
     background-color: #1e1e1e;
     color: white;
     padding: 25px;
