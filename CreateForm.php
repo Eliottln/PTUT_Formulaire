@@ -1,29 +1,32 @@
 <?php
     include "class/input.php";
     echo "<pre id=\"debug\">";
-    $arrayStringForm = explode("<",$_POST["fileToString"]);
-    $arrayObjectInput = array();
-
-    $arrayStringInput = array();
-    foreach($arrayStringForm as $key => $value){
-        if(str_contains($value, "input ")){
-            array_push($arrayStringInput,explode("\"",$value));
-            array_push($arrayObjectInput, new Input());
-        }
-    }
-
-    for($i = 0; $i < count($arrayStringInput); $i++){
-        for($j = 0; $j < count($arrayStringInput[$i]); $j++){
-            if(str_contains($arrayStringInput[$i][$j], "name=")){
-                $arrayObjectInput[$i]->set_name($arrayStringInput[$i][$j+1]);
-            }
-            if(str_contains($arrayStringInput[$i][$j], "type=")){
-                $arrayObjectInput[$i]->set_type($arrayStringInput[$i][$j+1]);
+    if(!empty($_POST)){
+        $arrayStringForm = explode("<",$_POST["fileToString"]);
+        $arrayObjectInput = array();
+    
+        $arrayStringInput = array();
+        foreach($arrayStringForm as $key => $value){
+            if(str_contains($value, "input ")){
+                array_push($arrayStringInput,explode("\"",$value));
+                array_push($arrayObjectInput, new Input());
             }
         }
+    
+        for($i = 0; $i < count($arrayStringInput); $i++){
+            for($j = 0; $j < count($arrayStringInput[$i]); $j++){
+                if(str_contains($arrayStringInput[$i][$j], "name=")){
+                    $arrayObjectInput[$i]->set_name($arrayStringInput[$i][$j+1]);
+                }
+                if(str_contains($arrayStringInput[$i][$j], "type=")){
+                    $arrayObjectInput[$i]->set_type($arrayStringInput[$i][$j+1]);
+                }
+            }
+        }
+
     }
     echo "Object : ";
-    var_dump($arrayObjectInput);
+    var_dump($_POST);
     echo "</pre>";
 ?>
 
@@ -114,7 +117,7 @@
         }
 
         <?php
-            if($arrayObjectInput[0]->get_name() != null ){
+            if(!empty($arrayObjectInput)){
                 for($i=0;$i<count($arrayObjectInput);$i++){
                     echo "addSectionFromObject(\"".$arrayObjectInput[$i]->get_name()."\",\"".$arrayObjectInput[$i]->get_type()."\")\n";
                 }
