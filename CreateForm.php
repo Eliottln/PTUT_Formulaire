@@ -1,33 +1,50 @@
 <?php
     include "class/input.php";
-    echo "<pre id=\"debug\">";
+    echo "<pre id=\"debug\"><code>";
     if(!empty($_POST)){
-        $arrayStringForm = explode("<",$_POST["fileToString"]);
-        $arrayObjectInput = array();
-    
-        $arrayStringInput = array();
-        foreach($arrayStringForm as $key => $value){
-            if(str_contains($value, "input ")){
-                array_push($arrayStringInput,explode("\"",$value));
-                array_push($arrayObjectInput, new Input());
-            }
-        }
-    
-        for($i = 0; $i < count($arrayStringInput); $i++){
-            for($j = 0; $j < count($arrayStringInput[$i]); $j++){
-                if(str_contains($arrayStringInput[$i][$j], "name=")){
-                    $arrayObjectInput[$i]->set_name($arrayStringInput[$i][$j+1]);
+        switch ($_POST["fileType"]) {
+            case 'html':
+                $arrayStringForm = explode("<",$_POST["fileToString"]);
+                $arrayObjectInput = array();
+            
+                $arrayStringInput = array();
+                foreach($arrayStringForm as $key => $value){
+                    if(str_contains($value, "input ")){
+                        array_push($arrayStringInput,explode("\"",$value));
+                        array_push($arrayObjectInput, new Input());
+                    }
                 }
-                if(str_contains($arrayStringInput[$i][$j], "type=")){
-                    $arrayObjectInput[$i]->set_type($arrayStringInput[$i][$j+1]);
+            
+                for($i = 0; $i < count($arrayStringInput); $i++){
+                    for($j = 0; $j < count($arrayStringInput[$i]); $j++){
+                        if(str_contains($arrayStringInput[$i][$j], "name=")){
+                            $arrayObjectInput[$i]->set_name($arrayStringInput[$i][$j+1]);
+                        }
+                        if(str_contains($arrayStringInput[$i][$j], "type=")){
+                            $arrayObjectInput[$i]->set_type($arrayStringInput[$i][$j+1]);
+                        }
+                    }
                 }
-            }
+                
+                echo "Object : ";
+                var_dump($arrayStringInput);
+                break;
+
+            case 'json':
+                #   code...
+                echo "Les fichier de type JSON ne sont pas encore pris en charge";
+                break;
+            
+            default:
+                #   code...
+                echo "Ce fichier est incompatible avec l'importation";
+                break;
         }
 
+
     }
-    echo "Object : ";
-    var_dump($_POST);
-    echo "</pre>";
+    
+    echo "</code></pre>";
 ?>
 
 
@@ -55,13 +72,15 @@
                     <div id="ImportForm" class="button">importer un formulaire</div>
                 </li>
             </ul>
+            <div id="Debug-button" class="button">&#128421;Debug</div>
         </div>
         <div id="bgGrey">
             <dialog id="Import">
-                <form action="CreateForm.php" method="post">
+                <form action="CreateForm.php" method="post" >
                     <input onchange="ImportedFiles(event,this)" type="file" name="importedFile" id="file">
 
-                    <input type="textarea" name="fileToString" id="fileToString">
+                    <input type="hidden" name="fileToString" id="fileToString">
+                    <input type="hidden" name="fileType" id="fileType">
 
                     <button id="confirm" type="submit" disabled>Confirmer</button>
                     <button id="cancel" type="reset">Annuler</button>
@@ -137,6 +156,7 @@
             if (typeof document.getElementById('Import').showModal === "function") {
                 document.getElementById('Import').style.display = "flex";
                 document.getElementById('bgGrey').style.display = "flex";
+                document.querySelector('html').style.overflowY = "hidden";
             } else {
                 console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
             }
@@ -150,6 +170,7 @@
                 document.getElementById('bgGrey').style.display = "none";
                 document.getElementById("Import").classList.remove("content");
                 document.getElementById("confirm").setAttribute("disabled",true);
+                document.querySelector('html').removeAttribute('style');
             } else {
                 console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
             }
@@ -167,7 +188,6 @@
                 let lines = reader.result.split('\n');
                 for(var line = 0; line < lines.length; line++){
                     OUTPUT.textContent += lines[line] + "\n";
-                    console.log(lines[line]);
                 }
             }
               
@@ -184,9 +204,29 @@
 
         function sendConfirm(){
             document.getElementById("fileToString").value = OUTPUT.textContent;
+            document.getElementById("fileType").value = document.getElementById("typeofFile").textContent.split(' : ')[1];
         }
 
         document.getElementById("confirm").addEventListener('click',sendConfirm);
+
+
+        //ONLY FOR TEST
+        const DEBUG_BUTTON = document.getElementById("Debug-button");
+        const DEBUG = document.getElementById("debug");
+        let debugOpen = false;
+
+        function displayDebug(){
+            if(debugOpen){
+                DEBUG.style.display = "none";
+                debugOpen = false;
+            }
+            else{
+                DEBUG.style.display = "flex";
+                debugOpen = true;
+            }
+        }
+
+        DEBUG_BUTTON.addEventListener("click",displayDebug);
 
 
     </script>
