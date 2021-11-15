@@ -3,6 +3,7 @@
     echo "<pre id=\"debug\"><code>";
     if(!empty($_POST)){
         switch ($_POST["fileType"]) {
+            case 'xml':
             case 'html':
                 $arrayStringForm = explode("<",$_POST["fileToString"]);
                 $arrayObjectInput = array();
@@ -34,6 +35,12 @@
                 #   code...
                 echo "Les fichier de type JSON ne sont pas encore pris en charge";
                 break;
+
+            //case 'xml':
+                #   code...
+                //echo "Les fichier de type XML ne sont pas encore pris en charge";
+                //break;
+                
             
             default:
                 #   code...

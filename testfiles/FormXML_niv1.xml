@@ -1,0 +1,8 @@
+<input type="text" name="Pseudo">
+<input type="email" name="Adresse Mail">
+<input type="password" name="Mot de passe">
+<input type="date" name="Date du rendez-vous">
+<input type="color" name="Couleur préférée">
+<input type="number" name="Numéro">
+<input type="tel" name="Telephone">
+<input type="url" name="Lien">
