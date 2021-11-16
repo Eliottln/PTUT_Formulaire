@@ -10,60 +10,10 @@ newCheckbox.addEventListener('click',newForm)
 
 const content = document.getElementById("form-document")
 
-
 const button = document.getElementById('submit')
 
 let numForm = 0
 let numQuestion = 0
-
-
-function newForm(){ //create a question input with response input in html
-
-    let xhr1 = new XMLHttpRequest()
-
-
-    xhr1.onreadystatechange = function() {
-        console.log(this)
-        if (this.readyState === 4 && this.status === 200)
-        {
-
-            addDivElement().innerHTML = this.responseText
-            button.removeAttribute('disabled')
-
-        }
-        else if (this.readyState === 4 && this.status === 404)
-        {
-            alert('Erreur chargement')
-        }
-    }
-
-    numQuestion++
-
-    let data = 'numQuestion=' + numQuestion + '&id=' + this.getAttribute('id')
-
-    xhr1.open("POST", "/modules/newQuestion.php")
-    xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr1.send(data)
-    /*xhr1.onload = () => {
-        console.log(xhr1.responseText);
-    }*/
-
-    if (this.getAttribute('id') === 'new-radio'){
-        const addRadio=document.querySelectorAll('.b-add-radio')
-        for (i=0;i<addRadio.length;i++){
-            addRadio.addEventListener('click',newChoice)
-        }
-/*        addRadio.forEach((element,index) => {
-            index.addEventListener('click',newChoice)
-        })*/
-
-    }
-    else if (this.getAttribute('id') === 'new-checkbox'){
-        const addCheckbox=document.querySelectorAll('.b-add-checkbox')
-        addCheckbox.addEventListener('click',newChoice)
-    }
-
-}
 
 
 function addDivElement(){ //create the div element for the question
@@ -76,38 +26,92 @@ function addDivElement(){ //create the div element for the question
 }
 
 
+
+function newForm(){ //create a question input with response input in html
+
+    button.removeAttribute('disabled')
+
+    numQuestion++
+
+    let div = addDivElement()
+
+    div.innerHTML = '<div>'+
+                        '<label for="question-num'+numQuestion+'">Question</label>'+
+                        '<textarea id="question-num'+numQuestion+'" class="question" name="question-num'+numQuestion+'" placeholder="Question" required></textarea>'+
+                    '</div>'
+
+    if(this.getAttribute('id') === 'new-text'){
+
+        let divQ = document.createElement("div");
+        divQ.innerHTML = '<label for="response-text">Réponse</label>'+
+                    '<input id="response-text" type="text" name="response" disabled>'
+
+        div.appendChild(divQ)
+    }
+
+    else if(this.getAttribute('id') === 'new-radio'){
+
+        let divQ = document.createElement("div");
+        divQ.innerHTML = '<p>Réponses</p>'+
+                    '<label for="q'+numQuestion+'-radio-choice1">Choix 1</label>'+
+                    '<input id="q'+numQuestion+'-radio-choice1" type="text" name="q'+numQuestion+'-radio-choice1">'+
+                    '<input type="radio" name="q'+numQuestion+'-response" disabled>'+
+
+                    '<label for="q'+numQuestion+'-radio-choice2">Choix 2</label>'+
+                    '<input id="q'+numQuestion+'-radio-choice2" type="text" name="q'+numQuestion+'-radio-choice2">'+
+                    '<input type="radio" name="q'+numQuestion+'-response" disabled>'+
+
+                    '<button id="q'+numQuestion+'-button-add-radio" type="button">Ajouter</button>'
+
+        div.appendChild(divQ)
+
+        const addCheckbox=document.querySelector('#q'+numQuestion+'-button-add-radio')
+        addCheckbox.addEventListener('click',newChoice)
+    }
+
+    else if(this.getAttribute('id') === 'new-checkbox'){
+
+        let divQ = document.createElement("div");
+        divQ.innerHTML = '<p>Réponses</p>'+
+            '<label for="q'+numQuestion+'-checkbox-choice1">Choix 1</label>'+
+            '<input id="q'+numQuestion+'-checkbox-choice1" type="text" name="q'+numQuestion+'-checkbox-choice1">'+
+            '<input type="checkbox" name="q'+numQuestion+'-response" disabled>'+
+
+            '<label for="q'+numQuestion+'-checkbox-choice2">Choix 2</label>'+
+            '<input id="q'+numQuestion+'-checkbox-choice2" type="text" name="q'+numQuestion+'-checkbox-choice2">'+
+            '<input type="checkbox" name="q'+numQuestion+'-response" disabled>'+
+
+            '<button id="q'+numQuestion+'-button-add-checkbox" type="button">Ajouter</button>'
+
+        div.appendChild(divQ)
+
+        const addCheckbox=document.querySelector('#q'+numQuestion+'-button-add-checkbox')
+        addCheckbox.addEventListener('click',newChoice)
+    }
+
+}
+
+
 /*------------------------------*/
-
-
-
-
 
 
 function newChoice(){ //add a choice for radio or checkbox input
 
-    let xhr2 = new XMLHttpRequest()
+    const regex = /radio/
 
-    let h = this
+    if(regex.test(this.getAttribute('id'))){
+        let choice='<label for="q'+numQuestion+'-radio-choice3">Choix 3</label>'+
+                '<input id="q'+numQuestion+'-radio-choice3" type="text" name="q'+numQuestion+'-radio-choice3">'+
+                '<input id="response-radio3" type="radio" name="q'+numQuestion+'-response" disabled>'
 
+        this.insertAdjacentHTML("beforebegin", choice);
+    }
+    else{
+        let choice='<label for="q'+numQuestion+'-checkbox-choice3">Choix 3</label>'+
+            '<input id="q'+numQuestion+'-checkbox-choice3" type="text" name="q'+numQuestion+'-checkbox-choice3">'+
+            '<input id="response-checkbox3" type="checkbox" name="q'+numQuestion+'-response" disabled>'
 
-    xhr2.onreadystatechange = function() {
-        console.log(this)
-        if (this.readyState === 4 && this.status === 200)
-        {
-            h.insertAdjacentHTML("beforebegin", this.responseText);
-        }
-        else if (this.readyState === 4 && this.status === 404)
-        {
-            alert('Erreur chargement')
-        }
+        this.insertAdjacentHTML("beforebegin", choice);
     }
 
-    let data = 'numQuestion=' + numQuestion + '&class=' + this.getAttribute("class")
-
-    xhr2.open("POST", "/modules/newChoice.php")
-    xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr2.send(data)
-    /*xhr2.onload = () => {
-        console.log(xhr2.responseText);
-    }*/
 }
