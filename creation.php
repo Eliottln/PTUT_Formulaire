@@ -4,7 +4,7 @@
 
     <meta charset="utf-8">
     <title>Accueil</title>
-    <link type="text/css" rel="stylesheet" href="">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" sizes="16x16" href="">
 
 </head>
