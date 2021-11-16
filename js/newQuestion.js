@@ -49,12 +49,18 @@ function newForm(){ //create a question input with response input in html
     }*/
 
     if (this.getAttribute('id') === 'new-radio'){
-        const addRadio=document.querySelector('.b-add-radio')
-        addRadio.addEventListener('click',newChoice)
+        const addRadio=document.querySelectorAll('.b-add-radio')
+        for (i=0;i<addRadio.length;i++){
+            addRadio.addEventListener('click',newChoice)
+        }
+/*        addRadio.forEach((element,index) => {
+            index.addEventListener('click',newChoice)
+        })*/
+
     }
     else if (this.getAttribute('id') === 'new-checkbox'){
-        const addCheckbox=document.querySelector('.b-add-checkbox')
-        addCheckbox.addEventListener('click',newChoice,true)
+        const addCheckbox=document.querySelectorAll('.b-add-checkbox')
+        addCheckbox.addEventListener('click',newChoice)
     }
 
 }
