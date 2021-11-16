@@ -2,10 +2,15 @@
 class Input{
     private $name;
     private $type;
+    private $subInput;
 
-    function __construct(){
-        $this->name = "New Title";
-        $this->type = "text";
+    function __construct($type = "text",$name = "New Title"){
+        $this->type = $type;
+        $this->name = $name;
+
+        if($this->type == "select"){
+            $this->subInput = array();
+        }
     }
 
     //SET
@@ -18,10 +23,21 @@ class Input{
     }
 
     //GET
-    public function get_name() {
+    public function getName() {
         return $this->name;
     }
-    public function get_type() {
+
+    public function getType() {
         return $this->type;
     }
+
+    public function getSubInput() {
+        return $this->subInput;
+    }
+
+    //FUNCTION
+    public function addInput($type = "text") {
+        array_push($this->subInput, new Input($type));
+    }
+    
 }

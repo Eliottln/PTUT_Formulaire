@@ -8,6 +8,7 @@
                 $arrayStringForm = explode("<",$_POST["fileToString"]);
                 $arrayObjectInput = array();
             
+                //STANDART INPUT
                 $arrayStringInput = array();
                 foreach($arrayStringForm as $key => $value){
                     if(str_contains($value, "input ")){
@@ -15,7 +16,48 @@
                         array_push($arrayObjectInput, new Input());
                     }
                 }
+
+    /*            
+                $arrayObjectSelect = array();
+                //SELECT
+                $arrayStringSelect = array();
+                foreach($arrayStringForm as $key => $value){
+                    if(str_contains($value, "select")){
+                        if(str_contains($value, "/select")){
+                            array_push($arrayStringSelect,$value,$key);
+                        }
+                        else{
+                            array_push($arrayStringSelect,explode("\"",$value),$key);
+                            $lenghtMinusOne = count($arrayStringSelect) -4;
+                        array_push($arrayObjectSelect, new Input("select",$arrayStringSelect[$lenghtMinusOne][1]));
+                        }
+                    }
+                }
+                echo "ok";
+                echo count($arrayStringSelect);
+                var_dump($arrayStringSelect);
+                echo "ok";
+
+                //OPTION
+                $iterator = 0;
+                foreach($arrayStringForm as $key => $value){
+                    if(str_contains($value, "<option")){
+                        for($i = 0; $i<count($arrayStringSelect); $i++){
+                            if(($key > $arrayStringSelect[$i][1])&&($key > $arrayStringSelect[$i+1][1])){
+                                array_push($arrayObjectSelect[$iterator]->getSubInput(),new Input("option"));
+                            }
+                        }
+                    }
+                }
+*/
+                foreach($arrayObjectSelect as $key => $value){
+                    array_push($arrayObjectInput,$value);
+                }/*
+                foreach($arrayStringSelect as $key => $value){
+                    array_push($arrayStringInput,$value);
+                }*/
             
+                //SET NAME & TYPE
                 for($i = 0; $i < count($arrayStringInput); $i++){
                     for($j = 0; $j < count($arrayStringInput[$i]); $j++){
                         if(str_contains($arrayStringInput[$i][$j], "name=")){
@@ -35,12 +77,6 @@
                 #   code...
                 echo "Les fichier de type JSON ne sont pas encore pris en charge";
                 break;
-
-            //case 'xml':
-                #   code...
-                //echo "Les fichier de type XML ne sont pas encore pris en charge";
-                //break;
-                
             
             default:
                 #   code...
@@ -98,9 +134,9 @@
                 </pre>
             </dialog>
         </div>
-        <div id="Form">
+        <form id="Form">
 
-        </div>
+        </form>
     </main>
     <script>
         const FORM = document.getElementById("Form");
@@ -145,7 +181,7 @@
         <?php
             if(!empty($arrayObjectInput)){
                 for($i=0;$i<count($arrayObjectInput);$i++){
-                    echo "addSectionFromObject(\"".$arrayObjectInput[$i]->get_name()."\",\"".$arrayObjectInput[$i]->get_type()."\")\n";
+                    echo "addSectionFromObject(\"".$arrayObjectInput[$i]->getName()."\",\"".$arrayObjectInput[$i]->getType()."\")\n";
                 }
             }
         ?>
