@@ -61,7 +61,7 @@ function newForm(){ //create a question input with response input in html
                     '<input id="q'+numQuestion+'-radio-choice2" type="text" name="q'+numQuestion+'-radio-choice2">'+
                     '<input type="radio" name="q'+numQuestion+'-response" disabled>'+
 
-                    '<button id="q'+numQuestion+'-button-add-radio" type="button">Ajouter</button>'
+                    '<button id="q'+numQuestion+'-button-add-radio" type="button" name="'+numQuestion+'">Ajouter</button>'
 
         div.appendChild(divQ)
 
@@ -81,7 +81,7 @@ function newForm(){ //create a question input with response input in html
             '<input id="q'+numQuestion+'-checkbox-choice2" type="text" name="q'+numQuestion+'-checkbox-choice2">'+
             '<input type="checkbox" name="q'+numQuestion+'-response" disabled>'+
 
-            '<button id="q'+numQuestion+'-button-add-checkbox" type="button">Ajouter</button>'
+            '<button id="q'+numQuestion+'-button-add-checkbox" type="button" name="'+numQuestion+'">Ajouter</button>'
 
         div.appendChild(divQ)
 
@@ -100,16 +100,20 @@ function newChoice(){ //add a choice for radio or checkbox input
     const regex = /radio/
 
     if(regex.test(this.getAttribute('id'))){
-        let choice='<label for="q'+numQuestion+'-radio-choice3">Choix 3</label>'+
-                '<input id="q'+numQuestion+'-radio-choice3" type="text" name="q'+numQuestion+'-radio-choice3">'+
-                '<input id="response-radio3" type="radio" name="q'+numQuestion+'-response" disabled>'
+        let question = this.getAttribute('name')
+
+        let choice='<label for="q'+question+'-radio-choice3">Choix 3</label>'+
+                '<input id="q'+question+'-radio-choice3" type="text" name="q'+question+'-radio-choice3">'+
+                '<input id="response-radio3" type="radio" name="q'+question+'-response" disabled>'
 
         this.insertAdjacentHTML("beforebegin", choice);
     }
     else{
-        let choice='<label for="q'+numQuestion+'-checkbox-choice3">Choix 3</label>'+
-            '<input id="q'+numQuestion+'-checkbox-choice3" type="text" name="q'+numQuestion+'-checkbox-choice3">'+
-            '<input id="response-checkbox3" type="checkbox" name="q'+numQuestion+'-response" disabled>'
+        let question = this.getAttribute('name')
+
+        let choice='<label for="q'+question+'-checkbox-choice3">Choix 3</label>'+
+            '<input id="q'+question+'-checkbox-choice3" type="text" name="q'+question+'-checkbox-choice3">'+
+            '<input id="response-checkbox3" type="checkbox" name="q'+question+'-response" disabled>'
 
         this.insertAdjacentHTML("beforebegin", choice);
     }
