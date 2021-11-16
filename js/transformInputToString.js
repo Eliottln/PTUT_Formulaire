@@ -4,22 +4,40 @@ const button = document.getElementById("submit")
 
 button.addEventListener('click',ajoutInput)
 
-let counter = 0;
+
 let counter2 = 0;
+let nowQuestion = "";
 
-/*function send(){
-    for (counter; counter < allInput.length; counter++){
-        console.log(allInput[counter]);
-    }
-}*/
-
+//CA FONCTIONNE LES MEME QUESTIONS SONT ANALYSE
+//FAIRE LE REGLGAGE DES RADIO BUTTON POUR BIEN LES ENVOYER DANS BDD, REMETTRE LE TYPE SUBMIT AU BOUTON DANSL E HTML POUR LE RENVOYER
 function ajoutInput(){
     for (counter2; counter2 < allInput.length; counter2++){
-        let newInput = document.createElement('input');
-        newInput.type = allInput[counter2].type;
-        newInput.name = allInput[counter2].name;
-        newInput.value = allInput[counter2].type +"/"+ allInput[counter2].value;
-        formTemp.appendChild(newInput);
+
+        if(allInput[counter2].type == 'radio'){
+
+        }
+        else{
+            let newInput = document.createElement('input');
+            let valeur = allInput[counter2].name.split("-");
+            if (nowQuestion == valeur[0]){
+                console.log("Meme question, donc plusieurs choix de radio " )
+            }
+
+
+            nowQuestion = valeur[0];
+            console.log(nowQuestion);
+
+
+            newInput.type = allInput[counter2].type;
+            newInput.name = allInput[counter2].name;
+            newInput.value = allInput[counter2].type +"/"+ allInput[counter2].value + "/" + nowQuestion;
+            formTemp.appendChild(newInput);
+        }
+
+
+
+
+
 
     }
 

@@ -34,6 +34,22 @@
                     <input id="q6" type="password" name="q6" required>
                 </div>
 
+                <div>
+                    <label for="q7-radio-choice1">Choix 1</label>
+                    <input id="q7-radio-choice1" type="text" name="q7-radio-choice1" >
+                    <input type="radio" name="q7-radio-choice1" disabled>
+
+                    <label for="q7-radio-choice2">Choix 2</label>
+                    <input id="q7-radio-choice2" type="text" name="q7-radio-choice2" >
+                    <input type="radio" name="q7-radio-choice2" disabled>
+                </div>
+
+                <div>
+                    <label for="q8-radio-choice1">Choix 1</label>
+                    <input id="q8-radio-choice1" type="text" name="q8-radio-choice1" >
+                    <input type="radio" name="q8-radio-choice1" disabled>
+                </div>
+
 
             </form>
 
@@ -42,7 +58,7 @@
             <form id="export" action="/exportBdd.php" method="post" >
 
                 <div class="buttonSR">
-                    <button  id="submit" type="submit">Enregistrer</button>
+                    <button  id="submit" type="button">Enregistrer</button>
                 </div>
 
             </form>

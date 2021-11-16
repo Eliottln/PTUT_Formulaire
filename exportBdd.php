@@ -34,8 +34,12 @@ try{
 
     foreach ($_POST as $key => $value){ // On renomme la clé et la valeur en key et value, faire un print_R pour + de detail.
         $parties = explode("/", $value);
+        echo '<br>';
         echo $parties[0] . "<br>";
-        echo $parties[1];
+        echo $parties[1] . "<br>";
+        echo $parties[2];
+        echo '<br>';
+        echo '<br>';
         $sql .= "INSERT INTO Questions VALUES('" . $count . "','" . $lastID . "','" . $parties[0] . "','" . $parties[1] . "');";
         $count ++;
 
