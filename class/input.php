@@ -1,16 +1,29 @@
 <?php
 class Input{
-    private $name;
+    
     private $type;
+    private $name;
     private $subInput;
+    private $value;
 
-    function __construct($type = "text",$name = "New Title"){
+    //CONSTRUCTOR
+    function __construct($type = "text",$name = "New Title",$value = null){
         $this->type = $type;
         $this->name = $name;
 
         if($this->type == "select"){
             $this->subInput = array();
         }
+        if($this->type == "radio" || $this->type == "checkbox"){
+            $this->value = array();
+            array_push($this->value, $value);
+        }
+    }
+
+    function optionConstructor($value){
+        $newOption = new Input("option",null);
+        $newOption->value = $value;
+        return $newOption;
     }
 
     //SET
@@ -35,9 +48,21 @@ class Input{
         return $this->subInput;
     }
 
+    public function getValue() {
+        return $this->value;
+    }
+
     //FUNCTION
-    public function addInput($type = "text") {
-        array_push($this->subInput, new Input($type));
+    public function addOption($value = "0") {
+        if($this->type == "select"){
+            array_push($this->subInput, $this->optionConstructor($value));
+        }
+    }
+
+    public function addValue($value) {
+        if($this->type == "radio" || $this->type == "checkbox"){
+            array_push($this->value, $value);
+        }
     }
     
 }
