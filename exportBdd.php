@@ -1,9 +1,9 @@
 <?php
 
 
-$dsn = 'mysql:dbname=p2008444; host=iutbg-lamp.univ-lyon1.fr';
-$username = "p2008444";
-$password = "12008444";
+$dsn = 'mysql:dbname=ptut_site_gestion_form; host=127.0.0.1';
+$username = "Hedi";
+$password = "hedizair120";
 
 
 

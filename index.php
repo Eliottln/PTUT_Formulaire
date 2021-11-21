@@ -58,7 +58,7 @@
             <form id="export" action="/exportBdd.php" method="post" >
 
                 <div class="buttonSR">
-                    <button  id="submit" type="button">Enregistrer</button>
+                    <button  id="submit" type="submit">Enregistrer</button>
                 </div>
 
             </form>
