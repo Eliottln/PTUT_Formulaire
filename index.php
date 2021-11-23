@@ -42,6 +42,8 @@
                 </div>
 
                 <div>
+
+
                     <label for="q8-radio-choice1">Choix 1</label>
                     <input id="q8-radio-choice1" type="text" name="q8-radio-choice1" >
                     <input type="radio" name="q8-radio-choice1" disabled>

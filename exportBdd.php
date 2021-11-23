@@ -45,32 +45,25 @@ try{
 
         $parties = explode("/", $value);
         echo '<br>';
-        $typeOfInput = $parties[0]; //type
-        $valueOfInput = $parties[1]; // value
+        $typeOfInput = $parties[0];
+        $valueOfInput = $parties[1];
 
 
         $divpartie2 = explode("q", $parties[2]); //On resplite le mot q6 pour récuperer seulement le 6, soit le num de la question
         $numQuestion = $divpartie2[1];
         echo $numQuestion;
 
-        //Faire une variable bool pour savoir si on est dans un cas de radiobutton
 
-        if($parties[0]!='radioChoice'){
-            echo '<br>';
-            echo '<br>';
+        if($typeOfInput!='radioChoice'){
             $sql .= "INSERT INTO Questions VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . $valueOfInput . "');";
         }
         else{
-            array_push($tabOfMultipleAnswerQuestion, $value);
+            array_push($tabOfMultipleAnswerQuestion, $value); // On stock les choix multiples dans une array pour les retraiter après
         }
 
-        //if($parties[0] == "radio")
         $count ++;
 
     }
-
-    echo '<br>';
-    echo '<br>';
 
 
     $numChoiceOfQuestion = 0; //Compte le numéro du choix de la question radio
@@ -94,12 +87,9 @@ try{
         $numQuestion2 = $parsing2_numQuestion[1];
 
 
-        echo '<br>';
-        echo $numQuestion2 . ' and ' . $numQuestion1;
-        echo '<br>';
-
         if($numQuestion1 != $numQuestion2){
-            $sql .= "INSERT INTO Questions VALUES('" . $numQuestion1 . "','" . $lastID . "','" . 'radio' . "','" . $valueOfInput1 . "');";
+            //POUR TOUT LES AUTRES TYPE DINPUT, MODIFIER ICI, EN METTANT UN SWITCH OU AUTRE CONDITION
+            $sql .= "INSERT INTO Questions VALUES('" . $numQuestion1 . "','" . $lastID . "','" . 'radio' . "','" . null . "');";
             $numChoiceOfQuestion = 0;
             $sql .= "INSERT INTO RadioChoice VALUES('" . $numChoiceOfQuestion . "','" .  $numQuestion1. "','" . $lastID . "','" . $valueOfInput1 . "');";
             $numChoiceOfQuestion++;
@@ -108,7 +98,7 @@ try{
             $sql .= "INSERT INTO RadioChoice VALUES('" . $numChoiceOfQuestion . "','" .  $numQuestion1. "','" . $lastID . "','" . $valueOfInput1 . "');";
             $numChoiceOfQuestion++;
         }
-        
+
 
     }
 
@@ -136,7 +126,7 @@ function initDataBase( $_sql, $_lastID, $_tabOfMultipleAnswerQuestion){
     $parsing1_numQuestion = explode("q", $parsing1[2]);
     $numQuestion1 = $parsing1_numQuestion[1];
 
-    $_sql .= "INSERT INTO Questions VALUES('" . $numQuestion1 . "','" . $_lastID . "','" . 'radio' . "','" . $valueOfInput1 . "');";
+    $_sql .= "INSERT INTO Questions VALUES('" . $numQuestion1 . "','" . $_lastID . "','" . 'radio' . "','" . null . "');";
     $numChoiceOfQuestion = 0; //Compte le numéro du choix de la question radio
     $_sql .= "INSERT INTO RadioChoice VALUES('" . $numChoiceOfQuestion . "','" .  $numQuestion1. "','" . $_lastID . "','" . $valueOfInput1 . "');";
 

@@ -1,0 +1,3 @@
+-Moduler tout en fonction, parce que la frero c'est cringe
+-Ajouter une question dans le champ des questions
+-gerer les checkbox et autres choix multiples
