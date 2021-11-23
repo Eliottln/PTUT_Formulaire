@@ -5,35 +5,41 @@ const button = document.getElementById("submit")
 button.addEventListener('click',ajoutInput)
 
 
-let counter2 = 0;
+let counter = 0;
 let nowQuestion = "";
 
 //CA FONCTIONNE LES MEME QUESTIONS SONT ANALYSE
 //FAIRE LE REGLGAGE DES RADIO BUTTON POUR BIEN LES ENVOYER DANS BDD, REMETTRE LE TYPE SUBMIT AU BOUTON DANSL E HTML POUR LE RENVOYER
 function ajoutInput(){
-    for (counter2; counter2 < allInput.length; counter2++){
+    for (counter; counter < allInput.length; counter++){
 
-        if(allInput[counter2].type == 'radio'){
+        let valeur = allInput[counter].name.split("-"); //Split le nom de l'input, qui est sous la forme qX-type-n°;
 
-        }
-        else{
+        if(allInput[counter].type != 'radio'){
+
             let newInput = document.createElement('input');
-            let valeur = allInput[counter2].name.split("-");
-            if (nowQuestion == valeur[0]){
-                console.log("Meme question, donc plusieurs choix de radio " )
+            nowQuestion = valeur[0];
+            $type = valeur[1]; //Suelement dans le cas ou c'est un radioButton, sinn la variable est à undefined
+
+            if($type == 'radio' ){
+
+                //faire un newInput avec toute les valeurs des radio
+                newInput.type = 'text';
+                newInput.name = newInput.name = allInput[counter].name;
+                newInput.value = 'radioChoice' +"/"+ allInput[counter].value + "/" + nowQuestion;
+
+            }
+            else{
+
+                newInput.type = allInput[counter].type;
+                newInput.name = allInput[counter].name;
+                newInput.value = allInput[counter].type +"/"+ allInput[counter].value + "/" + nowQuestion;
+
             }
 
+            formTemp.appendChild(newInput); // On crée dans le formulaire export un nouveau champ div
 
-            nowQuestion = valeur[0];
-            console.log(nowQuestion);
-
-
-            newInput.type = allInput[counter2].type;
-            newInput.name = allInput[counter2].name;
-            newInput.value = allInput[counter2].type +"/"+ allInput[counter2].value + "/" + nowQuestion;
-            formTemp.appendChild(newInput);
         }
-
 
 
 

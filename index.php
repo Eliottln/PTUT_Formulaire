@@ -39,16 +39,28 @@
                     <input id="q7-radio-choice1" type="text" name="q7-radio-choice1" >
                     <input type="radio" name="q7-radio-choice1" disabled>
 
-                    <label for="q7-radio-choice2">Choix 2</label>
-                    <input id="q7-radio-choice2" type="text" name="q7-radio-choice2" >
-                    <input type="radio" name="q7-radio-choice2" disabled>
                 </div>
 
                 <div>
                     <label for="q8-radio-choice1">Choix 1</label>
                     <input id="q8-radio-choice1" type="text" name="q8-radio-choice1" >
                     <input type="radio" name="q8-radio-choice1" disabled>
+
+                    <label for="q8-radio-choice2">Choix 2</label>
+                    <input id="q8-radio-choice2" type="text" name="q8-radio-choice2" >
+                    <input type="radio" name="q8-radio-choice2" disabled>
                 </div>
+
+
+
+                <div>
+                    <label for="q9-radio-choice1">Choix 1</label>
+                    <input id="q9-radio-choice1" type="text" name="q9-radio-choice1" >
+                    <input type="radio" name="q9-radio-choice1" disabled>
+
+                </div>
+
+
 
 
             </form>
