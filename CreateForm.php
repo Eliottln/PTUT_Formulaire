@@ -1,56 +1,6 @@
 <?php
-    include "class/input.php";
     echo "<pre id=\"debug\"><code>";
-    if(!empty($_POST)){
-        switch ($_POST["fileType"]) {
-            case 'xml':
-            case 'html':
-                $arrayStringForm = explode("<",$_POST["fileToString"]);
-                $arrayObjectInput = array();
-            
-                $arrayStringInput = array();
-                foreach($arrayStringForm as $key => $value){
-                    if(str_contains($value, "input ")){
-                        array_push($arrayStringInput,explode("\"",$value));
-                        array_push($arrayObjectInput, new Input());
-                    }
-                }
-            
-                for($i = 0; $i < count($arrayStringInput); $i++){
-                    for($j = 0; $j < count($arrayStringInput[$i]); $j++){
-                        if(str_contains($arrayStringInput[$i][$j], "name=")){
-                            $arrayObjectInput[$i]->set_name($arrayStringInput[$i][$j+1]);
-                        }
-                        if(str_contains($arrayStringInput[$i][$j], "type=")){
-                            $arrayObjectInput[$i]->set_type($arrayStringInput[$i][$j+1]);
-                        }
-                    }
-                }
-                
-                echo "Object : ";
-                var_dump($arrayStringInput);
-                break;
-
-            case 'json':
-                #   code...
-                echo "Les fichier de type JSON ne sont pas encore pris en charge";
-                break;
-
-            //case 'xml':
-                #   code...
-                //echo "Les fichier de type XML ne sont pas encore pris en charge";
-                //break;
-                
-            
-            default:
-                #   code...
-                echo "Ce fichier est incompatible avec l'importation";
-                break;
-        }
-
-
-    }
-    
+    include_once($_SERVER["DOCUMENT_ROOT"]."/modules/ImportFile.php");
     echo "</code></pre>";
 ?>
 
@@ -66,12 +16,20 @@
 </head>
 
 <body>
-    <header></header>
+    <?php require 'modules/header.php'; ?>
+
     <main>
         <div id="palette">
             <ul>
                 <li>
                     <div id="addSection" class="button">Ajouter une question</div>
+                    <div id="choose-type">
+                        <ul>
+                            <li><div id="new-text" class="subButton">Texte</div></li>
+                            <li><div id="new-radio" class="subButton">Radio</div></li>
+                            <li><div id="new-checkbox" class="subButton">Checkbox</div></li>
+                        </ul>
+                    </div>
                 </li>
                 <li>
                     <div id="ClearForm" class="button">Recommencer</div>
@@ -99,14 +57,19 @@
                 </pre>
             </dialog>
         </div>
-        <div id="Form">
+        <form id="form-document" action="https://ressources.site/" method="post">
+            <button id="submit" type="submit" disabled>Enregistrer</button>
 
-        </div>
+        </form>
     </main>
-    <script>
-        const FORM = document.getElementById("Form");
 
-        function addSection(){
+    <?php require 'modules/footer.php'; ?>
+
+    <script src="/js/newQuestion.js"></script>
+    <script>
+        const FORM = document.getElementById("form-document");
+
+/*        function addSection(){
             let newSection = document.createElement("section");
             let newTitle = document.createElement("input");
             newTitle.setAttribute("value", "New Title");
@@ -123,42 +86,111 @@
         }
         
         document.getElementById("addSection").addEventListener('click',addSection);
-
+*/
         //With parameters
-        function addSectionFromObject(name,type){
-            let newSection = document.createElement("section");
-            let newTitle = document.createElement("input");
-            newTitle.setAttribute("value", name);
-            newTitle.classList.add("title")
-        
-            let newInput = document.createElement("input");
-            newInput.setAttribute("name", name);
-            newInput.setAttribute("type", type);
-            newInput.setAttribute("disabled", true);
+        function addQuestionFromObject(name,type){
+            numQuestion++;
+            let div = addDivElement()
 
+            div.innerHTML = '<div>'+
+                                '<label for="question-num'+numQuestion+'">Question</label>'+
+                                '<textarea id="question-num'+numQuestion+'" class="question" name="question-num'+numQuestion+'" placeholder="Question" required>'+name+'</textarea>'+
+                            '</div>'
+
+            let divQ = document.createElement("div");
+            divQ.innerHTML = '<label for="response-'+type+'">Réponse</label>'+
+                                '<input id="response-'+type+'" type="'+type+'" name="'+name+'" disabled>'
+
+            div.appendChild(divQ);
+        }
+
+        function addSelectFromObject(name,array){
+            numQuestion++;
+            let div = addDivElement()
+
+            div.innerHTML = '<div>'+
+                                '<label for="question-num'+numQuestion+'">Question</label>'+
+                                '<textarea id="question-num'+numQuestion+'" class="question" name="question-num'+numQuestion+'" placeholder="Question" required>'+name+'</textarea>'+
+                            '</div>'
+
+            let divQ = document.createElement("div");
+            divQ.innerHTML = '<label for="response-select">Réponse</label>'
+                                for (let index = 0; index < array.length; index++) {
+                                    divQ.innerHTML += '<label for="q'+numQuestion+'-select-option-'+(index+1)+'">Option '+(index+1)+'</label>'+
+                                                        '<input id="q'+numQuestion+'-select-option'+(index+1)+'" type="text" name="q'+numQuestion+'-select-option'+(index+1)+'" value="'+array[index]+'">'
+                                }
             
-            newSection.appendChild(newTitle);
-            newSection.appendChild(newInput);
+            divQ.innerHTML += '<button id="q'+numQuestion+'-button-add-select" type="button">Ajouter</button>'
+            divQ.innerHTML +='<label for="response-select">Prévisualisation</label>'
+            
+            let select = document.createElement('select');
+            select.setAttribute('id', 'response-select');
+            select.setAttribute('name',name);
+                                for (let index = 0; index < array.length; index++) {
+                                    select.innerHTML += '<option value="'+array[index]+'">'+array[index]+'</option>';
+                                }
 
-            FORM.appendChild(newSection);
+            div.appendChild(divQ);
+            div.appendChild(select);
+
+            const addCheckbox=document.querySelector('#q'+numQuestion+'-button-add-select')
+            addCheckbox.addEventListener('click',function(){
+                console.log("fonction à faire");//TODO
+            })
+            
         }
 
-        <?php
-            if(!empty($arrayObjectInput)){
-                for($i=0;$i<count($arrayObjectInput);$i++){
-                    echo "addSectionFromObject(\"".$arrayObjectInput[$i]->get_name()."\",\"".$arrayObjectInput[$i]->get_type()."\")\n";
-                }
+        function addRadioOrCheckboxFromObject(name,type,array){
+            numQuestion++
+            console.log(array[0]);
+            let div = addDivElement()
+
+            div.innerHTML = '<div>'+
+                                '<label for="question-num'+numQuestion+'">Question</label>'+
+                                '<textarea id="question-num'+numQuestion+'" class="question" name="question-num'+numQuestion+'" placeholder="Question" required>'+name+'</textarea>'+
+                            '</div>'
+            
+            let divQ = document.createElement("div");
+            divQ.innerHTML = '<p>Réponses</p>'
+                    for (let index = 0; index < array.length; index++) {
+                        divQ.innerHTML += '<label for="q'+numQuestion+'-'+type+'-choice'+(index+1)+'">Choix '+(index+1)+'</label>'+
+                                            '<input id="q'+numQuestion+'-'+type+'-choice'+(index+1)+'" type="text" name="q'+numQuestion+'-'+type+'-choice'+(index+1)+'" value="'+array[index]+'">'+
+                                            '<input type="'+type+'" name="q'+numQuestion+'-response" disabled>'
+                    }
+
+                    divQ.innerHTML +='<button id="q'+numQuestion+'-button-add-'+type+'" type="button">Ajouter</button>'
+
+            div.appendChild(divQ)
+
+            const addCheckbox=document.querySelector('#q'+numQuestion+'-button-add-'+type+'')
+            addCheckbox.addEventListener('click',newChoice)
+        }
+
+        <?php include_once($_SERVER["DOCUMENT_ROOT"]."/modules/createInputFromObject.php");?>
+
+        let chooseTypeisVisible = false;
+        function displayChooseType(){
+            if(chooseTypeisVisible){
+                document.getElementById("choose-type").removeAttribute("style");
+                chooseTypeisVisible++;
             }
-        ?>
-
-        
-
-        function newForm(){
-            let formContent = document.querySelectorAll('#Form section');
-            formContent.forEach(element => element.remove());
+            else{
+                document.getElementById("choose-type").style.opacity = "100%";
+                chooseTypeisVisible--;
+            }
         }
 
-        document.getElementById("ClearForm").addEventListener('click',newForm);
+        document.getElementById("addSection").addEventListener('click',displayChooseType);
+
+        function resetForm(){
+            let formContent = document.querySelectorAll('#form-document div');
+            formContent.forEach(element => element.remove());
+            numForm = 0
+            numQuestion = 0
+            button.setAttribute('disabled',true);
+        }
+
+        document.getElementById("ClearForm").addEventListener('click',resetForm);
         
         function showDialog(){
             if (typeof document.getElementById('Import').showModal === "function") {
