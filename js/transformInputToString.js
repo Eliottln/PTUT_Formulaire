@@ -1,59 +1,86 @@
 const allInput = document.querySelectorAll("input")
+const allTextArea = document.querySelectorAll("textarea")
 const formTemp = document.getElementById('export');
 const button = document.getElementById("submit")
-const allFormQuestion = document.querySelectorAll("form div");
+const allFormQuestion = document.querySelectorAll("#form-document>div");
+
 
 button.addEventListener('click',ajoutInput)
 
 
-let counter = 0;
-let counterInput
+let counter;
+let counterInput;
+let counterTextArea;
 let nowQuestion = "";
+
+let tabInput = [];
 
 
 function ajoutInput(){
 
-    for (counter; counter < allFormQuestion.length; counter++){
-        
+    for (counter =0; counter < allFormQuestion.length; counter++){
+
+        let parsing1 = allFormQuestion[counter].id.split("-");
+        numQuestion = parsing1[1];
+        typeQuestion = parsing1[2];
+
+
+
+        //ON AJOUTE LA QUESTION AUX TABLEAU DINPUT
+        newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.name = allTextArea[parseInt(counter)].name;
+        newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+        tabInput.push(newInput);
+
+
+
+
+        //Dans le cas des input (radio button et autres choix multiples
         for(counterInput =0; counterInput < allInput.length; counterInput++){
-            let parsing = allInput[counterInput].id.split("-");
-            //GERER AUSSI LE CAS DES TEXTE AREA
-            console.log(parsing[0]);
-            console.log(parsing[1]);
-            console.log(parsing[2]);
-        }
-        
+            let parsing2 = allInput[counterInput].id.split("-");
+            let numQuestionOfInput = parsing2[0].replace('q','');
 
-        /*
-        let valeur = allInput[counter].name.split("-"); //Split le nom de l'input, qui est sous la forme qX-type-n°;
-
-        if(allInput[counter].type != 'radio'){
-
-            let newInput = document.createElement('input');
-            nowQuestion = valeur[0];
-            $type = valeur[1]; //Suelement dans le cas ou c'est un radioButton, sinn la variable est à undefined
-
-            if($type == 'radio' ){
-
-                //faire un newInput avec toute les valeurs des radio
-                newInput.type = 'text';
-                newInput.name = newInput.name = allInput[counter].name;
-                newInput.value = 'radioChoice' +"/"+ allInput[counter].value + "/" + nowQuestion;
-
-            }
-            else{
-
-                newInput.type = allInput[counter].type;
-                newInput.name = allInput[counter].name;
-                newInput.value = allInput[counter].type +"/"+ allInput[counter].value + "/" + nowQuestion;
-
+            if(numQuestionOfInput === numQuestion){
+                switch (typeQuestion) {
+                    case "radio":
+                        let newInput = document.createElement('input');
+                        newInput.type = 'text'
+                        newInput.name = allInput[counterInput].name;
+                        newInput.value = 'radioChoice' + '/' + allInput[counterInput].value + '/' + numQuestion;
+                        tabInput.push(newInput);
+                        break;
+                    case "checkbox":
+                        let newInput2 = document.createElement('input');
+                        newInput2.type = 'text'
+                        newInput2.name = allInput[counterInput].name;
+                        newInput2.value = 'checkBoxChoice' + '/' + allInput[counterInput].value + '/' + numQuestion;
+                        tabInput.push(newInput2);
+                        break;
+                    default:
+                        console.log("NOP");
+                }
             }
 
-            formTemp.appendChild(newInput); // On crée dans le formulaire export un nouveau champ div
+            /*if(numQuestionOfInput === numQuestion && typeQuestion=== 'radio'){
+                let newInput = document.createElement('input');
+                newInput.type = 'text'
+                newInput.name = allInput[counterInput].name;
+                newInput.value = 'radioChoice' + '/' + allInput[counterInput].value + '/' + numQuestion;
+                tabInput.push(newInput);
+
+            }
+            else if*/
+
+
+
 
         }
-        */
 
+        //on affiche le nouveau form
+        for (let i = 0; i < tabInput.length; i++){
+            formTemp.appendChild(tabInput[i]);
+        }
 
 
 
