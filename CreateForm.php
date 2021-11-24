@@ -16,10 +16,13 @@
 </head>
 
 <body>
+
     <?php require 'modules/header.php'; ?>
 
     <main>
+
         <div id="palette">
+
             <ul>
                 <li>
                     <div id="addSection" class="button">Ajouter une question</div>
@@ -38,6 +41,7 @@
                     <div id="ImportForm" class="button">importer un formulaire</div>
                 </li>
             </ul>
+
             <div id="Debug-button" class="button">&#128421;Debug</div>
         </div>
         <div id="bgGrey">
@@ -66,6 +70,7 @@
     <?php require 'modules/footer.php'; ?>
 
     <script src="/js/newQuestion.js"></script>
+
     <script>
         const FORM = document.getElementById("form-document");
 

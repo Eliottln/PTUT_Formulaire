@@ -7,23 +7,60 @@ newRadio.addEventListener('click',newForm)
 const newCheckbox=document.getElementById('new-checkbox')
 newCheckbox.addEventListener('click',newForm)
 
-
 const content = document.getElementById("form-document")
-
 const button = document.getElementById('submit')
 
-let numForm = 0
 let numQuestion = 0
+const choice = new Map();
 
 
-function addDivElement(){ //create the div element for the question
-    numForm++
+function addDivElement(id){ //create the div element for the question
+    numQuestion++
+
     let div = document.createElement("div")
     content.appendChild(div)
-    div.setAttribute('id', 'form'+numForm)
+    div.setAttribute('id', 'form-'+numQuestion+'-'+id.slice(4))
 
     return div
 }
+
+
+function createRadioOrCheckbox(type){
+    choice.set(numQuestion.toString(),2)
+
+    return '<p>Réponses</p>'+
+        '<label for="q'+numQuestion+'-'+type+'1">Choix 1</label>'+
+        '<input id="q'+numQuestion+'-'+type+'1" type="text" name="q'+numQuestion+'-'+type+'1">'+
+        '<input type="'+type+'" disabled>'+
+
+        '<label for="q'+numQuestion+'-'+type+'2">Choix 2</label>'+
+        '<input id="q'+numQuestion+'-'+type+'2" type="text" name="q'+numQuestion+'-'+type+'2">'+
+        '<input type="'+type+'" disabled>'+
+
+        '<button id="q'+numQuestion+'-add-'+type+'" type="button" name="'+numQuestion+'">Ajouter</button>'
+}
+
+
+function newChoice(){ //add a choice for radio or checkbox input
+
+    const type = this.getAttribute('id').slice(7)
+
+    const question = this.getAttribute('name')
+
+    choice.set(this.getAttribute('name'),choice.get(this.getAttribute('name'))+1)
+
+    const num = choice.get(this.getAttribute('name'))
+
+    let add='<label for="q'+question+'-'+type+num+'">Choix '+num+'</label>'+
+        '<input id="q'+question+'-'+type+num+'" type="text" name="q'+question+'-'+type+num+'">'+
+        '<input type="'+type+'" disabled>'
+
+    this.insertAdjacentHTML("beforebegin", add);
+}
+
+
+
+/****************************************************/
 
 
 
@@ -31,91 +68,42 @@ function newForm(){ //create a question input with response input in html
 
     button.removeAttribute('disabled')
 
-    numQuestion++
+    const id = this.getAttribute('id')
 
-    let div = addDivElement()
+    let div = addDivElement(id)
 
+    //Create the textarea for the question
     div.innerHTML = '<div>'+
-                        '<label for="question-num'+numQuestion+'">Question</label>'+
-                        '<textarea id="question-num'+numQuestion+'" class="question" name="question-num'+numQuestion+'" placeholder="Question" required></textarea>'+
+                        '<label for="q'+numQuestion+'">Question</label>'+
+                        '<textarea id="q'+numQuestion+'" class="question" name="q'+numQuestion+'" placeholder="Question" required></textarea>'+
                     '</div>'
 
-    if(this.getAttribute('id') === 'new-text'){
 
-        let divQ = document.createElement("div");
-        divQ.innerHTML = '<label for="response-text">Réponse</label>'+
-                    '<input id="response-text" type="text" name="response" disabled>'
 
-        div.appendChild(divQ)
-    }
+    let divQ = document.createElement("div");
 
-    else if(this.getAttribute('id') === 'new-radio'){
+    if(id === 'new-text'){
 
-        let divQ = document.createElement("div");
-        divQ.innerHTML = '<p>Réponses</p>'+
-                    '<label for="q'+numQuestion+'-radio-choice1">Choix 1</label>'+
-                    '<input id="q'+numQuestion+'-radio-choice1" type="text" name="q'+numQuestion+'-radio-choice1">'+
-                    '<input type="radio" name="q'+numQuestion+'-response" disabled>'+
-
-                    '<label for="q'+numQuestion+'-radio-choice2">Choix 2</label>'+
-                    '<input id="q'+numQuestion+'-radio-choice2" type="text" name="q'+numQuestion+'-radio-choice2">'+
-                    '<input type="radio" name="q'+numQuestion+'-response" disabled>'+
-
-                    '<button id="q'+numQuestion+'-button-add-radio" type="button" name="'+numQuestion+'">Ajouter</button>'
+        divQ.innerHTML = '<label for="response'+numQuestion+'">Réponse</label>'+
+                    '<input id="response'+numQuestion+'" type="text" name="response" disabled>'
 
         div.appendChild(divQ)
-
-        const addCheckbox=document.querySelector('#q'+numQuestion+'-button-add-radio')
-        addCheckbox.addEventListener('click',newChoice)
     }
 
-    else if(this.getAttribute('id') === 'new-checkbox'){
+    else if(id === 'new-radio'){
 
-        let divQ = document.createElement("div");
-        divQ.innerHTML = '<p>Réponses</p>'+
-            '<label for="q'+numQuestion+'-checkbox-choice1">Choix 1</label>'+
-            '<input id="q'+numQuestion+'-checkbox-choice1" type="text" name="q'+numQuestion+'-checkbox-choice1">'+
-            '<input type="checkbox" name="q'+numQuestion+'-response" disabled>'+
-
-            '<label for="q'+numQuestion+'-checkbox-choice2">Choix 2</label>'+
-            '<input id="q'+numQuestion+'-checkbox-choice2" type="text" name="q'+numQuestion+'-checkbox-choice2">'+
-            '<input type="checkbox" name="q'+numQuestion+'-response" disabled>'+
-
-            '<button id="q'+numQuestion+'-button-add-checkbox" type="button" name="'+numQuestion+'">Ajouter</button>'
+        divQ.innerHTML = createRadioOrCheckbox('radio')
 
         div.appendChild(divQ)
-
-        const addCheckbox=document.querySelector('#q'+numQuestion+'-button-add-checkbox')
-        addCheckbox.addEventListener('click',newChoice)
+        document.querySelector('#q'+numQuestion+'-add-radio').addEventListener('click',newChoice)
     }
 
-}
+    else if(id === 'new-checkbox'){
 
+        divQ.innerHTML = createRadioOrCheckbox('checkbox')
 
-/*------------------------------*/
-
-
-function newChoice(){ //add a choice for radio or checkbox input
-
-    const regex = /radio/
-
-    if(regex.test(this.getAttribute('id'))){
-        let question = this.getAttribute('name')
-
-        let choice='<label for="q'+question+'-radio-choice3">Choix 3</label>'+
-                '<input id="q'+question+'-radio-choice3" type="text" name="q'+question+'-radio-choice3">'+
-                '<input id="response-radio3" type="radio" name="q'+question+'-response" disabled>'
-
-        this.insertAdjacentHTML("beforebegin", choice);
-    }
-    else{
-        let question = this.getAttribute('name')
-
-        let choice='<label for="q'+question+'-checkbox-choice3">Choix 3</label>'+
-            '<input id="q'+question+'-checkbox-choice3" type="text" name="q'+question+'-checkbox-choice3">'+
-            '<input id="response-checkbox3" type="checkbox" name="q'+question+'-response" disabled>'
-
-        this.insertAdjacentHTML("beforebegin", choice);
+        div.appendChild(divQ)
+        document.querySelector('#q'+numQuestion+'-add-checkbox').addEventListener('click',newChoice)
     }
 
 }
