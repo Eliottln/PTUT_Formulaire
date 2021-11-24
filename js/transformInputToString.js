@@ -1,18 +1,30 @@
 const allInput = document.querySelectorAll("input")
 const formTemp = document.getElementById('export');
 const button = document.getElementById("submit")
+const allFormQuestion = document.querySelectorAll("form div");
 
 button.addEventListener('click',ajoutInput)
 
 
 let counter = 0;
+let counterInput
 let nowQuestion = "";
 
-//CA FONCTIONNE LES MEME QUESTIONS SONT ANALYSE
-//FAIRE LE REGLGAGE DES RADIO BUTTON POUR BIEN LES ENVOYER DANS BDD, REMETTRE LE TYPE SUBMIT AU BOUTON DANSL E HTML POUR LE RENVOYER
-function ajoutInput(){
-    for (counter; counter < allInput.length; counter++){
 
+function ajoutInput(){
+
+    for (counter; counter < allFormQuestion.length; counter++){
+        
+        for(counterInput =0; counterInput < allInput.length; counterInput++){
+            let parsing = allInput[counterInput].id.split("-");
+            //GERER AUSSI LE CAS DES TEXTE AREA
+            console.log(parsing[0]);
+            console.log(parsing[1]);
+            console.log(parsing[2]);
+        }
+        
+
+        /*
         let valeur = allInput[counter].name.split("-"); //Split le nom de l'input, qui est sous la forme qX-type-n°;
 
         if(allInput[counter].type != 'radio'){
@@ -40,7 +52,7 @@ function ajoutInput(){
             formTemp.appendChild(newInput); // On crée dans le formulaire export un nouveau champ div
 
         }
-
+        */
 
 
 

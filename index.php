@@ -2,66 +2,64 @@
 <html>
 
     <body>
-            <form class="" action="/exportBdd.php" method="post">
+        <form class="" action="/exportBdd.php" method="post">
 
+            <div id="form1-text">
                 <div>
-                    <label for="q1">Question 1</label>
-                    <input id="q1" type="text" name="q1" required>
+                    <label for="q1">Question</label>
+                    <textarea id="q1" class="question" name="q1" placeholder="Question" required=""></textarea>
                 </div>
 
                 <div>
-                    <label for="q2">Question 2</label>
-                    <input id="q2" type="text" name="q2" required>
+                    <label for="response-text">Réponse</label>
+                    <input id="response-text" type="text" name="response" disabled="">
+                </div>
+            </div>
+
+            <div id="form2-text">
+                <div>
+                    <label for="q2">Question</label>
+                    <textarea id="q2" class="question" name="q2" placeholder="Question" required=""></textarea>
                 </div>
 
                 <div>
-                    <label for="q3">Question 3</label>
-                    <input id="q3" type="text" name="q3" required>
+                    <label for="response-text">Réponse</label>
+                    <input id="response-text" type="text" name="response" disabled="">
+                </div>
+            </div>
+
+            <div id="form3-text">
+                <div>
+                    <label for="q3">Question</label>
+                    <textarea id="q3" class="question" name="q3" placeholder="Question" required=""></textarea>
                 </div>
 
                 <div>
-                    <label for="q4">Question 4</label>
-                    <input id="q4" type="text" name="q4" required>
+                    <label for="response-text">Réponse</label>
+                    <input id="response-text" type="text" name="response" disabled="">
+                </div>
+            </div>
+
+
+            <div id="form4-radio">
+                <div>
+                    <label for="q4">Question</label>
+                    <textarea id="q4" class="question" name="q4" placeholder="Question" required=""></textarea>
                 </div>
 
                 <div>
-                    <label for="q5">Question 5</label>
-                    <input id="q5" type="password" name="q5" required>
+                    <p>Réponses</p>
+                    <label for="q4-radio-choice1">Choix 1</label>
+                    <input id="q4-radio-choice1" type="text" name="q4-radio-choice1">
+                    <input type="radio" name="q4-response" disabled="">
+
+                    <label for="q4-radio-choice2">Choix 2</label>
+                    <input id="q4-radio-choice2" type="text" name="q4-radio-choice2">
+                    <input type="radio" name="q4-response" disabled="">
+                    
+                    <button id="q4-button-add-radio" type="button">Ajouter</button></div>
                 </div>
-
-                <div>
-                    <label for="q6">Question 6</label>
-                    <input id="q6" type="password" name="q6" required>
-                </div>
-
-                <div>
-                    <label for="q7-radio-choice1">Choix 1</label>
-                    <input id="q7-radio-choice1" type="text" name="q7-radio-choice1" >
-                    <input type="radio" name="q7-radio-choice1" disabled>
-
-                </div>
-
-                <div>
-
-
-                    <label for="q8-radio-choice1">Choix 1</label>
-                    <input id="q8-radio-choice1" type="text" name="q8-radio-choice1" >
-                    <input type="radio" name="q8-radio-choice1" disabled>
-
-                    <label for="q8-radio-choice2">Choix 2</label>
-                    <input id="q8-radio-choice2" type="text" name="q8-radio-choice2" >
-                    <input type="radio" name="q8-radio-choice2" disabled>
-                </div>
-
-
-
-                <div>
-                    <label for="q9-radio-choice1">Choix 1</label>
-                    <input id="q9-radio-choice1" type="text" name="q9-radio-choice1" >
-                    <input type="radio" name="q9-radio-choice1" disabled>
-
-                </div>
-
+            </div>
 
 
 
@@ -72,13 +70,10 @@
             <form id="export" action="/exportBdd.php" method="post" >
 
                 <div class="buttonSR">
-                    <button  id="submit" type="submit">Enregistrer</button>
+                    <button  id="submit" type="button">Enregistrer</button>
                 </div>
 
             </form>
-
-
-
 
 
         <script src="js/transformInputToString.js" >  </script>
@@ -86,3 +81,16 @@
 
 
 </html>
+
+
+
+<!--
+<form class="" action="/exportBdd.php" method="post">
+
+    <button id="submit" type="submit">Enregistrer</button>
+        
+        
+            
+</form>
+
+-->
