@@ -192,11 +192,11 @@
         document.getElementById("ClearForm").addEventListener('click',resetForm);
         
         function showDialog(){
-            if (typeof document.getElementById('Import').showModal === "function") {
+            try {
                 document.getElementById('Import').style.display = "flex";
                 document.getElementById('bgGrey').style.display = "flex";
                 document.querySelector('html').style.overflowY = "hidden";
-            } else {
+            } catch(error) {
                 console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
             }
         }
@@ -204,13 +204,13 @@
         document.getElementById("ImportForm").addEventListener('click',showDialog);
 
         function hideDialog(){
-            if (typeof document.getElementById('Import').showModal === "function") {
+            try {
                 document.getElementById('Import').style.display = "none";
                 document.getElementById('bgGrey').style.display = "none";
                 document.getElementById("Import").classList.remove("content");
                 document.getElementById("confirm").setAttribute("disabled",true);
                 document.querySelector('html').removeAttribute('style');
-            } else {
+            } catch (error) {
                 console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
             }
         }
@@ -219,7 +219,6 @@
 
         const OUTPUT =  document.getElementById('output-code');
         function ImportedFiles(event,input) {
-            //newForm();
             OUTPUT.textContent = "";
 
             let reader = new FileReader();
@@ -238,8 +237,6 @@
             document.getElementById("Import").classList.add("content")
             document.getElementById("confirm").disabled = false;
         }
-
-        //document.getElementById("file").addEventListener('change',ImportedFiles);
 
         function sendConfirm(){
             document.getElementById("fileToString").value = OUTPUT.textContent;
