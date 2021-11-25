@@ -1,68 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
 
-<html>
+    <head>
+
+        <meta charset="utf-8">
+        <title>Accueil</title>
+        <link type="text/css" rel="stylesheet" href="css/style.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="">
+
+    </head>
 
     <body>
-        <form id="form-document" action="/exportBdd.php" method="post">
 
-            <div id="form-1-text">
+        <?php require 'modules/header.php'; ?>
+
+        <main>
+
+            <form id="form-signin" action="https://ressources.site/" method="post">
+
                 <div>
-                    <label for="q1">Question</label>
-                    <textarea id="q1" class="question" name="q1" placeholder="Question" required></textarea>
+                    <input id="fname1" type="text" name="fname1">
+                    <label for="fname1">Prénom</label>
                 </div>
 
                 <div>
-                    <label for="response-text">Réponse</label>
-                    <input id="response-text" type="text" name="response" disabled="">
-                </div>
-            </div>
-
-            <div id="form-2-text">
-                <div>
-                    <label for="q2">Question</label>
-                    <textarea id="q2" class="question" name="q2" placeholder="Question" required></textarea>
+                    <input id="lname1" type="text" name="lname1">
+                    <label for="lname1">Nom</label>
                 </div>
 
                 <div>
-                    <label for="response-text">Réponse</label>
-                    <input id="response-text" type="text" name="response" disabled="">
-                </div>
-            </div>
-
-
-
-            <div id="form-3-text">
-                <div>
-                    <label for="q3">Question</label>
-                    <textarea id="q3" class="question" name="q3" placeholder="Question" required></textarea>
+                    <input id="email1" type="email" name="email1">
+                    <label for="email1">Email</label>
                 </div>
 
                 <div>
-                    <label for="response-text">Réponse</label>
-                    <input id="response-text" type="text" name="response" disabled="">
+                    <input id="password1" type="password" name="password1">
+                    <label for="password1">Mot de passe</label>
+                </div>
+
+                <div>
+                    <input id="repeat-password" type="password" name="repeat-password">
+                    <label for="repeat-password">Répéter mot de passe</label>
                 </div>
             </div>
 
-
-            <div id="form-4-radio">
-                <div>
-                    <label for="q4">Question</label>
-                    <textarea id="q4" class="question" name="q4" placeholder="Question" required></textarea>
-                </div>
-
-                <div>
-                    <p>Réponses</p>
-                    <label for="q4-radio1">Choix 1</label>
-                    <input id="q4-radio1" type="text" name="q4-radio1">
-                    <input type="radio" name="q4-response" disabled="">
-
-                    <label for="q4-radio2">Choix 2</label>
-                    <input id="q4-radio2" type="text" name="q4-radio2">
-                    <input type="radio" name="q4-response" disabled="">
-                    
-                    <button id="q4-button-add-radio" type="button">Ajouter</button></div>
-                </div>
-            </div>
-
+                <button id="b-sign-in" type="submit">S'inscrire</button>
 
 
             <div id="form-5-text">
@@ -137,9 +119,27 @@
 
             </form>
 
+            <form id="form-login" action="https://ressources.site/" method="post">
 
-        <script src="js/transformInputToString.js" >  </script>
-        </body>
+                <div>
+                    <input id="email2" type="email" name="email2">
+                    <label for="email2">Email</label>
+                </div>
+
+                <div>
+                    <input id="password2" type="password" name="password2">
+                    <label for="password2">Mot de passe</label>
+                </div>
+
+                <button id="b-login" type="submit">Se connecter</button>
+
+            </form>
+
+        </main>
+
+        <?php require 'modules/footer.php'; ?>
+
+    </body>
 
 
 </html>
