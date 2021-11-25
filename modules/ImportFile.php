@@ -65,7 +65,7 @@ if(!empty($_POST)){
                 //Created Object & Recover data
                 $arrayObjectInput = array();
                 $arrayStringInput = array();   //Data
-                $currentSelect;
+                $currentSelect = null;
                 foreach($arrayStringForm as $key => $value){
                     if(contains($value, "input ")){
                         array_push($arrayStringInput,explode("\"",$value));
