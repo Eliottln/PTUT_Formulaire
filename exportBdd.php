@@ -1,14 +1,12 @@
 <?php
 
 
-$dsn = 'mysql:dbname=ptut_site_gestion_form; host=127.0.0.1';
-$username = "Hedi";
-$password = "hedizair120";
+$dsn = 'mysql:dbname=p2008444; host=iutbg-lamp.univ-lyon1.fr'; //'mysql:dbname=ptut_site_gestion_form; host=127.0.0.1';
+$username = "p2008444"; //"Hedi";
+$password = "12008444"; //"hedizair120";
 
 
 
-
-// Create connection
 
 $nbChamps = count($_POST);
 $count = '0';
@@ -16,13 +14,7 @@ $count = '0';
 $tabOfMultipleAnswerQuestion = array(); //Contiens toutes les questions à choix multiple de type radio, checkBox ....
 
 
-
-
-var_dump($_POST);
-
 print_r($nbChamps);
-
-//VERIFIER SI CEST UN BOUTON RADIO, A CE MOMENT LA, AJOUTER DANS LA TABLE RADIO LES CHOIX DES QUESTIONS
 
 
 try{
@@ -30,11 +22,11 @@ try{
     echo 'connexion réussie :' ;
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "INSERT INTO Form VALUES (null,". $nbChamps.");";
+    $sql = "INSERT INTO Form VALUES (null,". $nbChamps.");"; //Document
 
     $connect->exec($sql);
 
-    $lastID = $connect->lastInsertId();
+    $lastID = $connect->lastInsertId(); //Numéro du document
 
     $sql = '';
 
@@ -47,25 +39,43 @@ try{
         echo '<br>';
         $typeOfInput = $parties[0];
         $valueOfInput = $parties[1];
+        $numQuestion = $parties[2];
 
+        //Verif du type de l'input
+        switch ($typeOfInput) {
+            case "question":
+                echo "i est une pomme";
+                $sql .= "INSERT INTO Questions VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . null . "');";
+                break;
+            case "radioQuestion":
+                echo "i est une barre";
+                $sql .= "INSERT INTO Questions VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . null . "');";
+                break;
+            case "checkboxQuestion":
+                echo "i est un gateau";
+                $sql .= "INSERT INTO Questions VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . null . "');";
+                break;
+            case "radioChoice":
+                echo "cerise";
+                $sql .= "INSERT INTO RadioChoice VALUES('" . $numQuestion . "','" . $lastID . "','" . $valueOfInput . "','" . null . "');";
+                break;
+            case "checkboxChoice":
+                echo "bibi";
+                $sql .= "INSERT INTO CheckBoxChoice VALUES('" . $numQuestion . "','" . $lastID . "','" . 'radio' . "','" . null . "');";
+                break;
 
-        $divpartie2 = explode("q", $parties[2]); //On resplite le mot q6 pour récuperer seulement le 6, soit le num de la question
-        $numQuestion = $divpartie2[1];
+        }
+
+        echo $typeOfInput . " / ";
         echo $numQuestion;
 
 
-        if($typeOfInput!='radioChoice'){
-            $sql .= "INSERT INTO Questions VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . $valueOfInput . "');";
-        }
-        else{
-            array_push($tabOfMultipleAnswerQuestion, $value); // On stock les choix multiples dans une array pour les retraiter après
-        }
 
         $count ++;
 
     }
 
-
+    /*//GESTION DES QUESTION A VALEURS MULTIPLES
     $numChoiceOfQuestion = 0; //Compte le numéro du choix de la question radio
     $sql = initDataBase($sql,$lastID,$tabOfMultipleAnswerQuestion); //On initalise la base de données pour le premier choxi multiple.
     $numChoiceOfQuestion++;
@@ -100,9 +110,10 @@ try{
         }
 
 
-    }
+    }*/
 
-    $connect->exec($sql);
+    $prepQuery = $connect->prepare($sql);
+    $prepQuery->execute();
 
 
 

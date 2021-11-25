@@ -29,14 +29,27 @@ function ajoutInput(){
         //ON AJOUTE LA QUESTION AUX TABLEAU DINPUT
         newInput = document.createElement('input');
         newInput.type = 'text';
+
+        switch (typeQuestion) {
+            case "radio":
+                newInput.value = 'radioQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+
+                break;
+            case "checkbox":
+                newInput.value = 'checkboxQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+                break;
+            default:
+                newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+                break;
+        }
+
         newInput.name = allTextArea[parseInt(counter)].name;
-        newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
         tabInput.push(newInput);
 
 
 
 
-        //Dans le cas des input (radio button et autres choix multiples
+        //On vérifie tout les champs input pour vérifier si ce sont des choix radio ou check box .
         for(counterInput =0; counterInput < allInput.length; counterInput++){
             let parsing2 = allInput[counterInput].id.split("-");
             let numQuestionOfInput = parsing2[0].replace('q','');
@@ -61,18 +74,6 @@ function ajoutInput(){
                         console.log("NOP");
                 }
             }
-
-            /*if(numQuestionOfInput === numQuestion && typeQuestion=== 'radio'){
-                let newInput = document.createElement('input');
-                newInput.type = 'text'
-                newInput.name = allInput[counterInput].name;
-                newInput.value = 'radioChoice' + '/' + allInput[counterInput].value + '/' + numQuestion;
-                tabInput.push(newInput);
-
-            }
-            else if*/
-
-
 
 
         }

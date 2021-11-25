@@ -51,12 +51,12 @@
 
                 <div>
                     <p>Réponses</p>
-                    <label for="q4-radio-choice1">Choix 1</label>
-                    <input id="q4-radio-choice1" type="text" name="q4-radio-choice1">
+                    <label for="q4-radio1">Choix 1</label>
+                    <input id="q4-radio1" type="text" name="q4-radio1">
                     <input type="radio" name="q4-response" disabled="">
 
-                    <label for="q4-radio-choice2">Choix 2</label>
-                    <input id="q4-radio-choice2" type="text" name="q4-radio-choice2">
+                    <label for="q4-radio2">Choix 2</label>
+                    <input id="q4-radio2" type="text" name="q4-radio2">
                     <input type="radio" name="q4-response" disabled="">
                     
                     <button id="q4-button-add-radio" type="button">Ajouter</button></div>
@@ -85,16 +85,16 @@
 
                 <div>
                     <p>Réponses</p>
-                    <label for="q6-radio-choice1">Choix 1</label>
-                    <input id="q6-radio-choice1" type="text" name="q6-radio-choice1">
+                    <label for="q6-radio1">Choix 1</label>
+                    <input id="q6-radio1" type="text" name="q6-radio1">
                     <input type="radio" name="q4-response" disabled="">
 
-                    <label for="q6-radio-choice2">Choix 2</label>
-                    <input id="q6-radio-choice2" type="text" name="q6-radio-choice2">
+                    <label for="q6-radio2">Choix 2</label>
+                    <input id="q6-radio2" type="text" name="q6-radio2">
                     <input type="radio" name="q6-response" disabled="">
 
-                    <label for="q6-radio-choice3">Choix 2</label>
-                    <input id="q6-radio-choice3" type="text" name="q6-radio-choice3">
+                    <label for="q6-radio3">Choix 2</label>
+                    <input id="q6-radio3" type="text" name="q6-radio3">
                     <input type="radio" name="q6-response" disabled="">
 
                     <button id="q6-button-add-radio" type="button">Ajouter</button></div>
@@ -109,16 +109,16 @@
 
                 <div>
                     <p>Réponses</p>
-                    <label for="q7-checkbox-choice1">Choix 1</label>7
-                    <input id="q7-checkbox-choice1" type="text" name="q7-checkbox-choice1">
+                    <label for="q7-checkbox1">Choix 1</label>7
+                    <input id="q7-checkbox1" type="text" name="q7-checkbox1">
                     <input type="checkbox" name="q7-response" disabled="">
 
-                    <label for="q7-checkbox-choice2">Choix 2</label>
-                    <input id="q7-checkbox-choice2" type="text" name="q7-checkbox-choice2">
+                    <label for="q7-checkbox2">Choix 2</label>
+                    <input id="q7-checkbox2" type="text" name="q7-checkbox2">
                     <input type="checkbox" name="q7-response" disabled="">
 
-                    <label for="q7-checkbox-choice3">Choix 2</label>
-                    <input id="q7-checkbox-choice3" type="text" name="q7-checkbox-choice3">
+                    <label for="q7-checkbox3">Choix 2</label>
+                    <input id="q7-checkbox3" type="text" name="q7-checkbox3">
                     <input type="checkbox" name="q7-response" disabled="">
 
                     <button id="q7-button-add-radio" type="button">Ajouter</button></div>
@@ -132,7 +132,7 @@
             <form id="export" action="/exportBdd.php" method="post" >
 
                 <div class="buttonSR">
-                    <button  id="submit" type="button">Enregistrer</button>
+                    <button  id="submit" type="submit">Enregistrer</button>
                 </div>
 
             </form>
