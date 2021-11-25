@@ -64,11 +64,9 @@ if(!empty($_POST)){
         
                 //Created Object & Recover data
                 $arrayObjectInput = array();
-                $arrayStringInput = array();   //Data
-                $currentSelect;
+                $currentSelect = null;
                 foreach($arrayStringForm as $key => $value){
                     if(contains($value, "input ")){
-                        array_push($arrayStringInput,explode("\"",$value));
                         $typeAndName = getNameAndType(explode("\"",$value));
                         
                         $valueExtracted = getValue(explode("\"",$value));
@@ -81,17 +79,16 @@ if(!empty($_POST)){
                     
                     }
                     else if(contains($value, "select ")){
-                        array_push($arrayStringInput,explode("\"",$value));
                         $typeAndName = getNameAndType(explode("\"",$value));
                         $currentSelect = new Input("select",$typeAndName[0]);
                     }
                     else if(contains($value, "option ")){
-                        array_push($arrayStringInput,explode("\"",$value));
-                        $valueExtracted = getValue(explode("\"",$value));
-                        $currentSelect->addOption($valueExtracted);
+                        if(!empty($currentSelect)){
+                            $valueExtracted = getValue(explode("\"",$value));
+                            $currentSelect->addOption($valueExtracted);
+                        }
                     }
                     else if(contains($value, "/select>")){
-                        array_push($arrayStringInput,explode("\"",$value));
                         array_push($arrayObjectInput, $currentSelect);
                         $currentSelect = null;
                     }
