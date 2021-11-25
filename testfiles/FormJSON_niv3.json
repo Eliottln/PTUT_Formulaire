@@ -1,0 +1,31 @@
+{"form" : {
+    "input" :[
+        {"type" : "text", "name" : "pseudo"},
+        {"type" : "email", "name" : "email"},
+        {"type" : "password", "name" : "password"},
+        {"type" : "date", "name" : "birthDate"},
+        {"type" : "color", "name" : "favoriteColor"},
+        {"type" : "number", "name" : "zip"},
+        {"type" : "tel", "name" : "phoneNumber"},
+        {"type" : "url", "name" : "link"},
+        {"type" : "range", "name" : "percentage", "min" : 0, "max" : 100}
+    ],
+    "select" : {
+        "option" : [
+            {"value" : "spanish"},
+            {"value" : "usa"},
+            {"value" : "france"},
+            {"value" : "italia"},
+            {"value" : "japan"}
+        ]
+    },
+    "radio" : {
+        "name" : "choose",
+        "value" : ["one", "two", "three"]
+    },
+    "checkbox" : {
+        "name" : "vehicle",
+        "value" : ["bike", "car", "boat"]
+    }
+}
+}
