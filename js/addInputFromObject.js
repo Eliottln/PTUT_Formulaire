@@ -1,8 +1,23 @@
 //  include this js file after newQuestion.js
 
+try {
+    const content = document.getElementById("form-document")
+} catch (error) {
+    //console.error("already exists")
+}
+
+function addDivElementForObject(type){ //create the div element for the question
+    numQuestion++
+
+    let div = document.createElement("div")
+    content.appendChild(div)
+    div.setAttribute('id', 'form-'+numQuestion+'-'+type)
+
+    return div
+}
+
 function addQuestionFromObject(name, type) {
-    numQuestion++;
-    let div = addDivElement()
+    let div = addDivElementForObject(type)
 
     div.innerHTML = '<div>' +
         '<label for="question-num' + numQuestion + '">Question</label>' +
@@ -17,8 +32,7 @@ function addQuestionFromObject(name, type) {
 }
 
 function addSelectFromObject(name, array) {
-    numQuestion++;
-    let div = addDivElement()
+    let div = addDivElementForObject("select")
 
     div.innerHTML = '<div>' +
         '<label for="question-num' + numQuestion + '">Question</label>' +
@@ -53,8 +67,7 @@ function addSelectFromObject(name, array) {
 }
 
 function addRadioOrCheckboxFromObject(name, type, array) {
-    numQuestion++
-    let div = addDivElement()
+    let div = addDivElementForObject(type)
 
     div.innerHTML = '<div>' +
         '<label for="question-num' + numQuestion + '">Question</label>' +
