@@ -60,9 +60,27 @@ class Input{
     }
 
     public function addValue($value) {
-        if($this->type == "radio" || $this->type == "checkbox"){
-            array_push($this->value, $value);
+        if($this->type == "radio" || $this->type == "checkbox" || $this->type == "range"){
+            if(is_array($value)){
+                $this->value = array_merge($value);
+            }
+            else{
+                array_push($this->value, $value);
+            }
+            
         }
+    }
+
+    public function valueToString(){
+        $arrayToString = "[";
+        foreach($this->getValue() as $key => $value){
+                $arrayToString .= "\"".$value."\"";
+                if($key+1 < count($this->getValue())){
+                    $arrayToString .= ",";
+                }
+        }
+        $arrayToString .= "];";
+        return $arrayToString;
     }
     
 }
