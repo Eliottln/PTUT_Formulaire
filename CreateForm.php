@@ -56,14 +56,20 @@
                 </pre>
             </dialog>
         </div>
-        <form id="form-document" action="https://ressources.site/" method="post">
+        <form id="form-document" method="post">
             <button id="submit" type="submit" disabled>Enregistrer</button>
 
         </form>
+
+        <form id="export" action="exportBdd.php" method="post">
+            <button id="submit" type="button" >Enregistrer</button>
+        </form>
+
     </main>
 
     <?php require 'modules/footer.php'; ?>
 
+    
     <script src="/js/newQuestion.js"></script>
     <script>
         const FORM = document.getElementById("form-document");
@@ -266,5 +272,7 @@
 
 
     </script>
+
+
 </body>
 </html>
