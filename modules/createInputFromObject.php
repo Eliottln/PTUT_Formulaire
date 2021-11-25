@@ -40,5 +40,6 @@ if(!empty($arrayObjectInput)){
         }
         
     }
+    echo "button.removeAttribute('disabled')";
 }
 ?>
