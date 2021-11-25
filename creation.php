@@ -24,13 +24,14 @@
             </form>
 
             <form id="export" action="exportBdd.php" method="post">
-                <button id="submit" type="button" >Enregistrer</button>
+                <button id="submit" type="submit" >Enregistrer</button>
             </form>
         </main>
 
         <?php require 'modules/footer.php'; ?>
 
         <script src="/js/newQuestion.js"></script>
+
         <script src="/js/transformInputToString.js"></script>
 
     </body>

@@ -1,29 +1,34 @@
-const allInput = document.querySelectorAll("input")
-const allTextArea = document.querySelectorAll("textarea")
+
 const formTemp = document.getElementById('export');
-const button = document.getElementById("submit")
-const allFormQuestion = document.querySelectorAll("#form-document>div");
+const buttonExport = document.getElementById("submit")
 
 
-button.addEventListener('click',ajoutInput)
+
+buttonExport.addEventListener('click',ajoutInput)
 
 
 let counter;
 let counterInput;
-let counterTextArea;
-let nowQuestion = "";
+
 
 let tabInput = [];
 
 
 function ajoutInput(){
 
+    const allInput = document.querySelectorAll("input")
+    const allTextArea = document.querySelectorAll("textarea")
+    const allFormQuestion = document.querySelectorAll("#form-document>div");
+
+
+
+    console.log(allFormQuestion.length)
+
     for (counter =0; counter < allFormQuestion.length; counter++){
 
         let parsing1 = allFormQuestion[counter].id.split("-");
         numQuestion = parsing1[1];
         typeQuestion = parsing1[2];
-
 
 
         //ON AJOUTE LA QUESTION AUX TABLEAU DINPUT
@@ -36,7 +41,7 @@ function ajoutInput(){
 
                 break;
             case "checkbox":
-                newInput.value = 'checkboxQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+                newInput.value = 'checkBoxQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
                 break;
             default:
                 newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
@@ -58,16 +63,21 @@ function ajoutInput(){
                 switch (typeQuestion) {
                     case "radio":
                         let newInput = document.createElement('input');
-                        newInput.type = 'text'
+                        let indexChoice = parsing2[1].substr(5,6) // Choix 1, choix 2 ...
+                        console.log("Numero du choix  : " + indexChoice);
+                        newInput.type = 'text';
                         newInput.name = allInput[counterInput].name;
-                        newInput.value = 'radioChoice' + '/' + allInput[counterInput].value + '/' + numQuestion;
+                        newInput.value = 'radioChoice' + '/' + allInput[counterInput].value + '/' + numQuestion + '/' + indexChoice;
                         tabInput.push(newInput);
                         break;
+
                     case "checkbox":
                         let newInput2 = document.createElement('input');
+                        let indexChoice2 = parsing2[1].substr(8,9) // Choix 1, choix 2 ...
+                        console.log("Numero du choix  : " + indexChoice2);
                         newInput2.type = 'text'
                         newInput2.name = allInput[counterInput].name;
-                        newInput2.value = 'checkBoxChoice' + '/' + allInput[counterInput].value + '/' + numQuestion;
+                        newInput2.value = 'checkBoxChoice' + '/' + allInput[counterInput].value + '/' + numQuestion + '/' + indexChoice2 ;
                         tabInput.push(newInput2);
                         break;
                     default:
