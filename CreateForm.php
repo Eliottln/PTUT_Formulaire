@@ -1,7 +1,7 @@
 <?php
-echo "<pre id=\"debug\"><code>";
-include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/ImportFile.php");
-echo "</code></pre>";
+    echo "<pre id=\"debug\"><code>";
+    include_once($_SERVER["DOCUMENT_ROOT"]."/modules/ImportFile.php");
+    echo "</code></pre>";
 ?>
 
 
@@ -17,10 +17,13 @@ echo "</code></pre>";
 </head>
 
 <body>
+
     <?php require 'modules/header.php'; ?>
 
     <main>
+
         <div id="palette">
+
             <ul>
                 <li>
                     <div id="addSection" class="button">Ajouter une question</div>
@@ -45,6 +48,7 @@ echo "</code></pre>";
                     <div id="ImportForm" class="button">Importer un formulaire</div>
                 </li>
             </ul>
+
             <div id="Debug-button" class="button">&#128421;Debug</div>
         </div>
 

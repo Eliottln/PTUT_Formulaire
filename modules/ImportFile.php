@@ -67,6 +67,7 @@ if(!empty($_POST)){
                 $currentSelect = null;
                 foreach($arrayStringForm as $key => $value){
                     if(contains($value, "input ")){
+                        array_push($arrayStringInput,explode("\"",$value));
                         $typeAndName = getNameAndType(explode("\"",$value));
                         
                         $valueExtracted = getValue(explode("\"",$value));
