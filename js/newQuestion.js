@@ -26,7 +26,8 @@ function addDivElement(id){ //create the div element for the question
 
 
 function createRadioOrCheckbox(type){
-    choice.set(numQuestion.toString(),2)
+    //choice.set(numQuestion.toString(),2)
+    choice.set(numQuestion,2)
 
     return '<p>Réponses</p>'+
         '<label for="q'+numQuestion+'-'+type+'1">Choix 1</label>'+
@@ -41,21 +42,43 @@ function createRadioOrCheckbox(type){
 }
 
 
-function newChoice(){ //add a choice for radio or checkbox input
+function newChoice(){ //add a choice for multi input
 
     const type = this.getAttribute('id').slice(7)
 
     const question = this.getAttribute('name')
 
-    choice.set(this.getAttribute('name'),choice.get(this.getAttribute('name'))+1)
+    const index = Number.parseInt(question.toString())
 
-    const num = choice.get(this.getAttribute('name'))
+    choice.set(index,choice.get(index)+1)
 
-    let add='<label for="q'+question+'-'+type+num+'">Choix '+num+'</label>'+
+    const num = choice.get(index)
+
+    const add='<div id="choice-'+question+'-'+num+'">'+
+        '<label for="q'+question+'-'+type+num+'">Choix '+num+'</label>'+
         '<input id="q'+question+'-'+type+num+'" type="text" name="q'+question+'-'+type+num+'">'+
-        '<input type="'+type+'" disabled>'
+        '<input type="'+type+'" disabled>'+
+        '</div>'+
+        '<input id="trash'+question+'-'+num+'" type="checkbox">'
 
     this.insertAdjacentHTML("beforebegin", add);
+
+    document.querySelector('#trash'+question+'-'+num).addEventListener('focus',delChoice)
+}
+
+
+function delChoice(){ //delete a choice for multi input
+
+    const id = this.getAttribute('id')
+
+    const numDiv = id.slice(5)
+
+    const index = Number.parseInt(id.slice(5,6))
+
+    document.querySelector('#choice-'+numDiv).remove()
+    choice.set(index,choice.get(index)-1)
+
+    this.remove()
 }
 
 
