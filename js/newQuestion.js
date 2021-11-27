@@ -32,16 +32,16 @@ function createRadioOrCheckbox(type, div){
     let divQ = document.createElement("div");
     divQ.innerHTML = '<p>Réponses</p>'+
         '<div id="choice-'+numQuestion+'-1">'+
-            '<label for="'+numQuestion+'-1">Choix 1</label>'+
-            '<input id="q'+numQuestion+'-1" type="text" name="q'+numQuestion+'-'+type+'1">'+
             '<input type="'+type+'" disabled>'+
+            '<input id="q'+numQuestion+'-1" type="text" name="q'+numQuestion+'-'+type+'1">'+
+            '<label for="'+numQuestion+'-1">Choix 1</label>'+
         '</div>'+
         '<button id="trash'+numQuestion+'-1-'+type+'" type="button">Supprimer</button>'+
 
         '<div id="choice-'+numQuestion+'-2">'+
-            '<label for="'+numQuestion+'-2">Choix 2</label>'+
-            '<input id="q'+numQuestion+'-2" type="text" name="q'+numQuestion+'-'+type+'2">'+
             '<input type="'+type+'" disabled>'+
+            '<input id="q'+numQuestion+'-2" type="text" name="q'+numQuestion+'-'+type+'2">'+
+            '<label for="'+numQuestion+'-2">Choix 2</label>'+
         '</div>'+
         '<button id="trash'+numQuestion+'-2-'+type+'" type="button">Supprimer</button>'+
 
@@ -68,9 +68,9 @@ function newChoice(){ //add a choice for multi input
     const num = choice.get(index)
 
     const add='<div id="choice-'+question+'-'+num+'">'+
-            '<label for="q'+question+'-'+num+'">Choix '+num+'</label>'+
-            '<input id="q'+question+'-'+num+'" type="text" name="q'+question+'-'+type+num+'">'+
             '<input type="'+type+'" disabled>'+
+            '<input id="q'+question+'-'+num+'" type="text" name="q'+question+'-'+type+num+'">'+
+            '<label for="q'+question+'-'+num+'">Choix '+num+'</label>'+
         '</div>'+
         '<button id="trash'+question+'-'+num+'-'+type+'" type="button">Supprimer</button>'
 
@@ -88,30 +88,34 @@ function delChoice(){ //delete a choice for multi input
     const numChoice = Number.parseInt(id.slice(7,8))
     const typeChoice = id.slice(9)
 
-    document.querySelector('#choice-'+numQuestion+'-'+numChoice).remove()
+    if (choice.get(numQuestion)>1) {
 
-    this.remove()
+        document.querySelector('#choice-' + numQuestion + '-' + numChoice).remove()
 
-    for (let i = numChoice; i < choice.get(numQuestion); i++){
+        this.remove()
 
-        let label = document.querySelector('#choice-'+numQuestion+'-'+(i+1)+' label')
-        label.textContent='Choix '+i
-        label.setAttribute('for','q'+numQuestion+'-'+i)
+        for (let i = numChoice; i < choice.get(numQuestion); i++) {
 
-        let divBlock = document.querySelector('#choice-'+numQuestion+'-'+(i+1))
-        divBlock.setAttribute('id','choice-'+numQuestion+'-'+i)
+            let label = document.querySelector('#choice-' + numQuestion + '-' + (i + 1) + ' label')
+            label.textContent = 'Choix ' + i
+            label.setAttribute('for', 'q' + numQuestion + '-' + i)
 
-        let input = document.querySelector('#q'+numQuestion+'-'+(i+1))
-        input.setAttribute('name','q'+numQuestion+'-'+typeChoice+i)
-        input.setAttribute('id','q'+numQuestion+'-'+i)
+            let divBlock = document.querySelector('#choice-' + numQuestion + '-' + (i + 1))
+            divBlock.setAttribute('id', 'choice-' + numQuestion + '-' + i)
 
-        let button = document.querySelector('#trash'+numQuestion+'-'+(i+1)+'-'+typeChoice)
-        button.setAttribute('id','trash'+numQuestion+'-'+i+'-'+typeChoice)
+            let input = document.querySelector('#q' + numQuestion + '-' + (i + 1))
+            input.setAttribute('name', 'q' + numQuestion + '-' + typeChoice + i)
+            input.setAttribute('id', 'q' + numQuestion + '-' + i)
 
-        button.addEventListener('click',delChoice)
+            let button = document.querySelector('#trash' + numQuestion + '-' + (i + 1) + '-' + typeChoice)
+            button.setAttribute('id', 'trash' + numQuestion + '-' + i + '-' + typeChoice)
+
+            button.addEventListener('click', delChoice)
+        }
+
+        choice.set(numQuestion, choice.get(numQuestion) - 1)
+
     }
-
-    choice.set(numQuestion,choice.get(numQuestion)-1)
 }
 
 
@@ -136,20 +140,38 @@ function newForm(){ //create a question input with response input in html
 
 
 
-    if(id === 'new-text'){
-        let divQ = document.createElement("div");
-        divQ.innerHTML = '<label for="response'+numQuestion+'">Réponse</label>'+
-                    '<input id="response'+numQuestion+'" type="text" name="response" disabled>'
+    switch (id){
+        case 'new-text':
+            let divQ = document.createElement("div");
+            divQ.innerHTML = '<label for="response'+numQuestion+'">Réponse</label>'+
+                '<input id="response'+numQuestion+'" type="text" name="response" disabled>'
 
-        div.appendChild(divQ)
+            div.appendChild(divQ)
+            break
+
+        case 'new-radio':
+            createRadioOrCheckbox('radio', div)
+            break
+
+        case 'new-checkbox':
+            createRadioOrCheckbox('checkbox', div)
+            break
     }
 
-    else if(id === 'new-radio'){
-        createRadioOrCheckbox('radio', div)
-    }
-
-    else if(id === 'new-checkbox'){
-        createRadioOrCheckbox('radio', div)
-    }
+    // if(id === 'new-text'){
+    //     let divQ = document.createElement("div");
+    //     divQ.innerHTML = '<label for="response'+numQuestion+'">Réponse</label>'+
+    //                 '<input id="response'+numQuestion+'" type="text" name="response" disabled>'
+    //
+    //     div.appendChild(divQ)
+    // }
+    //
+    // else if(id === 'new-radio'){
+    //     createRadioOrCheckbox('radio', div)
+    // }
+    //
+    // else if(id === 'new-checkbox'){
+    //     createRadioOrCheckbox('checkbox', div)
+    // }
 
 }
