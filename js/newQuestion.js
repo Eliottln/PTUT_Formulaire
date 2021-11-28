@@ -1,11 +1,9 @@
-const newText=document.getElementById('new-text')
-newText.addEventListener('click',newForm)
+document.getElementById('new-text').addEventListener('click',newForm)
+document.getElementById('new-radio').addEventListener('click',newForm)
+document.getElementById('new-checkbox').addEventListener('click',newForm)
 
-const newRadio=document.getElementById('new-radio')
-newRadio.addEventListener('click',newForm)
-
-const newCheckbox=document.getElementById('new-checkbox')
-newCheckbox.addEventListener('click',newForm)
+const newDate=document.getElementById('new-date')
+newDate.addEventListener('click',newForm)
 
 const content = document.getElementById("form-document")
 const button = document.getElementById('submit')
@@ -19,7 +17,7 @@ function addDivElement(id){ //create the div element for the question
 
     let div = document.createElement("div")
     content.appendChild(div)
-    div.setAttribute('id', 'form-'+numQuestion+'-'+id.slice(4))
+    div.id = 'form-'+numQuestion+'-'+id.slice(4)
 
     return div
 }
@@ -57,10 +55,8 @@ function createRadioOrCheckbox(type, div){
 
 function newChoice(){ //add a choice for multi input
 
-    const type = this.getAttribute('id').slice(7)
-
+    const type = this.id.slice(7)
     const question = this.getAttribute('name')
-
     const index = Number.parseInt(question.toString())
 
     choice.set(index,choice.get(index)+1)
@@ -82,11 +78,9 @@ function newChoice(){ //add a choice for multi input
 
 function delChoice(){ //delete a choice for multi input
 
-    const id = this.getAttribute('id')
-
-    const numQuestion = Number.parseInt(id.slice(5,6))
-    const numChoice = Number.parseInt(id.slice(7,8))
-    const typeChoice = id.slice(9)
+    const numQuestion = Number.parseInt(this.id.slice(5,6))
+    const numChoice = Number.parseInt(this.id.slice(7,8))
+    const typeChoice = this.id.slice(9)
 
     if (choice.get(numQuestion)>1) {
 
@@ -101,20 +95,35 @@ function delChoice(){ //delete a choice for multi input
             label.setAttribute('for', 'q' + numQuestion + '-' + i)
 
             let divBlock = document.querySelector('#choice-' + numQuestion + '-' + (i + 1))
-            divBlock.setAttribute('id', 'choice-' + numQuestion + '-' + i)
+            divBlock.id = 'choice-' + numQuestion + '-' + i
 
             let input = document.querySelector('#q' + numQuestion + '-' + (i + 1))
             input.setAttribute('name', 'q' + numQuestion + '-' + typeChoice + i)
-            input.setAttribute('id', 'q' + numQuestion + '-' + i)
+            input.id = 'q' + numQuestion + '-' + i
 
             let button = document.querySelector('#trash' + numQuestion + '-' + (i + 1) + '-' + typeChoice)
-            button.setAttribute('id', 'trash' + numQuestion + '-' + i + '-' + typeChoice)
+            button.id = 'trash' + numQuestion + '-' + i + '-' + typeChoice
 
             button.addEventListener('click', delChoice)
         }
 
         choice.set(numQuestion, choice.get(numQuestion) - 1)
+    }
+}
 
+
+function createDate(){
+    let question = Number.parseInt(this.id.slice(1,2))
+    let div = document.querySelector('#date-'+question)
+    let value = this.value
+
+    if (value === 'duration'){
+        div.innerHTML = '<label>Du :<input type="datetime-local" disabled></label>'+
+            '<label>Au :<input type="datetime-local" disabled></label>'
+    }
+
+    else{
+        div.innerHTML = '<input type="'+value+'" disabled>'
     }
 }
 
@@ -128,7 +137,7 @@ function newForm(){ //create a question input with response input in html
 
     button.removeAttribute('disabled')
 
-    const id = this.getAttribute('id')
+    const id = this.id
 
     let div = addDivElement(id)
 
@@ -143,8 +152,9 @@ function newForm(){ //create a question input with response input in html
     switch (id){
         case 'new-text':
             let divQ = document.createElement("div");
-            divQ.innerHTML = '<label for="response'+numQuestion+'">Réponse</label>'+
-                '<input id="response'+numQuestion+'" type="text" name="response" disabled>'
+            divQ.innerHTML = '<label>Réponse'+
+                '<input type="text" disabled>'+
+                '</label>'
 
             div.appendChild(divQ)
             break
@@ -156,22 +166,26 @@ function newForm(){ //create a question input with response input in html
         case 'new-checkbox':
             createRadioOrCheckbox('checkbox', div)
             break
-    }
 
-    // if(id === 'new-text'){
-    //     let divQ = document.createElement("div");
-    //     divQ.innerHTML = '<label for="response'+numQuestion+'">Réponse</label>'+
-    //                 '<input id="response'+numQuestion+'" type="text" name="response" disabled>'
-    //
-    //     div.appendChild(divQ)
-    // }
-    //
-    // else if(id === 'new-radio'){
-    //     createRadioOrCheckbox('radio', div)
-    // }
-    //
-    // else if(id === 'new-checkbox'){
-    //     createRadioOrCheckbox('checkbox', div)
-    // }
+        case 'new-date':
+            let divS = document.createElement("div");
+            divS.id = 'div-'+numQuestion
+
+            divS.innerHTML = '<p>Réponses</p>'+
+                '<select id="q'+numQuestion+'-select" name="q'+numQuestion+'-select">'+
+                '<option value="date">Date</option>'+
+                '<option value="time">Heure</option>'+
+                '<option value="datetime-local">Date-heure</option>'+
+                '<option value="duration">Durée</option>'+
+                '</select>'+
+
+                '<div id="date-'+numQuestion+'">'+
+                '<input type="date" disabled>'+
+                '</div>'
+
+            div.appendChild(divS)
+            document.querySelector('#q'+numQuestion+'-select').addEventListener('change',createDate)
+            break
+    }
 
 }

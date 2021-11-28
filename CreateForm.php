@@ -38,6 +38,9 @@
                             <li>
                                 <div id="new-checkbox" class="subButton">Checkbox</div>
                             </li>
+                            <li>
+                                <div id="new-date" class="subButton">Date</div>
+                            </li>
                         </ul>
                     </div>
                 </li>
