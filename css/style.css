@@ -275,7 +275,7 @@ dialog[class = "content"] pre{
 }
 
 #form-document div div:not(:first-child) :not(p){
-    margin-inline-start: 20px; 
+    /*margin-inline-start: 20px; */
 }
 
 #form-document div div:not(:first-child) input[type="radio"],#form-document div div:not(:first-child) input[type="checkbox"]{

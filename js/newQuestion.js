@@ -1,9 +1,9 @@
-document.getElementById('new-text').addEventListener('click',newForm)
-document.getElementById('new-radio').addEventListener('click',newForm)
-document.getElementById('new-checkbox').addEventListener('click',newForm)
+document.getElementById('new-text').addEventListener('click',newQuestion)
+document.getElementById('new-radio').addEventListener('click',newQuestion)
+document.getElementById('new-checkbox').addEventListener('click',newQuestion)
 
 const newDate=document.getElementById('new-date')
-newDate.addEventListener('click',newForm)
+newDate.addEventListener('click',newQuestion)
 
 const content = document.getElementById("form-document")
 const button = document.getElementById('submit')
@@ -15,11 +15,35 @@ const choice = new Map();
 function addDivElement(id){ //create the div element for the question
     numQuestion++
 
+    let type = id.slice(4)
     let div = document.createElement("div")
-    content.appendChild(div)
-    div.id = 'form-'+numQuestion+'-'+id.slice(4)
+    div.id = 'form-'+numQuestion+'-'+type
 
-    return div
+    div.innerHTML = '<div id="q'+numQuestion+'-content">'+
+        '<label for="q'+numQuestion+'">Question</label>'+
+        '<textarea id="q'+numQuestion+'" class="question" name="q'+numQuestion+'" placeholder="Question" required></textarea>'+
+        '</div>'+
+        '<div id="move-'+numQuestion+'-'+id.slice(4)+'">'+
+        '<button id="up-'+numQuestion+'-'+type+'" type="button">Up</button>'+
+        '<button id="down-'+numQuestion+'-'+type+'" type="button">Down</button>'+
+        '<button id="del-'+numQuestion+'-'+type+'" type="button">Supprimer</button>'+
+        '</div>'
+
+    content.appendChild(div)
+    document.querySelector('#up-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+    document.querySelector('#down-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+    document.querySelector('#del-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+}
+
+
+function moveQuestion(){
+    const id = this.id
+    const question = id.split('-')[1]
+    const type = id.split('-')[2]
+
+    if (id.startsWith('del')){
+        document.querySelector('#form-'+question+'-'+type).remove()
+    }
 }
 
 
@@ -133,20 +157,15 @@ function createDate(){
 
 
 
-function newForm(){ //create a question input with response input in html
+function newQuestion(){ //create a question input with response input in html
 
     button.removeAttribute('disabled')
 
     const id = this.id
 
-    let div = addDivElement(id)
+    addDivElement(id);
 
-    //Create the textarea for the question
-    div.innerHTML = '<div>'+
-                        '<label for="q'+numQuestion+'">Question</label>'+
-                        '<textarea id="q'+numQuestion+'" class="question" name="q'+numQuestion+'" placeholder="Question" required></textarea>'+
-                    '</div>'
-
+    let div = document.querySelector('#q'+numQuestion+'-content')
 
 
     switch (id){
