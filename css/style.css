@@ -1,35 +1,36 @@
-:root{
-    /*font*/
-    --debugFont:white;
-    --navFont: rgb(240, 116, 0);
+:root {
+  /*font*/
+  --debugFont: white;
+  --navFont: rgb(240, 116, 0);
 
-    /*Background*/
-    --debugBG:#1e1e1e;
-    --navBG:#111111;
-    --navLi_HOVER:#2b2b2b;
+  /*Background*/
+  --debugBG: #1e1e1e;
+  --navBG: #111111;
+  --navLi_HOVER: #2b2b2b;
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
-textarea:focus, input:focus{
-    outline: none;
+textarea:focus,
+input:focus {
+  outline: none;
 }
 
-main{
-    display: flex;
-    flex-direction: column;
+main {
+  display: flex;
+  flex-direction: column;
 }
 
-#debug{
-    display: none;
-    background-color: var(--debugBG,#1e1e1e);
-    color: var(--debugFont,white);
-    padding: 25px;
+#debug {
+  display: none;
+  background-color: var(--debugBG, #1e1e1e);
+  color: var(--debugFont, white);
+  padding: 25px;
 }
 
 /*#################################################*/
@@ -37,248 +38,268 @@ main{
 /*#################################################*/
 /*NavBar*/
 
-
-header nav ul{
-    display: flex;
-    justify-content: space-evenly;
-    list-style: none;
-    background-color:var(--navBG,#111111);
+header nav ul {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  background-color: var(--navBG, #111111);
 }
 
-header nav ul li{
-    font-size: larger;
-    padding-block: 20px;
-    width: 34%;
-    text-align: center;
-    transition: background-color 0.5s;
+header nav ul li {
+  font-size: larger;
+  padding-block: 20px;
+  width: 34%;
+  text-align: center;
+  transition: background-color 0.5s;
 }
 
-header nav ul li:hover{
-    display:flex;
-    background-color: var(--navLi_HOVER,#2b2b2b);
+header nav ul li:hover {
+  display: flex;
+  background-color: var(--navLi_HOVER, #2b2b2b);
 }
 
-header nav ul li a{
-    text-decoration: none;
-    color: var(--navFont,rgb(240, 116, 0));
-    width: 100%;
-    height: 100%;
+header nav ul li a {
+  text-decoration: none;
+  color: var(--navFont, rgb(240, 116, 0));
+  width: 100%;
+  height: 100%;
 }
 
 /*--------------------------------------------------*/
 /*Palette de Création*/
-#palette{
-    padding-block: 10px;
-    background-color: orange;
+#palette {
+  padding-block: 10px;
+  background-color: orange;
 }
 
-#palette ul{
-    list-style: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+#palette ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
-#Debug-button{
-    background-color: rgb(209, 101, 0);
-    color: white;
-    position: fixed;
-    padding-block: 15px;
-    padding-inline: 15px;
-    font-size: larger;
-    right: 1%;
-    top: 5%;
+#Debug-button {
+  background-color: rgb(209, 101, 0);
+  color: white;
+  position: fixed;
+  padding-block: 15px;
+  padding-inline: 15px;
+  font-size: larger;
+  right: 1%;
+  top: 5%;
 }
 
-.button{
-    padding: 7px;
-    background-color: gray;
-    border-radius: 5px;
+.button {
+  padding: 7px;
+  background-color: gray;
+  border-radius: 5px;
 }
 
-#palette ul li{
-    position: relative;
-    display: flex;
+#palette ul li {
+  position: relative;
+  display: flex;
 }
 
-#choose-type{
-    background-color: rgb(228, 110, 0);
-    position: absolute;
-    display: flex;
-    border-radius: 5px;
-    left: -23px;
-    top: 32px;
-    opacity: 0%;
-    transition: opacity 0.5s;
+#choose-type {
+  background-color: rgb(228, 110, 0);
+  position: absolute;
+  display: flex;
+  border-radius: 5px;
+  left: -23px;
+  top: 32px;
+  opacity: 0%;
+  transition: opacity 0.5s;
 }
 
-.subButton{
-    padding: 5px;
-    margin: 4px;
-    background-color: rgb(185, 185, 185);
-    border-radius: 5px;
+#choose-type form {
+  width: 13vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.button:hover,.subButton:hover{
-    background-color: rgb(58, 58, 58);
-    cursor: pointer;
+#choose-type form select {
+    width: 95%;
+    margin-block: 10px;
+    margin-inline: 2.5%;
+    background-color: var(--navLi_HOVER);
+    color: var(--navFont);
+    font-size: large;
+    padding: 5%;
+}
+
+#buttonTYPE{
+    margin-bottom: 5px;
+}
+
+.subButton {
+  padding: 5px;
+  margin: 4px;
+  background-color: rgb(185, 185, 185);
+  border-radius: 5px;
+}
+
+.button:hover,
+.subButton:hover {
+  background-color: rgb(58, 58, 58);
+  cursor: pointer;
 }
 
 /*########################################*/
 /*Dialog*/
 
-#bgGrey{
-    display: none;
-    top: 0;
-    position: absolute;
-    background: rgba(66, 66, 66, 0.75);
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+#bgGrey {
+  display: none;
+  top: 0;
+  position: absolute;
+  background: rgba(66, 66, 66, 0.75);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-dialog{
-    display: none;
-    flex-direction: column;
-    left: 25vw;
-    top: 25vh;
-    width: 50vw;
-    border: none;
-    background: rgb(41, 41, 41);
-    color: white;
-    max-height: 75.5vh;
-    transition: top 0.5s, height 0.5s;
+dialog {
+  display: none;
+  flex-direction: column;
+  left: 25vw;
+  top: 25vh;
+  width: 50vw;
+  border: none;
+  background: rgb(41, 41, 41);
+  color: white;
+  max-height: 75.5vh;
+  transition: top 0.5s, height 0.5s;
 }
 
-dialog>form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding-block: 10px;
-    flex-direction: column;
+dialog > form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-block: 10px;
+  flex-direction: column;
 }
 
-dialog>form>input{
-    font-size: larger;
-    border-bottom: 3px solid white;
-    padding: 5px;
+dialog > form > input {
+  font-size: larger;
+  border-bottom: 3px solid white;
+  padding: 5px;
 }
 
-#fileToString{
-    display: none;
+#fileToString {
+  display: none;
 }
 
-dialog>form>button{
-    width: 25%;
-    font-size: larger;
-    margin: 10px;
+dialog > form > button {
+  width: 25%;
+  font-size: larger;
+  margin: 10px;
 }
 
-dialog>pre{
-    display: none;
-    padding-block: 10px;
-    padding-inline: 10%;
-    background-color: orange;
-    color: black;
-    height: 80%;
-    justify-content: center;
-    overflow-y: scroll;
-    overflow-x: hidden;
+dialog > pre {
+  display: none;
+  padding-block: 10px;
+  padding-inline: 10%;
+  background-color: orange;
+  color: black;
+  height: 80%;
+  justify-content: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-dialog>pre>label{
-    font-size: x-large;
-    font-weight: bold;
-    color: #222222;
+dialog > pre > label {
+  font-size: x-large;
+  font-weight: bold;
+  color: #222222;
 }
 
-dialog>pre>code{
-    background: #222222;
-    color: lightgrey;
-    padding: 15px;
-    border-radius: 10px;
-    display: inline-table;
+dialog > pre > code {
+  background: #222222;
+  color: lightgrey;
+  padding: 15px;
+  border-radius: 10px;
+  display: inline-table;
 }
 
 /*Avec du contenu*/
 
-dialog[class = "content"]{
-    top: 12.5vh;
+dialog[class="content"] {
+  top: 12.5vh;
 }
 
-dialog[class = "content"] pre{
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
+dialog[class="content"] pre {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
 }
 /*########################################*/
 /*Form export*/
-#export{
-    display: flex;
-    justify-content: center;
+#export {
+  display: flex;
+  justify-content: center;
 }
 
-#export #submit{
-    padding: 10px;
-    font-size: large;
-    padding-inline: 10%;
-    border-end-end-radius: 15px;
-    border-end-start-radius: 15px;
-    background-color: orangered;
+#export #submit {
+  padding: 10px;
+  font-size: large;
+  padding-inline: 10%;
+  border-end-end-radius: 15px;
+  border-end-start-radius: 15px;
+  background-color: orangered;
 }
 
 /*Form-document*/
 
-#form-document{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+#form-document {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-
-
-#form-document label, #form-document p{
-    font-size: larger;
+#form-document label,
+#form-document p {
+  font-size: larger;
 }
 
-#form-document>div{
-    display: flex;
-    flex-direction: column;
-    background-color: lightgray;
-    border-radius: 5px;
-    margin-block: 10px;
-    margin-inline: 50px;
-    padding: 10px;
-    width: 80%;
+#form-document > div {
+  display: flex;
+  flex-direction: column;
+  background-color: lightgray;
+  border-radius: 5px;
+  margin-block: 10px;
+  margin-inline: 50px;
+  padding: 10px;
+  width: 80%;
 }
 
-#form-document div div:first-child{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+#form-document div div:first-child {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
-#form-document div div:first-child textarea{
-    width: 92%;
-    margin-left: 2%;
-    border: none;
-    background-color: lightgray;
-    border-bottom: 2px solid black;
-    height: 24px;
-    font-size: large;
+#form-document div div:first-child textarea {
+  width: 92%;
+  margin-left: 2%;
+  border: none;
+  background-color: lightgray;
+  border-bottom: 2px solid black;
+  height: 24px;
+  font-size: large;
 }
 
-#form-document div div:not(:first-child){
-    display: flex;
-    flex-direction: column;
+#form-document div div:not(:first-child) {
+  display: flex;
+  flex-direction: column;
 }
 
-#form-document div div:not(:first-child) :not(p){
-    margin-inline-start: 20px; 
+#form-document div div:not(:first-child) :not(p) {
+  margin-inline-start: 20px;
 }
 
-#form-document div div:not(:first-child) input[type="radio"],#form-document div div:not(:first-child) input[type="checkbox"]{
-    margin-block-end: 10px; 
+#form-document div div:not(:first-child) input[type="radio"],
+#form-document div div:not(:first-child) input[type="checkbox"] {
+  margin-block-end: 10px;
 }
-

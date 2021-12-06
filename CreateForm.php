@@ -28,20 +28,22 @@
                 <li>
                     <div id="addSection" class="button">Ajouter une question</div>
                     <div id="choose-type">
-                        <ul>
-                            <li>
-                                <div id="new-text" class="subButton">Texte</div>
-                            </li>
-                            <li>
-                                <div id="new-radio" class="subButton">Radio</div>
-                            </li>
-                            <li>
-                                <div id="new-checkbox" class="subButton">Checkbox</div>
-                            </li>
-                            <li>
-                                <div id="new-date" class="subButton">Date</div>
-                            </li>
-                        </ul>
+                        <form >
+                            <select name="addQuestion" id="addQuestion">
+                                <option id="new-checkbox" value="new-checkbox">Checkbox</option>
+                                <option id="new-color" value="new-color" disabled>Color</option>
+                                <option id="new-date" value="new-date">Date</option>
+                                <option id="new-email" value="new-email" disabled>Email</option>
+                                <option id="new-number" value="new-number" disabled>Number</option>
+                                <option id="new-radio" value="new-radio">Radio</option>
+                                <option id="new-range" value="new-range" disabled>Range</option>
+                                <option id="new-select" value="new-select" disabled>Select</option>
+                                <option id="new-tel" value="new-tel" disabled>Tel</option>
+                                <option id="new-text" value="new-text">Texte</option>
+                                <option id="new-url" value="new-url" disabled>Url</option>
+                            </select>
+                            <a id="buttonTYPE" class="button">Ajouter</a>
+                        </form>
                     </div>
                 </li>
                 <li>
