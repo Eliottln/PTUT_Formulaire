@@ -303,3 +303,101 @@ dialog[class="content"] pre {
 #form-document div div:not(:first-child) input[type="checkbox"] {
   margin-block-end: 10px;
 }
+
+/*#################################################*/
+/*LogInSignUp*/
+/*#################################################*/
+
+
+#LogInSignUp header, #LogInSignUp footer{
+  height: 10vh;
+  width: 100%;
+  background-color: var(--navBG);
+}
+
+#BackgroundAnime{
+  height: 80vh;
+  width: 100%;
+  background-image: url(/img/orangeBackground.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(7px) contrast(1.3);
+}
+
+#LogInSignUp main{
+  position: absolute;
+  z-index: 1;
+  top: 10vh;
+  margin-inline: 10%;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#LogInSignUp main form{
+  background-color: #fff;
+  margin-block: 50px;
+  border-radius: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#LogInSignUp main form h2{
+  font-size: xx-large;
+  color: #ff3b00;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  padding: 30px;
+}
+
+#LogInSignUp main form > div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 15px;
+  padding-block: 10px;
+  position: relative;
+}
+
+#LogInSignUp main form > div input{
+  min-width: 250px;
+  border: 2px solid #ff3b00;
+  border-radius: 5px;
+  height: 35px;
+  font-size: large;
+  padding-inline: 5px;
+}
+
+#LogInSignUp main form > div label{
+  background-color: white;
+  color: #ff3b00;
+  padding-inline: 4px;
+  font-size: large;
+  position: absolute;
+  left: 25px;
+  top: 17px;
+  transition: font-size 0.3s, top 0.3s
+}
+
+.notEmpty,#LogInSignUp main form > div input:focus ~ label{
+  font-size: medium !important;
+  top: -1px !important;
+}
+
+.buttonAccueil{
+  padding: 15px;
+  font-size: larger;
+  background-color: #ff3b00;
+  color:white;
+  border: none;
+  border-radius: 5px;
+}
+
+.buttonAccueil:hover{
+  background-color: #d43200;
+  cursor: pointer;
+}

@@ -1,73 +1,101 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <title>Accueil</title>
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="">
+    <meta charset="utf-8">
+    <title>Accueil</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="">
 
-    </head>
+</head>
 
-    <body>
+<body id="LogInSignUp">
 
-        <?php require 'modules/header.php'; ?>
+    <header>
+        <!--VIDE-->
+    </header>
+    <div id="BackgroundAnime"></div>
+    <main>
 
-        <main>
 
-            <form id="form-signin" action="https://ressources.site/" method="post">
 
-                <div>
-                    <input id="fname1" type="text" name="fname1">
-                    <label for="fname1">Prénom</label>
-                </div>
+        <form id="form-signin" action="https://ressources.site/" method="post">
 
-                <div>
-                    <input id="lname1" type="text" name="lname1">
-                    <label for="lname1">Nom</label>
-                </div>
+            <h2>S'inscrire</h2>
 
-                <div>
-                    <input id="email1" type="email" name="email1">
-                    <label for="email1">Email</label>
-                </div>
+            <div>
+                <input id="fname1" type="text" name="fname" autocomplete="off">
+                <label for="fname1">Prénom</label>
+            </div>
 
-                <div>
-                    <input id="password1" type="password" name="password1">
-                    <label for="password1">Mot de passe</label>
-                </div>
+            <div>
+                <input id="lname1" type="text" name="lname" autocomplete="off">
+                <label for="lname1">Nom</label>
+            </div>
 
-                <div>
-                    <input id="repeat-password" type="password" name="repeat-password">
-                    <label for="repeat-password">Répéter mot de passe</label>
-                </div>
+            <div>
+                <input id="email1" type="email" name="email" autocomplete="off">
+                <label for="email1">Email</label>
+            </div>
 
-                <button id="b-sign-in" type="submit">S'inscrire</button>
+            <div>
+                <input id="password1" type="password" name="password" autocomplete="off">
+                <label for="password1">Mot de passe</label>
+            </div>
 
-            </form>
+            <div>
+                <input id="repeat-password" type="password" name="repeat-password" autocomplete="off">
+                <label for="repeat-password">Répéter mot de passe</label>
+            </div>
 
-            <form id="form-login" action="https://ressources.site/" method="post">
+            <button id="b-sign-in" type="submit" class="buttonAccueil">S'inscrire</button>
 
-                <div>
-                    <input id="email2" type="email" name="email2">
-                    <label for="email2">Email</label>
-                </div>
+        </form>
 
-                <div>
-                    <input id="password2" type="password" name="password2">
-                    <label for="password2">Mot de passe</label>
-                </div>
+        <form id="form-login" action="/login.php" method="get">
 
-                <button id="b-login" type="submit">Se connecter</button>
+            <h2>Se connecter</h2>
 
-            </form>
+            <div>
+                <input id="email2" type="email" name="email" autocomplete="off">
+                <label for="email2">Email</label>
+            </div>
 
-        </main>
+            <div>
+                <input id="password2" type="password" name="password" autocomplete="off">
+                <label for="password2">Mot de passe</label>
+            </div>
 
-        <?php require 'modules/footer.php'; ?>
+            <button id="b-login" type="submit" class="buttonAccueil">Se connecter</button>
 
-    </body>
+        </form>
+
+    </main>
+
+    <footer>
+        <!--VIDE-->
+    </footer>
+
+</body>
+
+<script>
+    let inputs = document.querySelectorAll('#LogInSignUp main form > div input');
+
+    function inputNotEmpty() {
+        let label = document.querySelector('#LogInSignUp main form > div label[for="' + this.id + '"]');
+        console.log(label);
+        if (this.value != "") {
+            label.classList.add('notEmpty');
+        } else {
+            label.classList.remove('notEmpty');
+        }
+    }
+
+    for (let index = 0; index < inputs.length; index++) {
+        inputs[index].addEventListener('keyup', inputNotEmpty);
+    }
+</script>
 
 
 </html>
