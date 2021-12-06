@@ -23,16 +23,13 @@ if(!empty($arrayObjectInput)){
 
             case "checkbox":
             case "radio":
-                $arrayToString = "[";
-                foreach($arrayObjectInput[$i]->getValue() as $key => $value){
-                    $arrayToString .= "\"".$value."\"";
-                    if($key+1 < count($arrayObjectInput[$i]->getValue())){
-                        $arrayToString .= ",";
-                    }
-                }
-                $arrayToString .= "];";
-                echo "arrayValues = ".$arrayToString;
+                echo "arrayValues = ".$arrayObjectInput[$i]->valueToString();
                 echo "\naddRadioOrCheckboxFromObject(\"".$arrayObjectInput[$i]->getName()."\",\"".$arrayObjectInput[$i]->getType()."\",arrayValues);\n";
+                break;
+            
+            case "range":
+                echo "arrayValues = ".$arrayObjectInput[$i]->valueToString();
+                echo "\naddRangeFromObject(\"".$arrayObjectInput[$i]->getName()."\",arrayValues);\n";
                 break;
 
             default:

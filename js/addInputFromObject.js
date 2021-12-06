@@ -66,6 +66,21 @@ function addSelectFromObject(name, array) {
 
 }
 
+function addRangeFromObject(name,array){
+    let div = addDivElementForObject("range")
+    div.innerHTML = '<div>' +
+                        '<label for="question-num' + numQuestion + '">Question</label>' +
+                        '<textarea id="question-num' + numQuestion + '" class="question" name="question-num' + numQuestion + '" placeholder="Question" required>' + name + '</textarea>' +
+                    '</div>'
+
+    let divQ = document.createElement("div");
+    divQ.innerHTML = '<label for="response-range">Réponse</label>' +
+                        '<input id="response-range" type="range" name="' + name + '" min="' + array[0] + '" max="' + array[1] + '"disabled>'
+
+    div.appendChild(divQ);
+
+}
+
 function addRadioOrCheckboxFromObject(name, type, array) {
     let div = addDivElementForObject(type)
 

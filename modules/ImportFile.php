@@ -36,6 +36,19 @@ function getValue($array){
     return null;
 }
 
+function getMinMax($array){
+    $min = $max = null;
+    for($i = 0; $i < count($array);$i++){
+        if(contains($array[$i],"min")){
+            $min = $array[$i+1];
+        }
+        if(contains($array[$i],"max")){
+            $max = $array[$i+1];
+        }
+    }
+    return array($min,$max);
+}
+
 function alreadyExist($inputArray,$name){
     foreach($inputArray as $value){
         if($value->getName() == $name){
@@ -75,7 +88,15 @@ if(!empty($_POST)){
                             foundObject($arrayObjectInput,$typeAndName[1])->addValue($valueExtracted);
                         }
                         else{
-                            array_push($arrayObjectInput, new Input($typeAndName[0],$typeAndName[1],$valueExtracted));
+                            if($typeAndName[0] == "range"){
+                                array_push($arrayObjectInput, new Input($typeAndName[0],$typeAndName[1]));
+                                $minMax = getMinMax(explode("\"",$value));
+                                foundObject($arrayObjectInput,$typeAndName[1])->addValue($minMax);
+                            }
+                            else{
+                                array_push($arrayObjectInput, new Input($typeAndName[0],$typeAndName[1],$valueExtracted));
+                            }
+                            
                         }
                     
                     }
