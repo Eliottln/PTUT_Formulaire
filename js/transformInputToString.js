@@ -28,7 +28,7 @@ function ajoutInput(){
 
         let parsing1 = allFormQuestion[counter].id.split("-");
         numQuestion = parsing1[1];
-        typeQuestion = parsing1[2];
+        typeQuestion = parsing1[2]; //Contient le type de la question (radio/checkbox ...
 
 
         //ON AJOUTE LA QUESTION AUX TABLEAU DINPUT
@@ -44,22 +44,22 @@ function ajoutInput(){
                 newInput.value = 'checkBoxQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
                 break;
             default:
-                newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+                newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion; // question/quelle est la couleur ?/1
                 break;
         }
 
-        newInput.name = allTextArea[parseInt(counter)].name;
+        newInput.name = allTextArea[parseInt(counter)].name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
         tabInput.push(newInput);
 
 
 
 
-        //On vérifie tout les champs input pour vérifier si ce sont des choix radio ou check box .
+        //On vérifie tout les champs input pour vérifier si ce sont des choix radio ou check box de la question actuelle .
         for(counterInput =0; counterInput < allInput.length; counterInput++){
             let parsing2 = allInput[counterInput].id.split("-");
             let numQuestionOfInput = parsing2[0].replace('q','');
 
-            if(numQuestionOfInput === numQuestion){
+            if(numQuestionOfInput === numQuestion){ //numQuestion = numero de la question (Form), numQuestionInput= le numero de la question (Form) mais affiché a coté du choix. (voir le format)
                 switch (typeQuestion) {
                     case "radio":
                         let newInput = document.createElement('input');
