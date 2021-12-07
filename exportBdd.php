@@ -5,7 +5,7 @@ $dsn = 'mysql:dbname=ptut_site_gestion_form; host=127.0.0.1';  // 'mysql:dbname=
 $username = "Hedi"; //"Hedi";
 $password = "hedizair120"; //"hedizair120";
 
-
+// $connect = new PDO("sqlite:../database.db");
 
 
 $nbChamps = count($_POST);
