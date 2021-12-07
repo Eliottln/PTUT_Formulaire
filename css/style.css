@@ -5,6 +5,7 @@
 
   /*font*/
   --accueil_Color:#ff0048;
+  --accueil_Color_Darker:#b40033;
   --debugFont: white;
   --navFont: rgb(240, 116, 0);
 
@@ -440,7 +441,7 @@ dialog[class="content"] pre {
 }
 
 .buttonAccueil:hover{
-  background-color: var(--accueil_Color);
+  background-color: var(--accueil_Color_Darker);
   cursor: pointer;
 }
 
