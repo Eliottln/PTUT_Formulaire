@@ -119,6 +119,7 @@
         if(value==state){
             value = (state + 1)%5;
         }
+        state = value;
         switch (value) {
             case 0:
                 logo.innerHTML = 'U<span>w</span>U'
