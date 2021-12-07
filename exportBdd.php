@@ -1,11 +1,6 @@
 <?php
 
 
-$dsn = 'mysql:dbname=ptut_site_gestion_form; host=127.0.0.1';  // 'mysql:dbname=p2008444; host=iutbg-lamp.univ-lyon1.fr';
-$username = "Hedi"; //"Hedi";
-$password = "hedizair120"; //"hedizair120";
-
-// $connect = new PDO("sqlite:../database.db");
 
 
 $nbChamps = count($_POST);
@@ -17,8 +12,6 @@ if($nbChamps == 0){
 
 
 $tabOfMultipleAnswerQuestion = array(); //Contiens toutes les questions à choix multiple de type radio, checkBox ....
-
-
 
 
 try{
