@@ -1,5 +1,10 @@
 :root {
+  /*Main*/
+  --first:#ff0048;
+  --second:#ac37fd;
+
   /*font*/
+  --accueil_Color:#ff0048;
   --debugFont: white;
   --navFont: rgb(240, 116, 0);
 
@@ -7,6 +12,21 @@
   --debugBG: #1e1e1e;
   --navBG: #111111;
   --navLi_HOVER: #2b2b2b;
+}
+
+@font-face {
+  font-family: "Unbutton";
+  src: url("/fonts/unbutton.ttf");
+}
+
+@font-face {
+  font-family: "LemonMilk";
+  src: url("/fonts/LEMONMILK-Regular.otf");
+}
+
+@font-face {
+  font-family: "CFSamouraiBob";
+  src: url("/fonts/CFSamuraiBob.ttf");
 }
 
 * {
@@ -24,6 +44,16 @@ input:focus {
 main {
   display: flex;
   flex-direction: column;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 #debug {
@@ -321,7 +351,16 @@ dialog[class="content"] pre {
   background-image: url(/img/orangeBackground.gif);
   background-repeat: no-repeat;
   background-size: cover;
-  filter: blur(15px) contrast(0.85);
+  filter: blur(15px) contrast(0.85) hue-rotate(0deg);
+  animation-name: hue-rotate;
+  animation-duration: 60s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hue-rotate {
+  0% {filter: blur(15px) contrast(0.85) hue-rotate(0deg);}
+  50% {filter: blur(15px) contrast(0.85) hue-rotate(180deg);}
+  100% {filter: blur(15px) contrast(0.85) hue-rotate(360deg);}
 }
 
 #LogInSignUp main{
@@ -344,20 +383,17 @@ dialog[class="content"] pre {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border : 2px solid;
 }
 
-@font-face {
-  font-family: "Cubic";
-  src: url("/fonts/unbutton.ttf");
-}
+
 
 #LogInSignUp main form h2{
   font-size: xx-large;
-  color: #ff3b00;
-  text-decoration: underline;
+  color: var(--accueil_Color);
   text-underline-position: from-font;
   padding: 30px;
-  font-family: "Cubic";
+  font-family: "Unbutton";
 }
 
 #LogInSignUp main form > div{
@@ -371,7 +407,7 @@ dialog[class="content"] pre {
 
 #LogInSignUp main form > div input{
   min-width: 250px;
-  border: 2px solid #ff3b00;
+  border: 2px solid var(--accueil_Color);
   border-radius: 5px;
   height: 35px;
   font-size: large;
@@ -380,7 +416,7 @@ dialog[class="content"] pre {
 
 #LogInSignUp main form > div label{
   background-color: white;
-  color: #ff3b00;
+  color: var(--accueil_Color);
   padding-inline: 4px;
   font-size: large;
   position: absolute;
@@ -397,13 +433,51 @@ dialog[class="content"] pre {
 .buttonAccueil{
   padding: 15px;
   font-size: larger;
-  background-color: #ff3b00;
+  background-color: var(--accueil_Color);
   color:white;
   border: none;
   border-radius: 5px;
 }
 
 .buttonAccueil:hover{
-  background-color: #d43200;
+  background-color: var(--accueil_Color);
   cursor: pointer;
+}
+
+#brand{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 5vw;
+}
+
+#brand > div{
+  font-family: "CFSamouraiBob";
+}
+
+#UwU, #UwU > span{
+  font-family: "LemonMilk";
+  font-size: 10vw;
+}
+
+#UwU:hover,#UwU:hover span{
+  cursor: pointer;
+  background: linear-gradient(211deg, rgba(172,55,253,1) 0%, rgba(255,0,72,1) 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+#UwU > span{
+  font-size: smaller;
+  position: relative;
+  top: 5px;
+}
+
+.slider{
+  color: white;
+  padding-block: 17.5%;
+  font-size: 8vw;
 }
