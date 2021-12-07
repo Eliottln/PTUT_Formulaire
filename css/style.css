@@ -230,7 +230,7 @@ dialog[class = "content"] pre{
 
 /*Form-document*/
 
-#form-document{
+#document{
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -238,11 +238,11 @@ dialog[class = "content"] pre{
 
 
 
-#form-document label, #form-document p{
+#document label, #form-document p{
     font-size: larger;
 }
 
-#form-document>div{
+#document>div{
     display: flex;
     flex-direction: column;
     background-color: lightgray;
@@ -253,13 +253,13 @@ dialog[class = "content"] pre{
     width: 80%;
 }
 
-#form-document div div:first-child{
+#document div div:first-child{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
 }
 
-#form-document div div:first-child textarea{
+#document div div:first-child textarea{
     width: 92%;
     margin-left: 2%;
     border: none;
@@ -269,16 +269,15 @@ dialog[class = "content"] pre{
     font-size: large;
 }
 
-#form-document div div:not(:first-child){
+#document div div:not(:first-child){
     display: flex;
     flex-direction: column;
 }
 
-#form-document div div:not(:first-child) :not(p){
-    /*margin-inline-start: 20px; */
-}
+/*#form-document div div:not(:first-child) :not(p){
+    margin-inline-start: 20px;
+}*/
 
-#form-document div div:not(:first-child) input[type="radio"],#form-document div div:not(:first-child) input[type="checkbox"]{
+#document div div:not(:first-child) input[type="radio"],#form-document div div:not(:first-child) input[type="checkbox"]{
     margin-block-end: 10px; 
 }
-

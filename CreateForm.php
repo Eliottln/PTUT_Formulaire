@@ -77,7 +77,7 @@
             <button id="submit" type="submit" disabled>Enregistrer</button>
         </form>
 
-        <form id="form-document" action="https://ressources.site/" method="post">
+        <form id="document" action="https://ressources.site/" method="post">
 
         </form>
     </main>
