@@ -53,7 +53,7 @@
 
         </form>
 
-        <form id="form-login" action="/login.php" method="get">
+        <form id="form-login" action="/login.php" method="post">
 
             <h2>Se connecter</h2>
 
