@@ -53,7 +53,7 @@
 
         </form>
 
-        <div class="slider">&laquo;</div>
+        <div id="slidL" class="slider">&laquo;</div>
 
         <div id="brand" class="noselect">
             <span id="UwU">U<span>w</span>U</span>
@@ -61,7 +61,7 @@
             <div>form</div>
         </div>
 
-        <div class="slider">&raquo;</div>
+        <div id="slidR" class="slider">&raquo;</div>
 
         <form id="form-login" action="/login.php" method="post">
 

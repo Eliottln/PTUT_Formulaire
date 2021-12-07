@@ -479,6 +479,37 @@ dialog[class="content"] pre {
 
 .slider{
   color: white;
-  padding-block: 17.5%;
-  font-size: 8vw;
+  font-size: 18vh;
+  padding-block: 30vh;
+  padding-inline: 7.5px;
+}
+
+#slidL{
+  animation-name: bumpL;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bumpL {
+  0% {padding-right: 7.5px;padding-left: 7.5px;}
+  12.5% {padding-right: 15px;padding-left: 0px;}
+  25% {padding-right: 7.5px;padding-left: 7.5px;}
+  37.5% {padding-right: 15px;padding-left: 0px;}
+  50% {padding-right: 7.5px;padding-left: 7.5px;}
+  100% {padding-right: 7.5px;padding-left: 7.5px;}
+}
+
+#slidR{
+  animation-name: bumpR;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bumpR {
+  0% {padding-left: 7.5px; padding-right: 7.5px;}
+  12.5% {padding-left: 15px; padding-right: 0px;}
+  25% {padding-left: 7.5px; padding-right: 7.5px;}
+  37.5% {padding-left: 15px; padding-right: 0px;}
+  50% {padding-left: 7.5px; padding-right: 7.5px;}
+  100% {padding-left: 7.5px; padding-right: 7.5px;}
 }
