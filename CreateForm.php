@@ -67,15 +67,16 @@
         </form>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button id="submit" type="button" >Enregistrer</button>
+            <button id="submit-button" type="submit" >Enregistrer</button>
         </form>
 
     </main>
 
     <?php require 'modules/footer.php'; ?>
+    <script src="/js/transformInputToString.js"></script>
 
-    
     <script src="/js/newQuestion.js"></script>
+
 
     <script>
         const FORM = document.getElementById("form-document");

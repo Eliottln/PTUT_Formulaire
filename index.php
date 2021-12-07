@@ -131,7 +131,7 @@
                     <label for="password2">Mot de passe</label>
                 </div>
 
-                <button id="b-login" type="submit">Se connecter</button>
+                <button id="b-login" type="button">Se connecter</button>
 
             </form>
 

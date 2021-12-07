@@ -24,7 +24,7 @@
             </form>
 
             <form id="export" action="exportBdd.php" method="post">
-                <button id="submit" type="submit" >Enregistrer</button>
+                <button id="submit" type="button" >Enregistrer</button>
             </form>
         </main>
 

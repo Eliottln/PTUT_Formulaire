@@ -1,6 +1,6 @@
 
 const formTemp = document.getElementById('export');
-const buttonExport = document.getElementById("submit")
+const buttonExport = document.getElementById("submit-button")
 
 
 
@@ -12,6 +12,7 @@ let counterInput;
 
 
 let tabInput = [];
+
 
 
 function ajoutInput(){
@@ -27,9 +28,10 @@ function ajoutInput(){
     for (counter =0; counter < allFormQuestion.length; counter++){
 
         let parsing1 = allFormQuestion[counter].id.split("-");
+
         numQuestion = parsing1[1];
         typeQuestion = parsing1[2]; //Contient le type de la question (radio/checkbox ...
-
+        console.log(numQuestion);
 
         //ON AJOUTE LA QUESTION AUX TABLEAU DINPUT
         newInput = document.createElement('input');
@@ -43,6 +45,10 @@ function ajoutInput(){
             case "checkbox":
                 newInput.value = 'checkBoxQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
                 break;
+
+            case "date":
+                newInput.value = 'date' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+
             default:
                 newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion; // question/quelle est la couleur ?/1
                 break;

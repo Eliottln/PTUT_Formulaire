@@ -9,7 +9,12 @@ $password = "hedizair120"; //"hedizair120";
 
 
 $nbChamps = count($_POST);
-$count = '0';
+
+if($nbChamps == 0){
+    header("Location: index.php");
+    exit();
+}
+
 
 $tabOfMultipleAnswerQuestion = array(); //Contiens toutes les questions à choix multiple de type radio, checkBox ....
 
@@ -17,8 +22,8 @@ $tabOfMultipleAnswerQuestion = array(); //Contiens toutes les questions à choix
 
 
 try{
-    $connect = new PDO($dsn,$username,$password);
-
+    //$connect = new PDO($dsn,$username,$password);
+    $connect = new PDO("sqlite:../database.db");
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "INSERT INTO Document VALUES (null,". $nbChamps.");"; //Document
     $connect->exec($sql);
@@ -44,16 +49,18 @@ try{
                 $indexQuestion = $parties[3];
                 $sql .= "INSERT INTO RadioChoice VALUES('" . $indexQuestion . "','" . $numQuestion . "','".  $lastID ."','" . $valueOfInput ."');";
 
-
                 break;
             case "checkBoxChoice":
 
                 $indexQuestion = $parties[3];
                 $sql .= "INSERT INTO CheckBoxChoice VALUES('". $indexQuestion ."','". $numQuestion . "','" . $lastID . "','" . $valueOfInput . "');";
+
                 break;
+
 
             default: // Le cas des champ de question seul, ou des champs de question d'en tete de choix de radio ou check --> (text area)
                 $sql .= "INSERT INTO Form VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . $valueOfInput . "');";
+
                 break;
 
         }
