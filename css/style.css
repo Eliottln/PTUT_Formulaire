@@ -346,12 +346,18 @@ dialog[class="content"] pre {
   align-items: center;
 }
 
+@font-face {
+  font-family: "Cubic";
+  src: url("/fonts/unbutton.ttf");
+}
+
 #LogInSignUp main form h2{
   font-size: xx-large;
   color: #ff3b00;
   text-decoration: underline;
   text-underline-position: from-font;
   padding: 30px;
+  font-family: "Cubic";
 }
 
 #LogInSignUp main form > div{
