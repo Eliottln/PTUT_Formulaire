@@ -1,7 +1,7 @@
 <?php
 
 // Create connection
-try {
+/*try {
 
     $dsn = 'mysql:dbname=p2008444; host=iutbg-lamp.univ-lyon1.fr';
     $username = "p2008444";
@@ -10,7 +10,7 @@ try {
     $connect = new PDO($dsn, $username, $password);
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-} catch (\Throwable $th) {
+} catch (\Throwable $th) {*/
     try {
         $connect = new PDO("sqlite:../database.db");
         $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,4 +18,4 @@ try {
         die("Connection failed: " . mysqli_connect_error() . "\n
                 $ex->getMessage()");
     }
-}
+//}
