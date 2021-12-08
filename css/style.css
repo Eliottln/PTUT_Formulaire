@@ -374,6 +374,7 @@ dialog[class="content"] pre {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  overflow: hidden;
 }
 
 #LogInSignUp main form{
@@ -445,6 +446,11 @@ dialog[class="content"] pre {
   cursor: pointer;
 }
 
+#blocLabel{
+  display: flex;
+  flex-direction:row;
+}
+
 #brand{
   display: flex;
   flex-direction: column;
@@ -512,4 +518,8 @@ dialog[class="content"] pre {
   37.5% {padding-left: 15px; padding-right: 0px;}
   50% {padding-left: 7.5px; padding-right: 7.5px;}
   100% {padding-left: 7.5px; padding-right: 7.5px;}
+}
+
+@media(max-width:950px){
+  
 }

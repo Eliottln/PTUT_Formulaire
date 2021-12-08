@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-
-    <meta charset="utf-8">
-    <title>Accueil</title>
-    <link type="text/css" rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/ico" href="/img/favicon.ico" />
-
-</head>
+<?php
+$pageName = "UwUniForm";
+include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
+?>
 
 <body id="LogInSignUp">
 
@@ -53,15 +49,17 @@
 
         </form>
 
-        <div id="slidL" class="slider">&laquo;</div>
+        <div id="blocLabel">
+            <div id="slidL" class="slider">&laquo;</div>
 
-        <div id="brand" class="noselect">
-            <span id="UwU">U<span>w</span>U</span>
-            <div>ni</div>
-            <div>form</div>
+            <div id="brand" class="noselect">
+                <span id="UwU">U<span>w</span>U</span>
+                <div>ni</div>
+                <div>form</div>
+            </div>
+
+            <div id="slidR" class="slider">&raquo;</div>
         </div>
-
-        <div id="slidR" class="slider">&raquo;</div>
 
         <form id="form-login" action="/login.php" method="post">
 
@@ -116,8 +114,8 @@
 
     function expression() {
         let value = getRandomInt(5)
-        if(value==state){
-            value = (state + 1)%5;
+        if (value == state) {
+            value = (state + 1) % 5;
         }
         state = value;
         switch (value) {
