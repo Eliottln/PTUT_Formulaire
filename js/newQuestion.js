@@ -87,9 +87,9 @@ function addDivElement(id){ //create the div element for the question
         '</div>'
 
     content.appendChild(div)
-    document.querySelector('#up-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
-    document.querySelector('#down-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
-    document.querySelector('#del-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+    document.getElementById('up-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+    document.getElementById('down-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+    document.getElementById('del-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
 }
 
 
@@ -100,22 +100,38 @@ function moveQuestion(){
 
 
     if (id.startsWith('del')){
-        document.querySelector('#form-'+question+'-'+type).remove()
+        document.getElementById('form-'+question+'-'+type).remove()
 
-        let q = document.querySelectorAll('[id^="form-"]')
+        let q = document.querySelectorAll('div[id^="form-"]')
 
-        for (let i in q){
-            let numBlock = Number.parseInt(i.id.split("-")[1])
-            if (numBlock > question){
-                let label = document.querySelector('#label-'+numBlock)
-                label.setAttribute('name','q'+(numBlock-1))
-                label.id = 'label-'+(numBlock-1)
+        q.forEach(e => {
 
-                let textArea = document.querySelector('#q'+numBlock)
-                textArea.setAttribute('name','q'+(numBlock-1))
-                textArea.id = 'q'+(numBlock-1)
+            let numBlock = Number.parseInt(e.id.split("-")[1])
+            if (numBlock > question) {
 
-                let typeBlock = i.id.split("-")[2]
+                let typeBlock = e.id.split("-")[2]
+
+                e.id = 'form-'+(numBlock - 1)+'-'+typeBlock
+
+                document.getElementById('content-'+numBlock).id = 'content-'+ (numBlock - 1)
+
+                let label = document.getElementById('label-' + numBlock)
+                label.setAttribute('for', 'q' + (numBlock - 1))
+                label.id = 'label-' + (numBlock - 1)
+
+                let textArea = document.getElementById('q' + numBlock)
+                textArea.setAttribute('name', 'q' + (numBlock - 1))
+                textArea.id = 'q' + (numBlock - 1)
+
+                let up = document.getElementById('up-'+numBlock+'-'+typeBlock)
+                up.id = 'up-'+(numBlock - 1)+'-'+typeBlock
+                up.addEventListener('click',moveQuestion)
+                let down = document.getElementById('down-'+numBlock+'-'+typeBlock)
+                down.id = 'down-'+(numBlock - 1)+'-'+typeBlock
+                down.addEventListener('click',moveQuestion)
+                let del = document.getElementById('del-'+numBlock+'-'+typeBlock)
+                del.id = 'del-'+(numBlock - 1)+'-'+typeBlock
+                del.addEventListener('click',moveQuestion)
 
 
                 // switch (typeBlock){
@@ -124,26 +140,7 @@ function moveQuestion(){
                 //
                 // }
             }
-        }
-        // for (let i=question; i < numQuestion; i++){
-        //
-        //     let label = document.querySelector('#label-' + numQuestion + '-' + (i + 1))
-        //     label.textContent = 'Choix ' + i
-        //     label.setAttribute('for', 'q' + numQuestion + '-' + i)
-        //     label.id = 'label-' + numQuestion + '-' + i
-        //
-        //     let divBlock = document.querySelector('#choice-' + numQuestion + '-' + (i + 1))
-        //     divBlock.id = 'choice-' + numQuestion + '-' + i
-        //
-        //     let input = document.querySelector('#q' + numQuestion + '-' + (i + 1))
-        //     input.setAttribute('name', 'q' + numQuestion + '-' + typeChoice + i)
-        //     input.id = 'q' + numQuestion + '-' + i
-        //
-        //     let button = document.querySelector('#trash-' + numQuestion + '-' + (i + 1) + '-' + typeChoice)
-        //     button.id = 'trash-' + numQuestion + '-' + i + '-' + typeChoice
-        //
-        //     button.addEventListener('click', delChoice)
-        // }
+        })
 
         numQuestion--
         if (numQuestion===0){
@@ -154,14 +151,14 @@ function moveQuestion(){
 
 
     else if (id.startsWith('up') && question > 1){
-        let object = document.querySelector('#q'+question+'-content')
-        let object2 = document.querySelector('#q'+(question+1)+'-content')
+        let object = document.getElementById('q'+question+'-content')
+        let object2 = document.getElementById('q'+(question+1)+'-content')
     }
 
 
 
     else if (id.startsWith('down')){
-        document.querySelector('#form-'+question+'-'+type)
+        document.getElementById('form-'+question+'-'+type)
     }
 }
 
@@ -192,9 +189,9 @@ function createRadioOrCheckbox(type, div){
 
     div.appendChild(divQ)
 
-    document.querySelector('#trash-'+numQuestion+'-1-'+type).addEventListener('click',delChoice)
-    document.querySelector('#trash-'+numQuestion+'-2-'+type).addEventListener('click',delChoice)
-    document.querySelector('#q'+numQuestion+'-add-'+type).addEventListener('click',newChoice)
+    document.getElementById('trash-'+numQuestion+'-1-'+type).addEventListener('click',delChoice)
+    document.getElementById('trash-'+numQuestion+'-2-'+type).addEventListener('click',delChoice)
+    document.getElementById('q'+numQuestion+'-add-'+type).addEventListener('click',newChoice)
 }
 
 
@@ -228,7 +225,7 @@ function delChoice(){ //delete a choice for multi input
 
     if (choice.get(numQuestion)>1) {
 
-        document.querySelector('#choice-' + numQuestion + '-' + numChoice).remove()
+        document.getElementById('choice-' + numQuestion + '-' + numChoice).remove()
 
         for (let i = numChoice; i < choice.get(numQuestion); i++) {
 
