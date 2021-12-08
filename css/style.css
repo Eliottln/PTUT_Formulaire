@@ -1,5 +1,11 @@
 :root {
+  /*Main*/
+  --first:#ff0048;
+  --second:#ac37fd;
+
   /*font*/
+  --accueil_Color:#ff0048;
+  --accueil_Color_Darker:#b40033;
   --debugFont: white;
   --navFont: rgb(240, 116, 0);
 
@@ -7,6 +13,21 @@
   --debugBG: #1e1e1e;
   --navBG: #111111;
   --navLi_HOVER: #2b2b2b;
+}
+
+@font-face {
+  font-family: "Unbutton";
+  src: url("/fonts/unbutton.ttf");
+}
+
+@font-face {
+  font-family: "LemonMilk";
+  src: url("/fonts/LEMONMILK-Regular.otf");
+}
+
+@font-face {
+  font-family: "CFSamouraiBob";
+  src: url("/fonts/CFSamuraiBob.ttf");
 }
 
 * {
@@ -24,6 +45,16 @@ input:focus {
 main {
   display: flex;
   flex-direction: column;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 #debug {
@@ -107,7 +138,7 @@ header nav ul li a {
   display: flex;
   border-radius: 5px;
   left: -23px;
-  top: 32px;
+  top: -50vh;
   opacity: 0%;
   transition: opacity 0.5s;
 }
@@ -302,4 +333,193 @@ dialog[class="content"] pre {
 #form-document div div:not(:first-child) input[type="radio"],
 #form-document div div:not(:first-child) input[type="checkbox"] {
   margin-block-end: 10px;
+}
+
+/*#################################################*/
+/*LogInSignUp*/
+/*#################################################*/
+
+
+#LogInSignUp header, #LogInSignUp footer{
+  height: 10vh;
+  width: 100%;
+  background-color: var(--navBG);
+}
+
+#BackgroundAnime{
+  height: 80vh;
+  width: 100%;
+  background-image: url(/img/orangeBackground.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(15px) contrast(0.85) hue-rotate(0deg);
+  animation-name: hue-rotate;
+  animation-duration: 60s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hue-rotate {
+  0% {filter: blur(15px) contrast(0.85) hue-rotate(0deg);}
+  50% {filter: blur(15px) contrast(0.85) hue-rotate(180deg);}
+  100% {filter: blur(15px) contrast(0.85) hue-rotate(360deg);}
+}
+
+#LogInSignUp main{
+  position: absolute;
+  z-index: 1;
+  top: 10vh;
+  margin-inline: 10%;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  overflow: hidden;
+}
+
+#LogInSignUp main form{
+  background-color: #fff;
+  margin-block: 50px;
+  border-radius: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border : 2px solid;
+}
+
+
+
+#LogInSignUp main form h2{
+  font-size: xx-large;
+  color: var(--accueil_Color);
+  text-underline-position: from-font;
+  padding: 30px;
+  font-family: "Unbutton";
+}
+
+#LogInSignUp main form > div{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 15px;
+  padding-block: 10px;
+  position: relative;
+}
+
+#LogInSignUp main form > div input{
+  min-width: 250px;
+  border: 2px solid var(--accueil_Color);
+  border-radius: 5px;
+  height: 35px;
+  font-size: large;
+  padding-inline: 5px;
+}
+
+#LogInSignUp main form > div label{
+  background-color: white;
+  color: var(--accueil_Color);
+  padding-inline: 4px;
+  font-size: large;
+  position: absolute;
+  left: 25px;
+  top: 17px;
+  transition: font-size 0.3s, top 0.3s
+}
+
+.notEmpty,#LogInSignUp main form > div input:focus ~ label{
+  font-size: medium !important;
+  top: -1px !important;
+}
+
+.buttonAccueil{
+  padding: 15px;
+  font-size: larger;
+  background-color: var(--accueil_Color);
+  color:white;
+  border: none;
+  border-radius: 5px;
+}
+
+.buttonAccueil:hover{
+  background-color: var(--accueil_Color_Darker);
+  cursor: pointer;
+}
+
+#blocLabel{
+  display: flex;
+  flex-direction:row;
+}
+
+#brand{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 5vw;
+}
+
+#brand > div{
+  font-family: "CFSamouraiBob";
+}
+
+#UwU, #UwU > span{
+  font-family: "LemonMilk";
+  font-size: 10vw;
+}
+
+#UwU:hover,#UwU:hover span{
+  cursor: pointer;
+  background: linear-gradient(211deg, rgba(172,55,253,1) 0%, rgba(255,0,72,1) 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+#UwU > span{
+  font-size: smaller;
+  position: relative;
+  top: 5px;
+}
+
+.slider{
+  color: white;
+  font-size: 18vh;
+  padding-block: 30vh;
+  padding-inline: 7.5px;
+}
+
+#slidL{
+  animation-name: bumpL;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bumpL {
+  0% {padding-right: 7.5px;padding-left: 7.5px;}
+  12.5% {padding-right: 15px;padding-left: 0px;}
+  25% {padding-right: 7.5px;padding-left: 7.5px;}
+  37.5% {padding-right: 15px;padding-left: 0px;}
+  50% {padding-right: 7.5px;padding-left: 7.5px;}
+  100% {padding-right: 7.5px;padding-left: 7.5px;}
+}
+
+#slidR{
+  animation-name: bumpR;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bumpR {
+  0% {padding-left: 7.5px; padding-right: 7.5px;}
+  12.5% {padding-left: 15px; padding-right: 0px;}
+  25% {padding-left: 7.5px; padding-right: 7.5px;}
+  37.5% {padding-left: 15px; padding-right: 0px;}
+  50% {padding-left: 7.5px; padding-right: 7.5px;}
+  100% {padding-left: 7.5px; padding-right: 7.5px;}
+}
+
+@media(max-width:950px){
+  
 }

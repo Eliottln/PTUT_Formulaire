@@ -41,7 +41,7 @@
                                 <option id="new-text" value="new-text">Texte</option>
                                 <option id="new-url" value="new-url" disabled>Url</option>
                             </select>
-                            <a id="buttonTYPE" class="button">Ajouter</a>
+                            <a id="buttonTYPE" class="button" disabled>Ajouter</a>
                         </form>
                     </div>
                 </li>

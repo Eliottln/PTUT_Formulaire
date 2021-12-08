@@ -1,145 +1,148 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-    <head>
+<?php
+$pageName = "UwUniForm";
+include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
+?>
 
-        <meta charset="utf-8">
-        <title>Accueil</title>
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="">
+<body id="LogInSignUp">
 
-    </head>
+    <header>
+        <!--VIDE-->
+    </header>
+    <div id="BackgroundAnime"></div>
+    <main>
 
-    <body>
 
-        <?php require 'modules/header.php'; ?>
 
-        <main>
+        <form id="form-signin" action="https://ressources.site/" method="post">
 
-            <form id="form-signin" action="https://ressources.site/" method="post">
+            <h2>S'inscrire</h2>
 
-                <div>
-                    <input id="fname1" type="text" name="fname1">
-                    <label for="fname1">Prénom</label>
-                </div>
-
-                <div>
-                    <input id="lname1" type="text" name="lname1">
-                    <label for="lname1">Nom</label>
-                </div>
-
-                <div>
-                    <input id="email1" type="email" name="email1">
-                    <label for="email1">Email</label>
-                </div>
-
-                <div>
-                    <input id="password1" type="password" name="password1">
-                    <label for="password1">Mot de passe</label>
-                </div>
-
-                <div>
-                    <input id="repeat-password" type="password" name="repeat-password">
-                    <label for="repeat-password">Répéter mot de passe</label>
-                </div>
+            <div>
+                <input id="fname1" type="text" name="fname" autocomplete="off">
+                <label for="fname1">Prénom</label>
             </div>
 
-                <button id="b-sign-in" type="submit">S'inscrire</button>
-
-
-            <div id="form-5-text">
-                <div>
-                    <label for="q5">Question</label>
-                    <textarea id="q5" class="question" name="q5" placeholder="Question" required></textarea>
-                </div>
-
-                <div>
-                    <label for="response-text">Réponse</label>
-                    <input id="response-text" type="text" name="response" disabled="">
-                </div>
+            <div>
+                <input id="lname1" type="text" name="lname" autocomplete="off">
+                <label for="lname1">Nom</label>
             </div>
 
-            <div id="form-6-radio">
-                <div>
-                    <label for="q6">Question</label>
-                    <textarea id="q6" class="question" name="q6" placeholder="Question" required></textarea>
-                </div>
-
-                <div>
-                    <p>Réponses</p>
-                    <label for="q6-radio1">Choix 1</label>
-                    <input id="q6-radio1" type="text" name="q6-radio1">
-                    <input type="radio" name="q4-response" disabled="">
-
-                    <label for="q6-radio2">Choix 2</label>
-                    <input id="q6-radio2" type="text" name="q6-radio2">
-                    <input type="radio" name="q6-response" disabled="">
-
-                    <label for="q6-radio3">Choix 2</label>
-                    <input id="q6-radio3" type="text" name="q6-radio3">
-                    <input type="radio" name="q6-response" disabled="">
-
-                    <button id="q6-button-add-radio" type="button">Ajouter</button></div>
-                </div>
+            <div>
+                <input id="email1" type="email" name="email" autocomplete="off">
+                <label for="email1">Email</label>
             </div>
 
-            <div id="form-7-checkbox">
-                <div>
-                    <label for="q7">Question</label>
-                    <textarea id="q7" class="question" name="q7" placeholder="Question" required></textarea>
-                </div>
-
-                <div>
-                    <p>Réponses</p>
-                    <label for="q7-checkbox1">Choix 1</label>7
-                    <input id="q7-checkbox1" type="text" name="q7-checkbox1">
-                    <input type="checkbox" name="q7-response" disabled="">
-
-                    <label for="q7-checkbox2">Choix 2</label>
-                    <input id="q7-checkbox2" type="text" name="q7-checkbox2">
-                    <input type="checkbox" name="q7-response" disabled="">
-
-                    <label for="q7-checkbox3">Choix 2</label>
-                    <input id="q7-checkbox3" type="text" name="q7-checkbox3">
-                    <input type="checkbox" name="q7-response" disabled="">
-
-                    <button id="q7-button-add-radio" type="button">Ajouter</button></div>
-            </div>
+            <div>
+                <input id="password1" type="password" name="password" autocomplete="off">
+                <label for="password1">Mot de passe</label>
             </div>
 
-            </form>
+            <div>
+                <input id="repeat-password" type="password" name="repeat-password" autocomplete="off">
+                <label for="repeat-password">Répéter mot de passe</label>
+            </div>
+
+            <button id="b-sign-in" type="submit" class="buttonAccueil">S'inscrire</button>
+
+        </form>
+
+        <div id="blocLabel">
+            <div id="slidL" class="slider">&laquo;</div>
+
+            <div id="brand" class="noselect">
+                <span id="UwU">U<span>w</span>U</span>
+                <div>ni</div>
+                <div>form</div>
+            </div>
+
+            <div id="slidR" class="slider">&raquo;</div>
+        </div>
+
+        <form id="form-login" action="/login.php" method="post">
+
+            <h2>Se connecter</h2>
+
+            <div>
+                <input id="email2" type="email" name="email" autocomplete="off">
+                <label for="email2">Email</label>
+            </div>
+
+            <div>
+                <input id="password2" type="password" name="password" autocomplete="off">
+                <label for="password2">Mot de passe</label>
+            </div>
+
+            <button id="b-login" type="submit" class="buttonAccueil">Se connecter</button>
+
+        </form>
+
+    </main>
+
+    <footer>
+        <!--VIDE-->
+    </footer>
+
+</body>
+
+<script>
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
 
 
+    let inputs = document.querySelectorAll('#LogInSignUp main form > div input');
 
-            <form id="export" action="/exportBdd.php" method="post" >
+    function inputNotEmpty() {
+        let label = document.querySelector('#LogInSignUp main form > div label[for="' + this.id + '"]');
+        console.log(label);
+        if (this.value != "") {
+            label.classList.add('notEmpty');
+        } else {
+            label.classList.remove('notEmpty');
+        }
+    }
 
-                <div class="buttonSR">
-                    <button  id="submit" type="submit">Enregistrer</button>
-                </div>
+    for (let index = 0; index < inputs.length; index++) {
+        inputs[index].addEventListener('keyup', inputNotEmpty);
+    }
 
-            </form>
+    const logo = document.getElementById('UwU');
+    let state = 0
 
-            <form id="form-login" action="https://ressources.site/" method="post">
+    function expression() {
+        let value = getRandomInt(5)
+        if (value == state) {
+            value = (state + 1) % 5;
+        }
+        state = value;
+        switch (value) {
+            case 0:
+                logo.innerHTML = 'U<span>w</span>U'
+                break;
 
-                <div>
-                    <input id="email2" type="email" name="email2">
-                    <label for="email2">Email</label>
-                </div>
+            case 1:
+                logo.innerHTML = 'X<span>o</span>X'
+                break;
 
-                <div>
-                    <input id="password2" type="password" name="password2">
-                    <label for="password2">Mot de passe</label>
-                </div>
+            case 2:
+                logo.innerHTML = '^<span>w</span>^'
+                break;
 
-                <button id="b-login" type="button">Se connecter</button>
+            case 3:
+                logo.innerHTML = '><span>_</span><'
+                break;
 
-            </form>
+            case 4:
+                logo.innerHTML = 'O<span>w</span>O'
+                break;
+        }
+    }
 
-        </main>
-
-        <?php require 'modules/footer.php'; ?>
-
-    </body>
+    logo.addEventListener('click', expression);
+</script>
 
 
 </html>

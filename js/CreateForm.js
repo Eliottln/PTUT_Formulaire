@@ -5,10 +5,12 @@ let chooseTypeisVisible = false;
 function displayChooseType() {
     if (chooseTypeisVisible) {
         document.getElementById("choose-type").removeAttribute("style");
+        document.getElementById("choose-type").style.top = "-50vh";
         chooseTypeisVisible++;
     }
     else {
         document.getElementById("choose-type").style.opacity = "100%";
+        document.getElementById("choose-type").style.top = "32px";
         chooseTypeisVisible--;
     }
 }
