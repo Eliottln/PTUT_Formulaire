@@ -1,4 +1,4 @@
-const FORM = document.getElementById("form-document");
+const FORM = document.getElementById("document");
 
 
 let chooseTypeisVisible = false;
@@ -15,11 +15,10 @@ function displayChooseType() {
 
 
 function resetForm() {
-    let formContent = document.querySelectorAll('#form-document div');
+    let formContent = document.querySelectorAll('#document div');
     formContent.forEach(element => element.remove());
-    numForm = 0
     numQuestion = 0
-    button.setAttribute('disabled', true);
+    button.setAttribute('disabled', '');
 }
 
 

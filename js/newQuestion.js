@@ -98,6 +98,10 @@ function moveQuestion(){
     const question = Number.parseInt(id.split('-')[1])
     const type = id.split('-')[2]
 
+    numQuestion--
+    if (numQuestion===0){
+        button.setAttribute('disabled','')
+    }
 
     if (id.startsWith('del')){
         document.getElementById('form-'+question+'-'+type).remove()
@@ -125,27 +129,29 @@ function moveQuestion(){
 
                 let up = document.getElementById('up-'+numBlock+'-'+typeBlock)
                 up.id = 'up-'+(numBlock - 1)+'-'+typeBlock
-                up.addEventListener('click',moveQuestion)
                 let down = document.getElementById('down-'+numBlock+'-'+typeBlock)
                 down.id = 'down-'+(numBlock - 1)+'-'+typeBlock
-                down.addEventListener('click',moveQuestion)
                 let del = document.getElementById('del-'+numBlock+'-'+typeBlock)
                 del.id = 'del-'+(numBlock - 1)+'-'+typeBlock
-                del.addEventListener('click',moveQuestion)
 
 
-                // switch (typeBlock){
-                //
-                //     case 'text':
-                //
-                // }
+
+                switch (typeBlock){
+
+                    case 'radio':
+                        updateNumRC(numBlock,typeBlock)
+                        break
+
+                    case 'checkbox':
+                        updateNumRC(numBlock,typeBlock)
+                        break
+
+                    default:
+                        break
+                }
             }
         })
 
-        numQuestion--
-        if (numQuestion===0){
-            button.setAttribute('disabled','')
-        }
     }
 
 
@@ -160,6 +166,31 @@ function moveQuestion(){
     else if (id.startsWith('down')){
         document.getElementById('form-'+question+'-'+type)
     }
+}
+
+function updateNumRC(numBlock,typeBlock){
+    for (let i = 1; i <= choice.get(numBlock); i++) {
+
+        document.getElementById('choice-' + numBlock + '-' + i).id = 'choice-' + (numBlock - 1) + '-' + i
+
+        label = document.getElementById('label-' + numBlock + '-' + i)
+        label.setAttribute('for', 'q' + (numBlock - 1) + '-' + i)
+        label.id = 'label-' + (numBlock - 1) + '-' + i
+
+        let input = document.getElementById('q' + numBlock + '-' + i)
+        input.setAttribute('name', 'q' + (numBlock - 1) + '-' + typeBlock + i)
+        input.id = 'q' + (numBlock - 1) + '-' + i
+
+        let button = document.getElementById('trash-' + numBlock + '-' + i + '-' + typeBlock)
+        button.id = 'trash-' + (numBlock - 1) + '-' + i + '-' + typeBlock
+        button.addEventListener('click', delChoice)
+
+    }
+
+    let button2 = document.getElementById('q'+numBlock+'-add-'+typeBlock)
+    button2.setAttribute('name',(numBlock - 1).toString())
+    button2.id = 'q'+(numBlock - 1)+'-add-'+typeBlock
+    button2.addEventListener('click',newChoice)
 }
 
 
