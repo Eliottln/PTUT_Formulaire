@@ -1,6 +1,6 @@
 
 const formTemp = document.getElementById('export');
-const buttonExport = document.getElementById("submit-button")
+const buttonExport = document.getElementById("submit")
 
 
 
@@ -69,7 +69,7 @@ function ajoutInput(){
                 switch (typeQuestion) {
                     case "radio":
                         let newInput = document.createElement('input');
-                        let indexChoice = parsing2[1].substr(5,6) // Choix 1, choix 2 ...
+                        let indexChoice = parsing2[1] // Choix 1, choix 2 ...
                         console.log("Numero du choix  : " + indexChoice);
                         newInput.type = 'text';
                         newInput.name = allInput[counterInput].name;
@@ -79,7 +79,7 @@ function ajoutInput(){
 
                     case "checkbox":
                         let newInput2 = document.createElement('input');
-                        let indexChoice2 = parsing2[1].substr(8,9) // Choix 1, choix 2 ...
+                        let indexChoice2 = parsing2[1] // Choix 1, choix 2 ...
                         console.log("Numero du choix  : " + indexChoice2);
                         newInput2.type = 'text'
                         newInput2.name = allInput[counterInput].name;
@@ -87,7 +87,7 @@ function ajoutInput(){
                         tabInput.push(newInput2);
                         break;
                     default:
-                        console.log("NOP");
+                        console.log("Le champs n'est pas un choix ");
                 }
             }
 
