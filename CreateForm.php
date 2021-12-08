@@ -7,7 +7,6 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <title>Createur de Formulaires</title>
     <meta charset="UTF-8">

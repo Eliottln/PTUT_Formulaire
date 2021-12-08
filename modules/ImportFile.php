@@ -14,6 +14,7 @@ function contains($a, $b){
  * returnArray[0] = "type"
  * returnArray[1] = "name"
  */
+
 function getNameAndType($array){
     $returnArray = array();
     for($i = 0; $i < count($array); $i++){
