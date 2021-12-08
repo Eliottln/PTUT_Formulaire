@@ -7,7 +7,8 @@
   --accueil_Color:#ff0048;
   --accueil_Color_Darker:#b40033;
   --debugFont: white;
-  --navFont: rgb(240, 116, 0);
+  --navFont: rgb(230, 0, 57);
+  --bgc_pallette:#6d009b;
 
   /*Background*/
   --debugBG: #1e1e1e;
@@ -57,17 +58,89 @@ main {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+/*
 #debug {
   display: none;
   background-color: var(--debugBG, #1e1e1e);
   color: var(--debugFont, white);
   padding: 25px;
+}*/
+
+.randonBG{
+  background-color: #1e1e1e;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1920' height='1080' preserveAspectRatio='none' viewBox='0 0 1920 1080'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1036%26quot%3b)' fill='none'%3e%3crect width='1920' height='1080' x='0' y='0' fill='rgba(26%2c 26%2c 26%2c 1)'%3e%3c/rect%3e%3cpath d='M439.665299757931 846.1083058583652L632.217898849235 639.6209235589236 233.17791745848936 653.5557067670611z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M789.447%2c1037.244C880.683%2c1032.516%2c960.107%2c983.108%2c1008.798%2c905.807C1061.447%2c822.221%2c1093.916%2c717.446%2c1044.91%2c631.674C995.629%2c545.422%2c888.729%2c525.218%2c789.447%2c521.894C681.903%2c518.294%2c560.683%2c522.977%2c502.534%2c613.516C441.1%2c709.169%2c463.093%2c836.653%2c526.832%2c930.786C583.594%2c1014.615%2c688.344%2c1042.484%2c789.447%2c1037.244' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M740.975%2c752.997C814.822%2c755.52%2c891.315%2c734.67%2c931.578%2c672.714C975.275%2c605.473%2c980.121%2c517.185%2c938.938%2c448.376C898.72%2c381.18%2c819.165%2c349.877%2c740.975%2c354.254C669.966%2c358.229%2c612.427%2c406.344%2c578.01%2c468.582C544.825%2c528.592%2c537.576%2c600.921%2c571.668%2c660.42C605.942%2c720.237%2c672.075%2c750.643%2c740.975%2c752.997' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M666.93 378.44 a197.15 197.15 0 1 0 394.3 0 a197.15 197.15 0 1 0 -394.3 0z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M48.39690482309352 886.6698490854527L213.10504630659784 1150.2579751156827 476.6931723368278 985.5498336321784 311.9850308533235 721.9617076019484z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float1'%3e%3c/path%3e%3cpath d='M496.165%2c1138.531C559.048%2c1135.281%2c610.575%2c1096.445%2c644.551%2c1043.431C682.164%2c984.744%2c712.579%2c913.243%2c680.069%2c851.582C645.983%2c786.933%2c569.146%2c758.115%2c496.165%2c761.992C429.483%2c765.534%2c377.409%2c812.097%2c343.252%2c869.476C308.094%2c928.537%2c284.639%2c1000.52%2c318.6%2c1060.277C352.854%2c1120.548%2c426.932%2c1142.109%2c496.165%2c1138.531' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M1739.5384736762303 352.1646615279633L1489.213808320121 235.43635304732226 1372.4854998394799 485.76101840343165 1622.8101651955892 602.4893268840726z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1506.26 5.96 a281.92 281.92 0 1 0 563.84 0 a281.92 281.92 0 1 0 -563.84 0z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float2'%3e%3c/path%3e%3cpath d='M366.0509429884751 154.24782475830565L588.8662942707932 272.7208485540797 707.3393180665672 49.90549727176153 484.52396678424907-68.5675265240125z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3cpath d='M1442.0057635047315 906.2631585748088L1522.6809393650994 624.9153850199561 1241.3331658102466 544.2402091595882 1160.6579899498788 825.5879827144408z' fill='rgba(175%2c 4%2c 84%2c 0.4)' class='triangle-float3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1036'%3e%3crect width='1920' height='1080' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cstyle%3e %40keyframes float1 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-10px%2c 0)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float1 %7b animation: float1 5s infinite%3b %7d %40keyframes float2 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(-5px%2c -5px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float2 %7b animation: float2 4s infinite%3b %7d %40keyframes float3 %7b 0%25%7btransform: translate(0%2c 0)%7d 50%25%7btransform: translate(0%2c -10px)%7d 100%25%7btransform: translate(0%2c 0)%7d %7d .triangle-float3 %7b animation: float3 6s infinite%3b %7d %3c/style%3e%3c/defs%3e%3c/svg%3e");
 }
+
+/**button export**/
+
+.buttonEXPORT {
+  text-decoration: none;
+  position: absolute;
+  border: none;
+  font-size: 22px;
+  font-family: inherit;
+  color: #fff;
+  width: 11em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  background: linear-gradient(90deg,#9703f4,#cd014c,#ffa63b,#9703f4);
+  background-size: 300%;
+  border-end-end-radius: 35px;
+  border-end-start-radius: 35px;
+  z-index: 1;
+  top: 113px;
+ }
+ 
+ .buttonEXPORT:hover {
+  animation: ani 8s linear infinite;
+  border: none;
+ }
+ 
+ @keyframes ani {
+  0% {
+   background-position: 0%;
+  }
+ 
+  100% {
+   background-position: 400%;
+  }
+ }
+ 
+ /*Create by @kirzin*/
+ /*Modify by Alexis FORESTIER*/
+ .buttonEXPORT:before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  background: linear-gradient(90deg,#9703f4,#cd014c,#ffa63b,#9703f4);
+  background-size: 400%;
+  /*border-radius: 35px;*/
+  border-end-end-radius: 35px;
+  border-end-start-radius: 35px;
+  transition: 1s;
+ }
+ 
+ .buttonEXPORT:hover::before {
+  filter: blur(20px);
+ }
+ 
+ .buttonEXPORT:active {
+  background: linear-gradient(32deg,#9703f4,#cd014c,#ffa63b,#9703f4);
+ }
 
 /*#################################################*/
 /*HEADER*/
 /*#################################################*/
 /*NavBar*/
+
+header{
+  z-index: 2;
+}
 
 header nav ul {
   display: flex;
@@ -91,7 +164,7 @@ header nav ul li:hover {
 
 header nav ul li a {
   text-decoration: none;
-  color: var(--navFont, rgb(240, 116, 0));
+  color: var(--navFont);
   width: 100%;
   height: 100%;
 }
@@ -100,7 +173,7 @@ header nav ul li a {
 /*Palette de Création*/
 #palette {
   padding-block: 10px;
-  background-color: orange;
+  background-color: var(--bgc_pallette);
 }
 
 #palette ul {
@@ -110,6 +183,7 @@ header nav ul li a {
   justify-content: space-evenly;
 }
 
+/*
 #Debug-button {
   background-color: rgb(209, 101, 0);
   color: white;
@@ -119,7 +193,7 @@ header nav ul li a {
   font-size: larger;
   right: 1%;
   top: 5%;
-}
+}*/
 
 .button {
   padding: 7px;
@@ -133,7 +207,7 @@ header nav ul li a {
 }
 
 #choose-type {
-  background-color: rgb(228, 110, 0);
+  background-color: var(--navFont);
   position: absolute;
   display: flex;
   border-radius: 5px;
@@ -187,7 +261,7 @@ header nav ul li a {
   background: rgba(66, 66, 66, 0.75);
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 3;
 }
 
 dialog {
@@ -232,7 +306,7 @@ dialog > pre {
   display: none;
   padding-block: 10px;
   padding-inline: 10%;
-  background-color: orange;
+  background-color: var(--navFont);
   color: black;
   height: 80%;
   justify-content: center;
@@ -272,13 +346,12 @@ dialog[class="content"] pre {
   justify-content: center;
 }
 
-#export #submit {
+#export {
   padding: 10px;
   font-size: large;
   padding-inline: 10%;
   border-end-end-radius: 15px;
   border-end-start-radius: 15px;
-  background-color: orangered;
 }
 
 /*Form-document*/

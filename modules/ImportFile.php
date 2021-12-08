@@ -81,7 +81,7 @@ if(!empty($_POST)){
                 $currentSelect = null;
                 foreach($arrayStringForm as $key => $value){
                     if(contains($value, "input ")){
-                        array_push($arrayStringInput,explode("\"",$value));
+                        //array_push($arrayStringInput,explode("\"",$value));
                         $typeAndName = getNameAndType(explode("\"",$value));
                         
                         $valueExtracted = getValue(explode("\"",$value));
@@ -117,24 +117,24 @@ if(!empty($_POST)){
                     }
                 }
             
-                echo "Object : ";
-                var_dump($arrayObjectInput);
-                echo "Fichier HTML importé avec succés";
+                //echo "Object : ";
+                //var_dump($arrayObjectInput);
+                //echo "Fichier HTML importé avec succés";
             } catch (Exception $e) {
-                echo $e->getLine().":".$e->getMessage()."<br>";
-                echo "L'importation du fichier HTML a échouée";
+                //echo $e->getLine().":".$e->getMessage()."<br>";
+                //echo "L'importation du fichier HTML a échouée";
             }
             
             break;
 
         case 'json':
             #   code...
-            echo "Les fichier de type JSON ne sont pas encore pris en charge";
+            //echo "Les fichier de type JSON ne sont pas encore pris en charge";
             break;
         
         default:
             #   code...
-            echo "Ce fichier est incompatible avec l'importation";
+            //echo "Ce fichier est incompatible avec l'importation";
             break;
     }
 
