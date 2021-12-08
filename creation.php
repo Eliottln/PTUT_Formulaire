@@ -18,7 +18,7 @@
             <button type="button" id="new-radio">Radio</button>
             <button type="button" id="new-checkbox">Checkbox</button>
 
-            <form id="form-document"  method="post">
+            <form id="form-document" action="https://ressources.site/" method="post">
 
 
             </form>

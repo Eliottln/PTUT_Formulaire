@@ -146,3 +146,16 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
 </html>
+
+
+
+<!--
+<form class="" action="/exportBdd.php" method="post">
+
+    <button id="submit" type="submit">Enregistrer</button>
+        
+        
+            
+</form>
+
+-->
