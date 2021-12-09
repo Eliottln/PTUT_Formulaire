@@ -1,67 +1,35 @@
-:root {
-  /*Main*/
-  --first:#ff0048;
-  --second:#ac37fd;
+:root{
+    /*font*/
+    --debugFont:white;
+    --navFont: rgb(240, 116, 0);
 
-  /*font*/
-  --accueil_Color:#ff0048;
-  --accueil_Color_Darker:#b40033;
-  --debugFont: white;
-  --navFont: rgb(240, 116, 0);
-
-  /*Background*/
-  --debugBG: #1e1e1e;
-  --navBG: #111111;
-  --navLi_HOVER: #2b2b2b;
+    /*Background*/
+    --debugBG:#1e1e1e;
+    --navBG:#111111;
+    --navLi_HOVER:#2b2b2b;
 }
 
-@font-face {
-  font-family: "Unbutton";
-  src: url("/fonts/unbutton.ttf");
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
 
-@font-face {
-  font-family: "LemonMilk";
-  src: url("/fonts/LEMONMILK-Regular.otf");
+textarea:focus, input:focus{
+    outline: none;
 }
 
-@font-face {
-  font-family: "CFSamouraiBob";
-  src: url("/fonts/CFSamuraiBob.ttf");
+main{
+    display: flex;
+    flex-direction: column;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  box-sizing: border-box;
-}
-
-textarea:focus,
-input:focus {
-  outline: none;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-}
-
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
-
-#debug {
-  display: none;
-  background-color: var(--debugBG, #1e1e1e);
-  color: var(--debugFont, white);
-  padding: 25px;
+#debug{
+    display: none;
+    background-color: var(--debugBG,#1e1e1e);
+    color: var(--debugFont,white);
+    padding: 25px;
 }
 
 /*#################################################*/
@@ -69,457 +37,247 @@ main {
 /*#################################################*/
 /*NavBar*/
 
-header nav ul {
-  display: flex;
-  justify-content: space-evenly;
-  list-style: none;
-  background-color: var(--navBG, #111111);
+
+header nav ul{
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+    background-color:var(--navBG,#111111);
 }
 
-header nav ul li {
-  font-size: larger;
-  padding-block: 20px;
-  width: 34%;
-  text-align: center;
-  transition: background-color 0.5s;
+header nav ul li{
+    font-size: larger;
+    padding-block: 20px;
+    width: 34%;
+    text-align: center;
+    transition: background-color 0.5s;
 }
 
-header nav ul li:hover {
-  display: flex;
-  background-color: var(--navLi_HOVER, #2b2b2b);
+header nav ul li:hover{
+    display:flex;
+    background-color: var(--navLi_HOVER,#2b2b2b);
 }
 
-header nav ul li a {
-  text-decoration: none;
-  color: var(--navFont, rgb(240, 116, 0));
-  width: 100%;
-  height: 100%;
+header nav ul li a{
+    text-decoration: none;
+    color: var(--navFont,rgb(240, 116, 0));
+    width: 100%;
+    height: 100%;
 }
 
 /*--------------------------------------------------*/
 /*Palette de Création*/
-#palette {
-  padding-block: 10px;
-  background-color: orange;
+#palette{
+    padding-block: 10px;
+    background-color: orange;
 }
 
-#palette ul {
-  list-style: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+#palette ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
-#Debug-button {
-  background-color: rgb(209, 101, 0);
-  color: white;
-  position: fixed;
-  padding-block: 15px;
-  padding-inline: 15px;
-  font-size: larger;
-  right: 1%;
-  top: 5%;
+#Debug-button{
+    background-color: rgb(209, 101, 0);
+    color: white;
+    position: fixed;
+    padding-block: 15px;
+    padding-inline: 15px;
+    font-size: larger;
+    right: 1%;
+    top: 5%;
 }
 
-.button {
-  padding: 7px;
-  background-color: gray;
-  border-radius: 5px;
+.button{
+    padding: 7px;
+    background-color: gray;
+    border-radius: 5px;
 }
 
-#palette ul li {
-  position: relative;
-  display: flex;
+#palette ul li{
+    position: relative;
+    display: flex;
 }
 
-#choose-type {
-  background-color: rgb(228, 110, 0);
-  position: absolute;
-  display: flex;
-  border-radius: 5px;
-  left: -23px;
-  top: -50vh;
-  opacity: 0%;
-  transition: opacity 0.5s;
+#choose-type{
+    background-color: rgb(228, 110, 0);
+    position: absolute;
+    display: flex;
+    border-radius: 5px;
+    left: -23px;
+    top: 32px;
+    opacity: 0%;
+    transition: opacity 0.5s;
 }
 
-#choose-type form {
-  width: 13vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.subButton{
+    padding: 5px;
+    margin: 4px;
+    background-color: rgb(185, 185, 185);
+    border-radius: 5px;
 }
 
-#choose-type form select {
-    width: 95%;
-    margin-block: 10px;
-    margin-inline: 2.5%;
-    background-color: var(--navLi_HOVER);
-    color: var(--navFont);
-    font-size: large;
-    padding: 5%;
-}
-
-#buttonTYPE{
-    margin-bottom: 5px;
-}
-
-.subButton {
-  padding: 5px;
-  margin: 4px;
-  background-color: rgb(185, 185, 185);
-  border-radius: 5px;
-}
-
-.button:hover,
-.subButton:hover {
-  background-color: rgb(58, 58, 58);
-  cursor: pointer;
+.button:hover,.subButton:hover{
+    background-color: rgb(58, 58, 58);
+    cursor: pointer;
 }
 
 /*########################################*/
 /*Dialog*/
 
-#bgGrey {
-  display: none;
-  top: 0;
-  position: absolute;
-  background: rgba(66, 66, 66, 0.75);
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+#bgGrey{
+    display: none;
+    top: 0;
+    position: absolute;
+    background: rgba(66, 66, 66, 0.75);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
-dialog {
-  display: none;
-  flex-direction: column;
-  left: 25vw;
-  top: 25vh;
-  width: 50vw;
-  border: none;
-  background: rgb(41, 41, 41);
-  color: white;
-  max-height: 75.5vh;
-  transition: top 0.5s, height 0.5s;
+dialog{
+    display: none;
+    flex-direction: column;
+    left: 25vw;
+    top: 25vh;
+    width: 50vw;
+    border: none;
+    background: rgb(41, 41, 41);
+    color: white;
+    max-height: 75.5vh;
+    transition: top 0.5s, height 0.5s;
 }
 
-dialog > form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding-block: 10px;
-  flex-direction: column;
+dialog>form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-block: 10px;
+    flex-direction: column;
 }
 
-dialog > form > input {
-  font-size: larger;
-  border-bottom: 3px solid white;
-  padding: 5px;
+dialog>form>input{
+    font-size: larger;
+    border-bottom: 3px solid white;
+    padding: 5px;
 }
 
-#fileToString {
-  display: none;
+#fileToString{
+    display: none;
 }
 
-dialog > form > button {
-  width: 25%;
-  font-size: larger;
-  margin: 10px;
+dialog>form>button{
+    width: 25%;
+    font-size: larger;
+    margin: 10px;
 }
 
-dialog > pre {
-  display: none;
-  padding-block: 10px;
-  padding-inline: 10%;
-  background-color: orange;
-  color: black;
-  height: 80%;
-  justify-content: center;
-  overflow-y: scroll;
-  overflow-x: hidden;
+dialog>pre{
+    display: none;
+    padding-block: 10px;
+    padding-inline: 10%;
+    background-color: orange;
+    color: black;
+    height: 80%;
+    justify-content: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-dialog > pre > label {
-  font-size: x-large;
-  font-weight: bold;
-  color: #222222;
+dialog>pre>label{
+    font-size: x-large;
+    font-weight: bold;
+    color: #222222;
 }
 
-dialog > pre > code {
-  background: #222222;
-  color: lightgrey;
-  padding: 15px;
-  border-radius: 10px;
-  display: inline-table;
+dialog>pre>code{
+    background: #222222;
+    color: lightgrey;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-table;
 }
 
 /*Avec du contenu*/
 
-dialog[class="content"] {
-  top: 12.5vh;
+dialog[class = "content"]{
+    top: 12.5vh;
 }
 
-dialog[class="content"] pre {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
+dialog[class = "content"] pre{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 /*########################################*/
 /*Form export*/
-#export {
-  display: flex;
-  justify-content: center;
+#export{
+    display: flex;
+    justify-content: center;
 }
 
-#export #submit {
-  padding: 10px;
-  font-size: large;
-  padding-inline: 10%;
-  border-end-end-radius: 15px;
-  border-end-start-radius: 15px;
-  background-color: orangered;
+#export #submit{
+    padding: 10px;
+    font-size: large;
+    padding-inline: 10%;
+    border-end-end-radius: 15px;
+    border-end-start-radius: 15px;
+    background-color: orangered;
 }
 
 /*Form-document*/
 
-#form-document {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-#form-document label,
-#form-document p {
-  font-size: larger;
-}
-
-#form-document > div {
-  display: flex;
-  flex-direction: column;
-  background-color: lightgray;
-  border-radius: 5px;
-  margin-block: 10px;
-  margin-inline: 50px;
-  padding: 10px;
-  width: 80%;
-}
-
-#form-document div div:first-child {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-#form-document div div:first-child textarea {
-  width: 92%;
-  margin-left: 2%;
-  border: none;
-  background-color: lightgray;
-  border-bottom: 2px solid black;
-  height: 24px;
-  font-size: large;
-}
-
-#form-document div div:not(:first-child) {
-  display: flex;
-  flex-direction: column;
-}
-
-#form-document div div:not(:first-child) :not(p) {
-  margin-inline-start: 20px;
-}
-
-#form-document div div:not(:first-child) input[type="radio"],
-#form-document div div:not(:first-child) input[type="checkbox"] {
-  margin-block-end: 10px;
-}
-
-/*#################################################*/
-/*LogInSignUp*/
-/*#################################################*/
-
-
-#LogInSignUp header, #LogInSignUp footer{
-  height: 10vh;
-  width: 100%;
-  background-color: var(--navBG);
-}
-
-#BackgroundAnime{
-  height: 80vh;
-  width: 100%;
-  background-image: url(/img/orangeBackground.gif);
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(15px) contrast(0.85) hue-rotate(0deg);
-  animation-name: hue-rotate;
-  animation-duration: 60s;
-  animation-iteration-count: infinite;
-}
-
-@keyframes hue-rotate {
-  0% {filter: blur(15px) contrast(0.85) hue-rotate(0deg);}
-  50% {filter: blur(15px) contrast(0.85) hue-rotate(180deg);}
-  100% {filter: blur(15px) contrast(0.85) hue-rotate(360deg);}
-}
-
-#LogInSignUp main{
-  position: absolute;
-  z-index: 1;
-  top: 10vh;
-  margin-inline: 10%;
-  width: 80%;
-  height: 80%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  overflow: hidden;
-}
-
-#LogInSignUp main form{
-  background-color: #fff;
-  margin-block: 50px;
-  border-radius: 35px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border : 2px solid;
+#document{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 
 
-#LogInSignUp main form h2{
-  font-size: xx-large;
-  color: var(--accueil_Color);
-  text-underline-position: from-font;
-  padding: 30px;
-  font-family: "Unbutton";
+#document label, #form-document p{
+    font-size: larger;
 }
 
-#LogInSignUp main form > div{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding-inline: 15px;
-  padding-block: 10px;
-  position: relative;
+#document>div{
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+    border-radius: 5px;
+    margin-block: 10px;
+    margin-inline: 50px;
+    padding: 10px;
+    width: 80%;
 }
 
-#LogInSignUp main form > div input{
-  min-width: 250px;
-  border: 2px solid var(--accueil_Color);
-  border-radius: 5px;
-  height: 35px;
-  font-size: large;
-  padding-inline: 5px;
+#document div div:first-child{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-#LogInSignUp main form > div label{
-  background-color: white;
-  color: var(--accueil_Color);
-  padding-inline: 4px;
-  font-size: large;
-  position: absolute;
-  left: 25px;
-  top: 17px;
-  transition: font-size 0.3s, top 0.3s
+#document div div:first-child textarea{
+    width: 92%;
+    margin-left: 2%;
+    border: none;
+    background-color: lightgray;
+    border-bottom: 2px solid black;
+    height: 24px;
+    font-size: large;
 }
 
-.notEmpty,#LogInSignUp main form > div input:focus ~ label{
-  font-size: medium !important;
-  top: -1px !important;
+#document div div:not(:first-child){
+    display: flex;
+    flex-direction: column;
 }
 
-.buttonAccueil{
-  padding: 15px;
-  font-size: larger;
-  background-color: var(--accueil_Color);
-  color:white;
-  border: none;
-  border-radius: 5px;
-}
+/*#form-document div div:not(:first-child) :not(p){
+    margin-inline-start: 20px;
+}*/
 
-.buttonAccueil:hover{
-  background-color: var(--accueil_Color_Darker);
-  cursor: pointer;
-}
-
-#blocLabel{
-  display: flex;
-  flex-direction:row;
-}
-
-#brand{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 5vw;
-}
-
-#brand > div{
-  font-family: "CFSamouraiBob";
-}
-
-#UwU, #UwU > span{
-  font-family: "LemonMilk";
-  font-size: 10vw;
-}
-
-#UwU:hover,#UwU:hover span{
-  cursor: pointer;
-  background: linear-gradient(211deg, rgba(172,55,253,1) 0%, rgba(255,0,72,1) 70%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-#UwU > span{
-  font-size: smaller;
-  position: relative;
-  top: 5px;
-}
-
-.slider{
-  color: white;
-  font-size: 18vh;
-  padding-block: 30vh;
-  padding-inline: 7.5px;
-}
-
-#slidL{
-  animation-name: bumpL;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-}
-
-@keyframes bumpL {
-  0% {padding-right: 7.5px;padding-left: 7.5px;}
-  12.5% {padding-right: 15px;padding-left: 0px;}
-  25% {padding-right: 7.5px;padding-left: 7.5px;}
-  37.5% {padding-right: 15px;padding-left: 0px;}
-  50% {padding-right: 7.5px;padding-left: 7.5px;}
-  100% {padding-right: 7.5px;padding-left: 7.5px;}
-}
-
-#slidR{
-  animation-name: bumpR;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-}
-
-@keyframes bumpR {
-  0% {padding-left: 7.5px; padding-right: 7.5px;}
-  12.5% {padding-left: 15px; padding-right: 0px;}
-  25% {padding-left: 7.5px; padding-right: 7.5px;}
-  37.5% {padding-left: 15px; padding-right: 0px;}
-  50% {padding-left: 7.5px; padding-right: 7.5px;}
-  100% {padding-left: 7.5px; padding-right: 7.5px;}
-}
-
-@media(max-width:950px){
-  
+#document div div:not(:first-child) input[type="radio"],#form-document div div:not(:first-child) input[type="checkbox"]{
+    margin-block-end: 10px;
 }

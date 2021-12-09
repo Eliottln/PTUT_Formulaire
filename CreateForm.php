@@ -7,6 +7,7 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <title>Createur de Formulaires</title>
     <meta charset="UTF-8">
@@ -75,11 +76,10 @@
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button id="submit" type="submit" >Enregistrer</button>
+            <button id="submit" type="submit" disabled>Enregistrer</button>
         </form>
 
-        <form id="form-document" action="https://ressources.site/" method="post">
-
+        <form id="document" action="https://ressources.site/" method="post">
         </form>
     </main>
 
