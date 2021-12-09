@@ -171,6 +171,7 @@ function moveQuestion(){
     }
 }
 
+
 function updateNumRC(numBlock,typeBlock){
     for (let i = 1; i <= choice.get(numBlock); i++) {
 
