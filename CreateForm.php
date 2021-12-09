@@ -74,7 +74,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             <button class="buttonEXPORT" id="submit" type="submit" disabled>Enregistrer</button>
         </form>
 
-        <form id="form-document" action="https://ressources.site/" method="post">
+        <form id="document" action="https://ressources.site/" method="post">
 
         </form>
     </main>
