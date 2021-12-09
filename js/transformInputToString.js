@@ -19,7 +19,7 @@ function ajoutInput(){
 
     const allInput = document.querySelectorAll("input")
     const allTextArea = document.querySelectorAll("textarea")
-    const allFormQuestion = document.querySelectorAll("#form-document>div");
+    const allFormQuestion = document.querySelectorAll("#document>div");
 
 
 
@@ -48,6 +48,7 @@ function ajoutInput(){
 
             case "date":
                 newInput.value = 'date' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+                break
 
             default:
                 newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion; // question/quelle est la couleur ?/1

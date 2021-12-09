@@ -1,7 +1,7 @@
-:root {
-  /*Main*/
-  --first:#ff0048;
-  --second:#ac37fd;
+:root{
+    /*font*/
+    --debugFont:white;
+    --navFont: rgb(240, 116, 0);
 
   /*font*/
   --accueil_Color:#ff0048;
@@ -26,21 +26,20 @@
   src: url("/fonts/LEMONMILK-Regular.otf");
 }
 
-@font-face {
-  font-family: "CFSamouraiBob";
-  src: url("/fonts/CFSamuraiBob.ttf");
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  box-sizing: border-box;
+textarea:focus, input:focus{
+    outline: none;
 }
 
-textarea:focus,
-input:focus {
-  outline: none;
+main{
+    display: flex;
+    flex-direction: column;
 }
 
 main {
@@ -149,17 +148,17 @@ header nav ul {
   background-color: var(--navBG, #111111);
 }
 
-header nav ul li {
-  font-size: larger;
-  padding-block: 20px;
-  width: 34%;
-  text-align: center;
-  transition: background-color 0.5s;
+header nav ul li{
+    font-size: larger;
+    padding-block: 20px;
+    width: 34%;
+    text-align: center;
+    transition: background-color 0.5s;
 }
 
-header nav ul li:hover {
-  display: flex;
-  background-color: var(--navLi_HOVER, #2b2b2b);
+header nav ul li:hover{
+    display:flex;
+    background-color: var(--navLi_HOVER,#2b2b2b);
 }
 
 header nav ul li a {
@@ -176,11 +175,11 @@ header nav ul li a {
   background-color: var(--bgc_pallette);
 }
 
-#palette ul {
-  list-style: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+#palette ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 /*
@@ -195,15 +194,15 @@ header nav ul li a {
   top: 5%;
 }*/
 
-.button {
-  padding: 7px;
-  background-color: gray;
-  border-radius: 5px;
+.button{
+    padding: 7px;
+    background-color: gray;
+    border-radius: 5px;
 }
 
-#palette ul li {
-  position: relative;
-  display: flex;
+#palette ul li{
+    position: relative;
+    display: flex;
 }
 
 #choose-type {
@@ -217,38 +216,16 @@ header nav ul li a {
   transition: opacity 0.5s;
 }
 
-#choose-type form {
-  width: 13vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.subButton{
+    padding: 5px;
+    margin: 4px;
+    background-color: rgb(185, 185, 185);
+    border-radius: 5px;
 }
 
-#choose-type form select {
-    width: 95%;
-    margin-block: 10px;
-    margin-inline: 2.5%;
-    background-color: var(--navLi_HOVER);
-    color: var(--navFont);
-    font-size: large;
-    padding: 5%;
-}
-
-#buttonTYPE{
-    margin-bottom: 5px;
-}
-
-.subButton {
-  padding: 5px;
-  margin: 4px;
-  background-color: rgb(185, 185, 185);
-  border-radius: 5px;
-}
-
-.button:hover,
-.subButton:hover {
-  background-color: rgb(58, 58, 58);
-  cursor: pointer;
+.button:hover,.subButton:hover{
+    background-color: rgb(58, 58, 58);
+    cursor: pointer;
 }
 
 /*########################################*/
@@ -264,42 +241,42 @@ header nav ul li a {
   z-index: 3;
 }
 
-dialog {
-  display: none;
-  flex-direction: column;
-  left: 25vw;
-  top: 25vh;
-  width: 50vw;
-  border: none;
-  background: rgb(41, 41, 41);
-  color: white;
-  max-height: 75.5vh;
-  transition: top 0.5s, height 0.5s;
+dialog{
+    display: none;
+    flex-direction: column;
+    left: 25vw;
+    top: 25vh;
+    width: 50vw;
+    border: none;
+    background: rgb(41, 41, 41);
+    color: white;
+    max-height: 75.5vh;
+    transition: top 0.5s, height 0.5s;
 }
 
-dialog > form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding-block: 10px;
-  flex-direction: column;
+dialog>form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-block: 10px;
+    flex-direction: column;
 }
 
-dialog > form > input {
-  font-size: larger;
-  border-bottom: 3px solid white;
-  padding: 5px;
+dialog>form>input{
+    font-size: larger;
+    border-bottom: 3px solid white;
+    padding: 5px;
 }
 
-#fileToString {
-  display: none;
+#fileToString{
+    display: none;
 }
 
-dialog > form > button {
-  width: 25%;
-  font-size: larger;
-  margin: 10px;
+dialog>form>button{
+    width: 25%;
+    font-size: larger;
+    margin: 10px;
 }
 
 dialog > pre {
@@ -314,36 +291,36 @@ dialog > pre {
   overflow-x: hidden;
 }
 
-dialog > pre > label {
-  font-size: x-large;
-  font-weight: bold;
-  color: #222222;
+dialog>pre>label{
+    font-size: x-large;
+    font-weight: bold;
+    color: #222222;
 }
 
-dialog > pre > code {
-  background: #222222;
-  color: lightgrey;
-  padding: 15px;
-  border-radius: 10px;
-  display: inline-table;
+dialog>pre>code{
+    background: #222222;
+    color: lightgrey;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-table;
 }
 
 /*Avec du contenu*/
 
-dialog[class="content"] {
-  top: 12.5vh;
+dialog[class = "content"]{
+    top: 12.5vh;
 }
 
-dialog[class="content"] pre {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
+dialog[class = "content"] pre{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 /*########################################*/
 /*Form export*/
-#export {
-  display: flex;
-  justify-content: center;
+#export{
+    display: flex;
+    justify-content: center;
 }
 
 #export {
@@ -419,16 +396,8 @@ dialog[class="content"] pre {
   background-color: var(--navBG);
 }
 
-#BackgroundAnime{
-  height: 80vh;
-  width: 100%;
-  background-image: url(/img/orangeBackground.gif);
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(15px) contrast(0.85) hue-rotate(0deg);
-  animation-name: hue-rotate;
-  animation-duration: 60s;
-  animation-iteration-count: infinite;
+#document label, #form-document p{
+    font-size: larger;
 }
 
 @keyframes hue-rotate {
@@ -556,43 +525,31 @@ dialog[class="content"] pre {
   top: 5px;
 }
 
-.slider{
-  color: white;
-  font-size: 18vh;
-  padding-block: 30vh;
-  padding-inline: 7.5px;
+#document div div:first-child{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
-#slidL{
-  animation-name: bumpL;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
+#document div div:first-child textarea{
+    width: 92%;
+    margin-left: 2%;
+    border: none;
+    background-color: lightgray;
+    border-bottom: 2px solid black;
+    height: 24px;
+    font-size: large;
 }
 
-@keyframes bumpL {
-  0% {padding-right: 7.5px;padding-left: 7.5px;}
-  12.5% {padding-right: 15px;padding-left: 0px;}
-  25% {padding-right: 7.5px;padding-left: 7.5px;}
-  37.5% {padding-right: 15px;padding-left: 0px;}
-  50% {padding-right: 7.5px;padding-left: 7.5px;}
-  100% {padding-right: 7.5px;padding-left: 7.5px;}
+#document div div:not(:first-child){
+    display: flex;
+    flex-direction: column;
 }
 
-#slidR{
-  animation-name: bumpR;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-}
+/*#form-document div div:not(:first-child) :not(p){
+    margin-inline-start: 20px;
+}*/
 
-@keyframes bumpR {
-  0% {padding-left: 7.5px; padding-right: 7.5px;}
-  12.5% {padding-left: 15px; padding-right: 0px;}
-  25% {padding-left: 7.5px; padding-right: 7.5px;}
-  37.5% {padding-left: 15px; padding-right: 0px;}
-  50% {padding-left: 7.5px; padding-right: 7.5px;}
-  100% {padding-left: 7.5px; padding-right: 7.5px;}
-}
-
-@media(max-width:950px){
-  
+#document div div:not(:first-child) input[type="radio"],#form-document div div:not(:first-child) input[type="checkbox"]{
+    margin-block-end: 10px;
 }
