@@ -1,20 +1,17 @@
 <?php
-    echo "<pre id=\"debug\"><code>";
-    include_once($_SERVER["DOCUMENT_ROOT"]."/modules/ImportFile.php");
-    echo "</code></pre>";
+include_once($_SERVER["DOCUMENT_ROOT"]."/include/config.php");
+include_once($_SERVER["DOCUMENT_ROOT"]."/modules/ImportFile.php");
 ?>
 
 
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <title>Createur de Formulaires</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+
+<?php
+$pageName = "Createur de Formulaires";
+include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
+?>
 
 <body>
 
@@ -53,8 +50,6 @@
                     <div id="ImportForm" class="button">Importer un formulaire</div>
                 </li>
             </ul>
-
-            <div id="Debug-button" class="button">&#128421;Debug</div>
         </div>
 
         <div id="bgGrey">
@@ -76,10 +71,11 @@
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button id="submit" type="submit" disabled>Enregistrer</button>
+            <button class="buttonEXPORT" id="submit" type="submit" disabled>Enregistrer</button>
         </form>
 
         <form id="document" action="https://ressources.site/" method="post">
+
         </form>
     </main>
 
@@ -91,6 +87,15 @@
     <script src="/js/addInputFromObject.js"></script>
     <script>
         <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
+
+        function styleHTLM(){
+            let html = document.documentElement;
+            html.classList.add('randonBG');
+            document.getElementsByTagName('header')[0].setAttribute('style',"z-index: 2");
+            document.getElementById('palette').setAttribute('style',"z-index: 2");
+        }
+
+        styleHTLM();
     </script>
 
 </body>

@@ -75,6 +75,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 <label for="password2">Mot de passe</label>
             </div>
 
+            <?php 
+            //TODO add checkbox remenber-me
+            ?>
+
             <button id="b-login" type="submit" class="buttonAccueil">Se connecter</button>
 
         </form>
