@@ -39,7 +39,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                                 <option id="new-text" value="new-text">Texte</option>
                                 <option id="new-url" value="new-url" disabled>Url</option>
                             </select>
-                            <a id="buttonTYPE" class="button" disabled>Ajouter</a>
+                            <a id="buttonTYPE" class="button">Ajouter</a>
                         </form>
                     </div>
                 </li>
@@ -71,7 +71,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button class="buttonEXPORT" id="submit" type="submit" disabled>Enregistrer</button>
+            <button class="buttonEXPORT" id="submit" type="button" disabled>Enregistrer</button>
         </form>
 
         <form id="document" action="https://ressources.site/" method="post">

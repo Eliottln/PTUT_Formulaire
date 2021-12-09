@@ -100,7 +100,6 @@ try {
     document.getElementById("cancel").addEventListener('click', hideDialog);
     document.getElementById("file").addEventListener("change",ImportedFiles);
     document.getElementById("confirm").addEventListener('click', sendConfirm);
-    DEBUG_BUTTON.addEventListener("click", displayDebug);
 } catch (error) {
     console.error("["+error.lineNumber+"] Error : addListener failure");
 }
