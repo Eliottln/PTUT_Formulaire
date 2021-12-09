@@ -18,7 +18,7 @@ function newQuestion(){ //create a question input with response input in html
 
     addDivElement(id);
 
-    let div = document.querySelector('#content-'+numQuestion)
+    let div = document.getElementById('content-'+numQuestion)
 
 
     switch (id){
@@ -41,7 +41,6 @@ function newQuestion(){ //create a question input with response input in html
 
         case 'new-date':
             let divS = document.createElement("div");
-            divS.id = 'div-'+numQuestion
 
             divS.innerHTML = '<p>Réponses</p>'+
                 '<select id="q'+numQuestion+'-select" name="q'+numQuestion+'-select">'+
@@ -56,7 +55,7 @@ function newQuestion(){ //create a question input with response input in html
                 '</div>'
 
             div.appendChild(divS)
-            document.querySelector('#q'+numQuestion+'-select').addEventListener('change',createDate)
+            document.getElementById('q'+numQuestion+'-select').addEventListener('change',createDate)
             break
     }
 
@@ -124,19 +123,17 @@ function moveQuestion(){
                 label.id = 'label-' + (numBlock - 1)
 
                 let textArea = document.getElementById('q' + numBlock)
-                textArea.setAttribute('name', 'q' + (numBlock - 1))
                 textArea.id = 'q' + (numBlock - 1)
+                textArea.setAttribute('name', textArea.id)
 
-                let up = document.getElementById('up-'+numBlock+'-'+typeBlock)
-                up.id = 'up-'+(numBlock - 1)+'-'+typeBlock
-                let down = document.getElementById('down-'+numBlock+'-'+typeBlock)
-                down.id = 'down-'+(numBlock - 1)+'-'+typeBlock
-                let del = document.getElementById('del-'+numBlock+'-'+typeBlock)
-                del.id = 'del-'+(numBlock - 1)+'-'+typeBlock
+                document.getElementById('up-'+numBlock+'-'+typeBlock).id = 'up-'+(numBlock - 1)+'-'+typeBlock
+                document.getElementById('down-'+numBlock+'-'+typeBlock).id = 'down-'+(numBlock - 1)+'-'+typeBlock
+                document.getElementById('del-'+numBlock+'-'+typeBlock).id = 'del-'+(numBlock - 1)+'-'+typeBlock
 
 
 
                 switch (typeBlock){
+
 
                     case 'radio':
                         updateNumRC(numBlock,typeBlock)
@@ -144,6 +141,13 @@ function moveQuestion(){
 
                     case 'checkbox':
                         updateNumRC(numBlock,typeBlock)
+                        break
+
+                    case 'date':
+                        let select = document.getElementById('q'+numBlock+'-select')
+                        select.id = 'q'+(numBlock - 1)+'-select'
+                        select.setAttribute('name',select.id)
+                        document.getElementById('date-'+numBlock).id = 'date-'+(numBlock - 1)
                         break
 
                     default:
@@ -173,7 +177,7 @@ function updateNumRC(numBlock,typeBlock){
 
         document.getElementById('choice-' + numBlock + '-' + i).id = 'choice-' + (numBlock - 1) + '-' + i
 
-        label = document.getElementById('label-' + numBlock + '-' + i)
+        let label = document.getElementById('label-' + numBlock + '-' + i)
         label.setAttribute('for', 'q' + (numBlock - 1) + '-' + i)
         label.id = 'label-' + (numBlock - 1) + '-' + i
 
@@ -244,7 +248,7 @@ function newChoice(){ //add a choice for multi input
 
     this.insertAdjacentHTML("beforebegin", add);
 
-    document.querySelector('#trash-'+question+'-'+num+'-'+type).addEventListener('click',delChoice)
+    document.getElementById('trash-'+question+'-'+num+'-'+type).addEventListener('click',delChoice)
 }
 
 
@@ -265,8 +269,7 @@ function delChoice(){ //delete a choice for multi input
             label.setAttribute('for', 'q' + numQuestion + '-' + i)
             label.id = 'label-' + numQuestion + '-' + i
 
-            let divBlock = document.querySelector('#choice-' + numQuestion + '-' + (i + 1))
-            divBlock.id = 'choice-' + numQuestion + '-' + i
+            document.querySelector('#choice-' + numQuestion + '-' + (i + 1)).id = 'choice-' + numQuestion + '-' + i
 
             let input = document.querySelector('#q' + numQuestion + '-' + (i + 1))
             input.setAttribute('name', 'q' + numQuestion + '-' + typeChoice + i)
@@ -274,7 +277,6 @@ function delChoice(){ //delete a choice for multi input
 
             let button = document.querySelector('#trash-' + numQuestion + '-' + (i + 1) + '-' + typeChoice)
             button.id = 'trash-' + numQuestion + '-' + i + '-' + typeChoice
-
             button.addEventListener('click', delChoice)
         }
 
@@ -285,7 +287,7 @@ function delChoice(){ //delete a choice for multi input
 
 function createDate(){
     let question = Number.parseInt(this.id.slice(1,2))
-    let div = document.querySelector('#date-'+question)
+    let div = document.getElementById('date-'+question)
     let value = this.value
 
     if (value === 'duration'){

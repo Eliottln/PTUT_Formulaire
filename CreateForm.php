@@ -74,10 +74,10 @@
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button id="submit" type="submit" disabled>Enregistrer</button>
         </form>
 
         <form id="document" action="https://ressources.site/" method="post">
+            <button id="submit" type="submit" disabled>Enregistrer</button>
 
         </form>
     </main>
