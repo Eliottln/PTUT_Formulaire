@@ -71,7 +71,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button class="buttonEXPORT" id="submit" type="button" disabled>Enregistrer</button>
+            <button class="buttonEXPORT" id="submit" type="submit" disabled>Enregistrer</button>
         </form>
 
         <form id="document" action="https://ressources.site/" method="post">
