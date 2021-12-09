@@ -134,7 +134,6 @@ function moveQuestion(){
 
                 switch (typeBlock){
 
-
                     case 'radio':
                         updateNumRC(numBlock,typeBlock)
                         break
