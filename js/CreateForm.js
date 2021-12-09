@@ -14,14 +14,6 @@ function displayChooseType() {
     }
 }
 
-
-function resetForm() {
-    content.innerHTML = ''
-    numQuestion = 0
-    button.setAttribute('disabled', '')
-}
-
-
 function showDialog() {
     try {
         document.getElementById('Import').style.display = "flex"
@@ -53,11 +45,9 @@ function ImportedFiles() {
     let reader = new FileReader()
     reader.onload = function () {
         let lines = reader.result.split('\n')
-        for (let line = 0; line < lines.length; line++) {
-            OUTPUT.textContent += lines[line] + "\n"
-        }
+        lines.forEach(line => OUTPUT.textContent += line + "\n");
     }
-
+    
     reader.readAsText(this.files[0])
 
     let fileType = this.files[0].name.split('.')
@@ -65,6 +55,7 @@ function ImportedFiles() {
     document.getElementById("typeofFile").textContent = "Fichier de type : " + fileType[fileType.length - 1]
     document.getElementById("Import").classList.add("content")
     document.getElementById("confirm").disabled = false
+
 }
 
 
@@ -74,30 +65,58 @@ function sendConfirm() {
 }
 
 
-//ONLY FOR TEST
-const DEBUG_BUTTON = document.getElementById("Debug-button")
-const DEBUG = document.getElementById("debug")
-let debugOpen = false
+/*Palette */
 
-function displayDebug() {
-    if (debugOpen) {
-        DEBUG.style.display = "none"
-        debugOpen = false
+
+
+let paletteIsOpen = true;
+
+function tooglePalette() {
+    if (paletteIsOpen) {
+        document.getElementById('palette').setAttribute('style', "left: 0px;");
+        document.getElementById('tooglePalette').setAttribute('style', "transform: rotate(180deg); color: black;");
+        paletteIsOpen = false;
+    } else {
+        document.getElementById('palette').removeAttribute('style');
+        document.getElementById('tooglePalette').removeAttribute('style');
+        paletteIsOpen = true;
     }
-    else {
-        DEBUG.style.display = "flex"
-        debugOpen = true
+}
+
+function resetForm() {
+    content.innerHTML = ''
+    numQuestion = 0
+    button.setAttribute('disabled', '')
+}
+
+let layout = 1;
+function setLayout() {
+    layout = document.getElementById("document-layout").value;
+    switch (layout) {
+        case '1':
+            document.querySelectorAll('#document > div').forEach(e => e.style.width = 'calc(100% - 100px)');
+            break;
+        case '2':
+            document.querySelectorAll('#document > div').forEach(e => e.style.width = 'calc(50% - 100px)');
+            break;
+        case '3':
+            document.querySelectorAll('#document > div').forEach(e => e.style.width = 'calc(33% - 100px)');
+            break;
+        default:
     }
 }
 
 // ADD EVENT LISTENER
 try {
-    document.getElementById("addSection").addEventListener('click', displayChooseType);
+    document.getElementById('tooglePalette').addEventListener('click', tooglePalette);
+
+    document.getElementById("document-layout").addEventListener('change', setLayout);
     document.getElementById("ClearForm").addEventListener('click', resetForm);
     document.getElementById("ImportForm").addEventListener('click', showDialog);
+
     document.getElementById("cancel").addEventListener('click', hideDialog);
-    document.getElementById("file").addEventListener("change",ImportedFiles);
+    document.getElementById("file").addEventListener("change", ImportedFiles);
     document.getElementById("confirm").addEventListener('click', sendConfirm);
 } catch (error) {
-    console.error("["+error.lineNumber+"] Error : addListener failure")
+    console.error("[" + error.lineNumber + "] Error : addListener failure");
 }
