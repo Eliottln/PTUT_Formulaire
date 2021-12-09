@@ -1,7 +1,14 @@
-document.getElementById('new-text').addEventListener('click',newQuestion)
-document.getElementById('new-radio').addEventListener('click',newQuestion)
-document.getElementById('new-checkbox').addEventListener('click',newQuestion)
-document.getElementById('new-date').addEventListener('click',newQuestion)
+/*
+document.getElementById('new-text').addEventListener('click',newForm)
+document.getElementById('new-radio').addEventListener('click',newForm)
+document.getElementById('new-checkbox').addEventListener('click',newForm)
+
+const newDate=document.getElementById('new-date')
+newDate.addEventListener('click',newForm)*/
+
+/*J'ai déclaré le select en fin de fichier */
+
+let selectTypeAdd = "new-checkbox";
 
 const content = document.getElementById("document")
 const button = document.getElementById('submit')
@@ -14,7 +21,8 @@ function newQuestion(){ //create a question input with response input in html
 
     button.removeAttribute('disabled')
 
-    const id = this.id
+    //const id = this.id
+    const id = selectTypeAdd
 
     addDivElement(id);
 
@@ -297,4 +305,14 @@ function createDate(){
     else{
         div.innerHTML = '<input type="'+value+'" disabled>'
     }
+}
+
+try {
+    let SELECT = document.getElementById("addQuestion");
+    const BUTTONADD = document.getElementById("buttonTYPE");
+
+    SELECT.addEventListener('change', function(){selectTypeAdd = this.value})
+    BUTTONADD.addEventListener('click',newQuestion)
+} catch (error) {
+    
 }
