@@ -84,7 +84,7 @@ $connect = null;
 $message = 'votre formulaire à bien été enregistré';
 
 
-header("Location: index.php");
+header("Location: CreateForm.php");
 exit();
 // Message d'alerte d'enregistrement : echo '<script type="text/javascript">window.alert("'.$message.'");</script>';
 
