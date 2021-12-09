@@ -50,9 +50,7 @@ try{
 
                 $indexQuestion = $parties[3];
                 $sql .= "INSERT INTO CheckBoxChoice VALUES('". $indexQuestion ."','". $numQuestion . "','" . $lastID . "','" . $valueOfInput . "');";
-
                 break;
-
 
             default: // Le cas des champ de question seul, ou des champs de question d'en tete de choix de radio ou check --> (text area)
                 $sql .= "INSERT INTO Form VALUES('" . $numQuestion . "','" . $lastID . "','" . $typeOfInput . "','" . $valueOfInput . "');";
