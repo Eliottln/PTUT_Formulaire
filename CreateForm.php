@@ -63,11 +63,31 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                             </svg>
                         </button>
                         <button type="button" id="new-email" value="new-email" title="email" disabled>@</button>
-                        <button type="button" id="new-number" value="new-number" title="number" disabled></button>
-                        <button type="button" id="new-radio" value="new-radio" title="radio"></button>
-                        <button type="button" id="new-range" value="new-range" title="range" disabled></button>
-                        <button type="button" id="new-select" value="new-select" title="select" disabled></button>
-                        <button type="button" id="new-tel" value="new-tel" title="tel" disabled></button>
+                        <button type="button" id="new-number" value="new-number" title="number" disabled>1</button>
+                        <button type="button" id="new-radio" value="new-radio" title="radio">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-range" value="new-range" title="range" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect opacity="0.3" x="3" y="10" width="18" height="4" rx="2" fill="currentColor" />
+                                <rect x="0" y="10" width="10" height="4" rx="2" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-select" value="new-select" title="select" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.17154 11.508L7.75732 10.0938L12 5.85113L16.2426 10.0938L14.8284 11.508L12 8.67956L9.17154 11.508Z" fill="currentColor" />
+                                <path d="M9.17154 12.492L7.75732 13.9062L12 18.1489L16.2426 13.9062L14.8284 12.492L12 15.3204L9.17154 12.492Z" fill="currentColor" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1 5C1 2.79086 2.79086 1 5 1H19C21.2091 1 23 2.79086 23 5V19C23 21.2091 21.2091 23 19 23H5C2.79086 23 1 21.2091 1 19V5ZM5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-tel" value="new-tel" title="tel" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 10V5C2 4.44775 2.44772 4 3 4H8C8.55228 4 9 4.44775 9 5V9C9 9.55225 8.55228 10 8 10H6C6 14.4182 9.58173 18 14 18V16C14 15.4478 14.4477 15 15 15H19C19.5523 15 20 15.4478 20 16V21C20 21.5522 19.5523 22 19 22H14C7.37259 22 2 16.6274 2 10Z" fill="currentColor" />
+                            </svg>
+                        </button>
                         <button type="button" id="new-text" value="new-text" title="text">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6.5 3H3V6.5H4V4H6.5V3Z" fill="currentColor" />
@@ -85,7 +105,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                                 <path d="M11 9.5H7V7.5H17V9.5H13V16.5H11V9.5Z" fill="currentColor" />
                             </svg>
                         </button>
-                        <button type="button" id="new-url" value="new-url" title="url" disabled></button>
+                        <button type="button" id="new-url" value="new-url" title="url" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4V8H4V10H8V14H4V16H8V20H10V16H14V20H16V16H20V14H16V10H20V8H16V4H14V8H10V4H8ZM14 14V10H10V14H14Z" fill="currentColor" />
+                            </svg>
+                        </button>
                     </form>
                 </li>
                 <hr>

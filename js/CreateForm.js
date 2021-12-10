@@ -105,7 +105,7 @@ function hideAS() {
 
 function resetForm() {
     let title = document.getElementById('document-title').value;
-    content.innerHTML = '<div><label>Titre<input type="text" name="title" value="' + title + '"></label></div>';
+    content.innerHTML = '<div><label>Titre : </label><input type="text" name="title" id="document-title" value="' + title + '"></div>';
     numQuestion = 0;
     button.setAttribute('disabled', '');
 }
