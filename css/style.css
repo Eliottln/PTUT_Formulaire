@@ -15,6 +15,9 @@
   --navBG: #111111;
   --navLi_HOVER: #2b2b2b;
   --bgc_pallette:#6d009b;
+  --bubble1:#380070;
+  --bubble2:#520018;
+  --bubble3:#d60040;
 }
 
 @font-face {
@@ -86,6 +89,11 @@ main {
   justify-content: center;
   align-items: center;
  }
+
+ .buttonEXPORT[disabled]{
+  background: linear-gradient(90deg,#292929,#6b6b6b,#a7a7a7,#292929);
+  cursor: not-allowed;
+ }
  
  .buttonEXPORT:hover {
   animation: ani 8s linear infinite;
@@ -114,6 +122,10 @@ main {
   border-radius: 35px;
   transition: 1s;
  }
+
+ .buttonEXPORT[disabled]:before{
+  background: linear-gradient(90deg,#292929,#6b6b6b,#a7a7a7,#292929);
+ }
  
  .buttonEXPORT:hover::before {
   filter: blur(20px);
@@ -121,6 +133,10 @@ main {
  
  .buttonEXPORT:active {
   background: linear-gradient(32deg,#9703f4,#cd014c,#ffa63b,#9703f4);
+ }
+
+ .buttonEXPORT[disabled]:active{
+  background: linear-gradient(32deg,#292929,#6b6b6b,#a7a7a7,#292929);
  }
 
 /*#################################################*/
@@ -375,7 +391,7 @@ header nav ul li:hover span {
 }
 
 @media(max-width:950px){
-  
+  /*TODO RESPONSIVE COMING SOON ...*/
 }
 
 
@@ -387,9 +403,10 @@ header nav ul li:hover span {
 /*--------------------------------------------------*/
 /*Palette de Création*/
 
-#tooglePalette{
+#togglePalette{
   position: fixed;
-  left: 9px;
+  left: 5%;
+  top: 90px;
   color: var(--bgc_pallette);
   transition: transform 0.5s, color 0.5s;
 }
@@ -398,11 +415,14 @@ header nav ul li:hover span {
   padding-block: 10px;
   background-color: var(--bgc_pallette);
   position: fixed;
-  width: 300px;
+  width: 200px;
   z-index: 2;
-  height: 90vh;
-  left: -300px;
+  height: 78vh;
+  top: 157px;
+  left: -200px;
   transition: left 0.5s;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #palette ul {
@@ -429,12 +449,17 @@ header nav ul li:hover span {
 #palette ul li {
   position: relative;
   display: flex;
+  justify-content: center;
+}
+
+#palette ul li div {
+  min-width: 100px;
 }
 
 #addSection {
-  width: 13vw;
+  width: 56%;
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   margin-block-start: 15px;
 }
@@ -447,17 +472,42 @@ header nav ul li:hover span {
   padding: 5%;
 }
 
+#palette hr{
+  width: 50%;
+  border: none;
+  background-color: #545454;
+  height: 3px;
+  border-radius: 3px;
+  margin-block-start: 15px;
+}
+
 #addSection button{
   background-color: var(--first);
   border: none;
-  border-start-end-radius: 5px;
-  border-end-end-radius: 5px;
-  height: 43px;
+  border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  padding: 5px;
+  margin: 3px;
+  color: black;
+  min-width: 45px;
+  min-height: 45px;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+}
+
+#addSection button[disabled]{
+  background-color: #4e4e4e;
+}
+
+#addSection button svg {
+  height: 35px;
+  width: 35px;
 }
 
 #settings-doc{
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   margin-block-start: 15px;
@@ -473,7 +523,6 @@ header nav ul li:hover span {
   display: flex;
   flex-direction: column;
   padding: 15px;
-  border: 1px solid white;
   margin-block-start: 5px;
   border-radius: 10px;
   background-color: var(--navLi_HOVER);
@@ -652,7 +701,7 @@ dialog[class="content"] pre {
   border-bottom: 2px solid white;
   height: 24px;
   font-size: large;
-  color: var(--second);
+  color: white;
   resize: none;
 }
 
@@ -695,6 +744,22 @@ dialog[class="content"] pre {
   background-color: var(--first);
 }
 
+#document div:first-child label{
+  width: 5%;
+  font-weight: bold;
+}
+
+#document-title{
+  border: none;
+  background-color: #0000;
+  color: white;
+  padding-inline: 2px;
+  font-size: large;
+  border-block-end: 2px solid var(--first);
+  padding-block: 1px;
+  width: 95%;
+}
+
 /**Background bubble**/
 @keyframes move {
   100% {
@@ -727,7 +792,7 @@ dialog[class="content"] pre {
 
 
 .background span:nth-child(0) {
-  color: #380070;
+  color: var(--bubble1);
   top: 34%;
   left: 55%;
   animation-duration: 64s;
@@ -736,7 +801,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.5591027655191265vmin currentColor;
 }
 .background span:nth-child(1) {
-  color: #380070;
+  color: var(--bubble1);
   top: 90%;
   left: 29%;
   animation-duration: 99s;
@@ -745,7 +810,7 @@ dialog[class="content"] pre {
   box-shadow: 34vmin 0 5.063637878086279vmin currentColor;
 }
 .background span:nth-child(2) {
-  color: #520018;
+  color: var(--bubble2);
   top: 27%;
   left: 57%;
   animation-duration: 148s;
@@ -754,7 +819,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.657578780479144vmin currentColor;
 }
 .background span:nth-child(3) {
-  color: #d60040;
+  color: var(--bubble3);
   top: 8%;
   left: 15%;
   animation-duration: 70s;
@@ -763,7 +828,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.309543620504284vmin currentColor;
 }
 .background span:nth-child(4) {
-  color: #380070;
+  color: var(--bubble1);
   top: 4%;
   left: 16%;
   animation-duration: 109s;
@@ -772,7 +837,7 @@ dialog[class="content"] pre {
   box-shadow: 34vmin 0 5.097151282037554vmin currentColor;
 }
 .background span:nth-child(5) {
-  color: #380070;
+  color: var(--bubble1);
   top: 56%;
   left: 19%;
   animation-duration: 115s;
@@ -781,7 +846,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.537458397299121vmin currentColor;
 }
 .background span:nth-child(6) {
-  color: #520018;
+  color: var(--bubble2);
   top: 56%;
   left: 79%;
   animation-duration: 60s;
@@ -790,7 +855,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.441855939633361vmin currentColor;
 }
 .background span:nth-child(7) {
-  color: #d60040;
+  color: var(--bubble3);
   top: 7%;
   left: 1%;
   animation-duration: 43s;
@@ -799,7 +864,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 5.037135153962445vmin currentColor;
 }
 .background span:nth-child(8) {
-  color: #d60040;
+  color: var(--bubble3);
   top: 84%;
   left: 34%;
   animation-duration: 134s;
@@ -808,7 +873,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.688500277848648vmin currentColor;
 }
 .background span:nth-child(9) {
-  color: #520018;
+  color: var(--bubble2);
   top: 83%;
   left: 28%;
   animation-duration: 146s;
@@ -817,7 +882,7 @@ dialog[class="content"] pre {
   box-shadow: 34vmin 0 4.960530806211686vmin currentColor;
 }
 .background span:nth-child(10) {
-  color: #380070;
+  color: var(--bubble1);
   top: 77%;
   left: 86%;
   animation-duration: 103s;
@@ -826,7 +891,7 @@ dialog[class="content"] pre {
   box-shadow: 34vmin 0 4.456195369467012vmin currentColor;
 }
 .background span:nth-child(11) {
-  color: #380070;
+  color: var(--bubble1);
   top: 6%;
   left: 5%;
   animation-duration: 147s;
@@ -835,7 +900,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.633052396597099vmin currentColor;
 }
 .background span:nth-child(12) {
-  color: #d60040;
+  color: var(--bubble3);
   top: 53%;
   left: 6%;
   animation-duration: 121s;
@@ -844,7 +909,7 @@ dialog[class="content"] pre {
   box-shadow: 34vmin 0 5.05686338692372vmin currentColor;
 }
 .background span:nth-child(13) {
-  color: #520018;
+  color: var(--bubble2);
   top: 50%;
   left: 34%;
   animation-duration: 159s;
@@ -853,7 +918,7 @@ dialog[class="content"] pre {
   box-shadow: 34vmin 0 5.184313995744491vmin currentColor;
 }
 .background span:nth-child(14) {
-  color: #520018;
+  color: var(--bubble2);
   top: 55%;
   left: 54%;
   animation-duration: 51s;
@@ -862,7 +927,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.602424765629109vmin currentColor;
 }
 .background span:nth-child(15) {
-  color: #520018;
+  color: var(--bubble2);
   top: 29%;
   left: 15%;
   animation-duration: 78s;
@@ -871,7 +936,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 5.11159209419379vmin currentColor;
 }
 .background span:nth-child(16) {
-  color: #520018;
+  color: var(--bubble2);
   top: 65%;
   left: 56%;
   animation-duration: 91s;
@@ -880,7 +945,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 5.230555128971314vmin currentColor;
 }
 .background span:nth-child(17) {
-  color: #380070;
+  color: var(--bubble1);
   top: 95%;
   left: 90%;
   animation-duration: 29s;
@@ -889,7 +954,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.664805485499578vmin currentColor;
 }
 .background span:nth-child(18) {
-  color: #d60040;
+  color: var(--bubble3);
   top: 99%;
   left: 7%;
   animation-duration: 177s;
@@ -898,7 +963,7 @@ dialog[class="content"] pre {
   box-shadow: -34vmin 0 4.9197823247075165vmin currentColor;
 }
 .background span:nth-child(19) {
-  color: #520018;
+  color: var(--bubble2);
   top: 84%;
   left: 14%;
   animation-duration: 130s;

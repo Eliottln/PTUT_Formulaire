@@ -9,8 +9,7 @@ newDate.addEventListener('click',newForm)*/
 /*J'ai déclaré le select en fin de fichier */
 
 
-let selectOptions = document.getElementById("addQuestion");
-let buttonOptions = document.getElementById("addQuestionButton");
+let buttonOptions = document.querySelectorAll("#addSection > button");
 let selectTypeAdd = "new-checkbox";
 
 const content = document.getElementById("document")
@@ -24,7 +23,7 @@ function newQuestion(){ //create a question input with response input in html
 
     button.removeAttribute('disabled')
 
-    const id = selectOptions.value
+    const id = this.value
 
     addDivElement(id);
 
@@ -91,8 +90,8 @@ function addDivElement(id){ //create the div element for the question
 
         '<div class="move">'+
             '<button id="up-'+numQuestion+'-'+type+'" type="button">Up</button>'+
-            '<button id="down-'+numQuestion+'-'+type+'" type="button">Down</button>'+
             '<button id="del-'+numQuestion+'-'+type+'" type="button">Supprimer</button>'+
+            '<button id="down-'+numQuestion+'-'+type+'" type="button">Down</button>'+
         '</div>'
 
     content.appendChild(div)
@@ -311,8 +310,7 @@ function createDate(){
 }
 
 try {
-    selectOptions.addEventListener('change', newQuestion);
-    buttonOptions.addEventListener('click', newQuestion);
+    buttonOptions.forEach(e => e.addEventListener('click', newQuestion));
 } catch (error) {
     console.error(error);
 }

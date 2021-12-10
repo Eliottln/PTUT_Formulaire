@@ -19,45 +19,76 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <main>
 
+        <div id="togglePalette">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.4853 12.0451L12.2426 7.80249L10.8284 9.2167L13.6568 12.0451L10.8284 14.8736L12.2426 16.2878L16.4853 12.0451Z" fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M1 4C1 2.34315 2.34315 1 4 1H20C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4ZM4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3Z" fill="currentColor" />
+            </svg>
+        </div>
+
         <aside id="palette">
-            <div id="tooglePalette">
-                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.4853 12.0451L12.2426 7.80249L10.8284 9.2167L13.6568 12.0451L10.8284 14.8736L12.2426 16.2878L16.4853 12.0451Z" fill="currentColor" />
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1 4C1 2.34315 2.34315 1 4 1H20C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4ZM4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3Z" fill="currentColor" />
-                </svg>
-            </div>
 
             <ul>
-                <div id="paletteLogo">
-                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM18.5793 19.531C20.6758 17.698 22 15.0036 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.9616 3.28743 17.6225 5.33317 19.4535L6.99999 10.9738H9.17026L12 6.07251L14.8297 10.9738H17L18.5793 19.531ZM16.0919 21.1272L15.2056 12.9738H8.79438L7.90814 21.1272C9.15715 21.688 10.5421 22 12 22C13.4579 22 14.8428 21.688 16.0919 21.1272Z" fill="currentColor" />
-                    </svg>
-                </div>
                 <li>
-                    <form id="addSection" title="add Question">
-                        <select name="addQuestion" id="addQuestion">
-                            <option id="new-checkbox" value="new-checkbox">Checkbox</option>
-                            <option id="new-color" value="new-color" disabled>Color</option>
-                            <option id="new-date" value="new-date">Date</option>
-                            <option id="new-email" value="new-email" disabled>Email</option>
-                            <option id="new-number" value="new-number" disabled>Number</option>
-                            <option id="new-radio" value="new-radio">Radio</option>
-                            <option id="new-range" value="new-range" disabled>Range</option>
-                            <option id="new-select" value="new-select" disabled>Select</option>
-                            <option id="new-tel" value="new-tel" disabled>Tel</option>
-                            <option id="new-text" value="new-text">Texte</option>
-                            <option id="new-url" value="new-url" disabled>Url</option>
-                        </select>
-                        <button id="addQuestionButton" type="button">
-                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 6C12.5523 6 13 6.44772 13 7V11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H13V17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17V13H7C6.44772 13 6 12.5523 6 12C6 11.4477 6.44772 11 7 11H11V7C11 6.44772 11.4477 6 12 6Z" fill="currentColor" />
-                            </svg>
-                        </button>
-                    </form>
+                    <div id="AdvancedSettings" class="button" title="Advanced settings">AS</div>
                 </li>
                 <li>
                     <div id="ClearForm" class="button" title="Reset / New form">Reset Form</div>
                 </li>
+                <hr>
+                <li>
+                    <form id="addSection">
+                        <button type="button" id="new-checkbox" value="new-checkbox" title="checkbox">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.2426 16.3137L6 12.071L7.41421 10.6568L10.2426 13.4853L15.8995 7.8284L17.3137 9.24262L10.2426 16.3137Z" fill="currentColor" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1 5C1 2.79086 2.79086 1 5 1H19C21.2091 1 23 2.79086 23 5V19C23 21.2091 21.2091 23 19 23H5C2.79086 23 1 21.2091 1 19V5ZM5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-color" value="new-color" title="color" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.20348 2.00378C9.46407 2.00378 10.5067 3.10742 10.6786 4.54241L19.1622 13.0259L11.384 20.8041C10.2124 21.9757 8.31291 21.9757 7.14134 20.8041L2.8987 16.5615C1.72713 15.3899 1.72713 13.4904 2.8987 12.3188L5.70348 9.51404V4.96099C5.70348 3.32777 6.82277 2.00378 8.20348 2.00378ZM8.70348 4.96099V6.51404L7.70348 7.51404V4.96099C7.70348 4.63435 7.92734 4.36955 8.20348 4.36955C8.47963 4.36955 8.70348 4.63435 8.70348 4.96099ZM8.70348 10.8754V9.34247L4.31291 13.733C3.92239 14.1236 3.92239 14.7567 4.31291 15.1473L8.55555 19.3899C8.94608 19.7804 9.57924 19.7804 9.96977 19.3899L16.3337 13.0259L10.7035 7.39569V10.8754C10.7035 10.9184 10.7027 10.9612 10.7012 11.0038H8.69168C8.69941 10.9625 8.70348 10.9195 8.70348 10.8754Z" fill="currentColor" />
+                                <path d="M16.8586 16.8749C15.687 18.0465 15.687 19.946 16.8586 21.1175C18.0302 22.2891 19.9297 22.2891 21.1013 21.1175C22.2728 19.946 22.2728 18.0465 21.1013 16.8749L18.9799 14.7536L16.8586 16.8749Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-date" value="new-date" title="date">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 13C7.44772 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11C8.55228 11 9 11.4477 9 12C9 12.5523 8.55228 13 8 13Z" fill="currentColor" />
+                                <path d="M8 17C7.44772 17 7 16.5523 7 16C7 15.4477 7.44772 15 8 15C8.55228 15 9 15.4477 9 16C9 16.5523 8.55228 17 8 17Z" fill="currentColor" />
+                                <path d="M11 16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16Z" fill="currentColor" />
+                                <path d="M16 17C15.4477 17 15 16.5523 15 16C15 15.4477 15.4477 15 16 15C16.5523 15 17 15.4477 17 16C17 16.5523 16.5523 17 16 17Z" fill="currentColor" />
+                                <path d="M11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12Z" fill="currentColor" />
+                                <path d="M16 13C15.4477 13 15 12.5523 15 12C15 11.4477 15.4477 11 16 11C16.5523 11 17 11.4477 17 12C17 12.5523 16.5523 13 16 13Z" fill="currentColor" />
+                                <path d="M8 7C7.44772 7 7 7.44772 7 8C7 8.55228 7.44772 9 8 9H16C16.5523 9 17 8.55228 17 8C17 7.44772 16.5523 7 16 7H8Z" fill="currentColor" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6 3C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3H6ZM18 5H6C5.44772 5 5 5.44772 5 6V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V6C19 5.44772 18.5523 5 18 5Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-email" value="new-email" title="email" disabled>@</button>
+                        <button type="button" id="new-number" value="new-number" title="number" disabled></button>
+                        <button type="button" id="new-radio" value="new-radio" title="radio"></button>
+                        <button type="button" id="new-range" value="new-range" title="range" disabled></button>
+                        <button type="button" id="new-select" value="new-select" title="select" disabled></button>
+                        <button type="button" id="new-tel" value="new-tel" title="tel" disabled></button>
+                        <button type="button" id="new-text" value="new-text" title="text">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6.5 3H3V6.5H4V4H6.5V3Z" fill="currentColor" />
+                                <path d="M8.5 4V3H11V4H8.5Z" fill="currentColor" />
+                                <path d="M13 4H15.5V3H13V4Z" fill="currentColor" />
+                                <path d="M17.5 3V4H20V6.5H21V3H17.5Z" fill="currentColor" />
+                                <path d="M21 8.5H20V11H21V8.5Z" fill="currentColor" />
+                                <path d="M21 13H20V15.5H21V13Z" fill="currentColor" />
+                                <path d="M21 17.5H20V20H17.5V21H21V17.5Z" fill="currentColor" />
+                                <path d="M15.5 21V20H13V21H15.5Z" fill="currentColor" />
+                                <path d="M11 21V20H8.5V21H11Z" fill="currentColor" />
+                                <path d="M6.5 21V20H4V17.5H3V21H6.5Z" fill="currentColor" />
+                                <path d="M3 15.5H4V13H3V15.5Z" fill="currentColor" />
+                                <path d="M3 11H4V8.5H3V11Z" fill="currentColor" />
+                                <path d="M11 9.5H7V7.5H17V9.5H13V16.5H11V9.5Z" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button type="button" id="new-url" value="new-url" title="url" disabled></button>
+                    </form>
+                </li>
+                <hr>
                 <li>
                     <div id="ImportForm" class="button" title="Import form">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,18 +98,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                     </div>
                 </li>
             </ul>
-            <div id="settings-doc">
-                <label id="document-settings-label" for="document-settings">Settings</label>
-                <form id="document-settings">
-                    <label for="document-title"> Title
-                        <input id="document-title" type="text" name="title" placeholder="Form title">
-                    </label>
-                    <label for="document-layout"> Layout
-                        <input id="document-layout" type="range" min="1" max="3" value="1" name="layout">
-                    </label>
-                </form>
-
-            </div>
         </aside>
 
         <div id="bgGrey">
@@ -97,6 +116,21 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                     <code id="output-code"></code>
                 </pre>
             </dialog>
+
+            <dialog id="settings-doc">
+                <label id="document-settings-label" for="document-settings">Settings</label>
+                <form id="document-settings">
+                    <label for="d"> Title
+                        <input id="d" type="text" name="title" placeholder="Form title">
+                    </label>
+                    <label for="document-layout"> Layout
+                        <input id="document-layout" type="range" min="1" max="3" value="1" name="layout">
+                    </label>
+                    <button id="confirmAS" type="button">Confirmer</button>
+                    <button id="cancelAS" type="reset">Annuler</button>
+                </form>
+
+            </dialog>
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
@@ -109,7 +143,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </form>
 
         <form id="document" action="https://ressources.site/" method="post">
-
+            <div><label>Titre : </label><input type="text" name="title" id="document-title"></div>
         </form>
     </main>
 

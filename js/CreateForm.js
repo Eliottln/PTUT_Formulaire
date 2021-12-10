@@ -71,22 +71,43 @@ function sendConfirm() {
 
 let paletteIsOpen = true;
 
-function tooglePalette() {
+function togglePalette() {
     if (paletteIsOpen) {
         document.getElementById('palette').setAttribute('style', "left: 0px;");
-        document.getElementById('tooglePalette').setAttribute('style', "transform: rotate(180deg); color: black;");
+        document.getElementById('togglePalette').setAttribute('style', "transform: rotate(180deg);");
         paletteIsOpen = false;
     } else {
         document.getElementById('palette').removeAttribute('style');
-        document.getElementById('tooglePalette').removeAttribute('style');
+        document.getElementById('togglePalette').removeAttribute('style');
         paletteIsOpen = true;
     }
 }
 
+function showAdvancedSettings() {
+    try {
+        document.getElementById('settings-doc').style.display = "flex"
+        document.getElementById('bgGrey').style.display = "flex"
+        document.querySelector('html').style.overflowY = "hidden"
+    } catch (error) {
+        console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.")
+    }
+}
+
+function hideAS() {
+    try {
+        document.getElementById('settings-doc').style.display = "none"
+        document.getElementById('bgGrey').style.display = "none"
+        document.querySelector('html').removeAttribute('style')
+    } catch (error) {
+        console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.")
+    }
+}
+
 function resetForm() {
-    content.innerHTML = ''
-    numQuestion = 0
-    button.setAttribute('disabled', '')
+    let title = document.getElementById('document-title').value;
+    content.innerHTML = '<div><label>Titre<input type="text" name="title" value="' + title + '"></label></div>';
+    numQuestion = 0;
+    button.setAttribute('disabled', '');
 }
 
 let layout = 1;
@@ -108,13 +129,15 @@ function setLayout() {
 
 // ADD EVENT LISTENER
 try {
-    document.getElementById('tooglePalette').addEventListener('click', tooglePalette);
+    document.getElementById('togglePalette').addEventListener('click', togglePalette);
 
     document.getElementById("document-layout").addEventListener('change', setLayout);
     document.getElementById("ClearForm").addEventListener('click', resetForm);
     document.getElementById("ImportForm").addEventListener('click', showDialog);
+    document.getElementById("AdvancedSettings").addEventListener('click', showAdvancedSettings);
 
     document.getElementById("cancel").addEventListener('click', hideDialog);
+    document.getElementById("cancelAS").addEventListener('click', hideAS);
     document.getElementById("file").addEventListener("change", ImportedFiles);
     document.getElementById("confirm").addEventListener('click', sendConfirm);
 } catch (error) {
