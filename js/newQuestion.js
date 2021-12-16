@@ -6,10 +6,13 @@ document.getElementById('new-checkbox').addEventListener('click',newForm)
 const newDate=document.getElementById('new-date')
 newDate.addEventListener('click',newForm)*/
 
-/*J'ai déclaré le select en fin de fichier */
-
-
 let buttonOptions = document.querySelectorAll("#addSection > button");
+
+try {
+    buttonOptions.forEach(e => e.addEventListener('click', newQuestion));
+} catch (error) {
+    console.error(error);
+}
 let selectTypeAdd = "new-checkbox";
 
 const content = document.getElementById("document")
@@ -110,8 +113,8 @@ function addDivElement(id){ //create the div element for the question
 
     content.appendChild(div)
     document.getElementById('up-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
-    document.getElementById('down-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
     document.getElementById('del-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+    document.getElementById('down-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
 }
 
 
@@ -119,105 +122,130 @@ function moveQuestion(){
     const id = this.id
     const question = Number.parseInt(id.split('-')[1])
     const type = id.split('-')[2]
+    let current = document.getElementById('form-'+question+'-'+type)
 
-    numQuestion--
-    if (numQuestion===0){
-        button.setAttribute('disabled','')
-    }
 
     if (id.startsWith('del')){
-        document.getElementById('form-'+question+'-'+type).remove()
+        current.remove()
+        numQuestion--
 
-        let q = document.querySelectorAll('div[id^="form-"]')
+        if (numQuestion===0){
+            button.setAttribute('disabled','')
+        }else {
 
-        q.forEach(e => {
+            let q = document.querySelectorAll('div[id^="form-"]')
 
-            let numBlock = Number.parseInt(e.id.split("-")[1])
-            if (numBlock > question) {
+            q.forEach(e => {
 
-                let typeBlock = e.id.split("-")[2]
-
-                e.id = 'form-'+(numBlock - 1)+'-'+typeBlock
-
-                document.getElementById('content-'+numBlock).id = 'content-'+ (numBlock - 1)
-
-                let label = document.getElementById('label-' + numBlock)
-                label.setAttribute('for', 'q' + (numBlock - 1))
-                label.id = 'label-' + (numBlock - 1)
-
-                let textArea = document.getElementById('q' + numBlock)
-                textArea.id = 'q' + (numBlock - 1)
-                textArea.setAttribute('name', textArea.id)
-
-                document.getElementById('up-'+numBlock+'-'+typeBlock).id = 'up-'+(numBlock - 1)+'-'+typeBlock
-                document.getElementById('down-'+numBlock+'-'+typeBlock).id = 'down-'+(numBlock - 1)+'-'+typeBlock
-                document.getElementById('del-'+numBlock+'-'+typeBlock).id = 'del-'+(numBlock - 1)+'-'+typeBlock
-
-
-
-                switch (typeBlock){
-
-                    case 'radio':
-                        updateNumRC(numBlock,typeBlock)
-                        break
-
-                    case 'checkbox':
-                        updateNumRC(numBlock,typeBlock)
-                        break
-
-                    case 'date':
-                        let select = document.getElementById('q'+numBlock+'-select')
-                        select.id = 'q'+(numBlock - 1)+'-select'
-                        select.setAttribute('name',select.id)
-                        document.getElementById('date-'+numBlock).id = 'date-'+(numBlock - 1)
-                        break
-
-                    default:
-                        break
+                let numBlock = Number.parseInt(e.id.split("-")[1])
+                if (numBlock > question) {
+                    update(e, -1)
                 }
-            }
-        })
+            })
+        }
+        if(typeof(choice.get(numQuestion+1)) !== 'undefined'){
+            choice.delete(numQuestion+1)
+        }
 
     }
 
-
-
-    else if (id.startsWith('up') && question > 1){
-        let object = document.getElementById('q'+question+'-content')
-        let object2 = document.getElementById('q'+(question+1)+'-content')
+    else if (id.startsWith('up') && (question-1) > 0){
+        let node = document.querySelector('div[id^="form-'+(question-1)+'"]')
+        swapNodes(node, current)
     }
 
-
-
-    else if (id.startsWith('down')){
-        document.getElementById('form-'+question+'-'+type)
+    else if (id.startsWith('down') && question !== numQuestion){
+        let node = document.querySelector('div[id^="form-'+(question+1)+'"]')
+        swapNodes(current, node)
     }
 }
 
 
-function updateNumRC(numBlock,typeBlock){
+function update(node,i){
+
+    let numBlock = Number.parseInt(node.id.split("-")[1])
+    let typeBlock = node.id.split("-")[2]
+    node.id = 'form-'+(numBlock + i)+'-'+typeBlock
+
+    document.getElementById('content-' +numBlock).id = 'content-'+ (numBlock + i)
+
+    let label = document.getElementById('label-' + numBlock)
+    label.setAttribute('for', 'q' + (numBlock + i))
+    label.id = 'label-' + (numBlock + i)
+
+    let textArea = document.getElementById('q' + numBlock)
+    textArea.id = 'q' + (numBlock + i)
+    textArea.setAttribute('name', textArea.id)
+
+    document.getElementById('up-'+numBlock+'-'+typeBlock).id = 'up-'+(numBlock + i)+'-'+typeBlock
+    document.getElementById('del-'+numBlock+'-'+typeBlock).id = 'del-'+(numBlock + i)+'-'+typeBlock
+    document.getElementById('down-'+numBlock+'-'+typeBlock).id = 'down-'+(numBlock + i)+'-'+typeBlock
+
+    switch (typeBlock){
+
+        case 'radio':
+            updateNumRC(numBlock,typeBlock,i)
+            break
+
+        case 'checkbox':
+            updateNumRC(numBlock,typeBlock,i)
+            break
+
+        case 'date':
+            let select = document.getElementById('q'+numBlock+'-select')
+            select.id = 'q'+(numBlock + i)+'-select'
+            select.setAttribute('name',select.id)
+            document.getElementById('date-'+numBlock).id = 'date-'+(numBlock + i)
+            break
+
+        default:
+            break
+    }
+
+}
+
+
+function updateNumRC(numBlock,typeBlock,j){
+
     for (let i = 1; i <= choice.get(numBlock); i++) {
 
-        document.getElementById('choice-' + numBlock + '-' + i).id = 'choice-' + (numBlock - 1) + '-' + i
+        document.getElementById('choice-' + numBlock + '-' + i).id = 'choice-' + (numBlock + j) + '-' + i
 
         let label = document.getElementById('label-' + numBlock + '-' + i)
-        label.setAttribute('for', 'q' + (numBlock - 1) + '-' + i)
-        label.id = 'label-' + (numBlock - 1) + '-' + i
+        label.setAttribute('for', 'q' + (numBlock + j) + '-' + i)
+        label.id = 'label-' + (numBlock + j) + '-' + i
 
         let input = document.getElementById('q' + numBlock + '-' + i)
-        input.setAttribute('name', 'q' + (numBlock - 1) + '-' + typeBlock + i)
-        input.id = 'q' + (numBlock - 1) + '-' + i
+        input.setAttribute('name', 'q' + (numBlock + j) + '-' + typeBlock + i)
+        input.id = 'q' + (numBlock + j) + '-' + i
 
         let button = document.getElementById('trash-' + numBlock + '-' + i + '-' + typeBlock)
-        button.id = 'trash-' + (numBlock - 1) + '-' + i + '-' + typeBlock
+        button.id = 'trash-' + (numBlock + j) + '-' + i + '-' + typeBlock
         button.addEventListener('click', delChoice)
 
     }
 
+    choice.set((numBlock+j),choice.get(numBlock))
+
     let button2 = document.getElementById('q'+numBlock+'-add-'+typeBlock)
-    button2.setAttribute('name',(numBlock - 1).toString())
-    button2.id = 'q'+(numBlock - 1)+'-add-'+typeBlock
+    button2.setAttribute('name',(numBlock + j).toString())
+    button2.id = 'q'+(numBlock + j)+'-add-'+typeBlock
     button2.addEventListener('click',newChoice)
+}
+
+
+function swapNodes(node1, node2) {
+
+    let node2_copy = node2.cloneNode(true);
+    node1.parentNode.insertBefore(node2_copy, node1);
+    node2.parentNode.insertBefore(node1, node2);
+    node2.parentNode.replaceChild(node2, node2_copy);
+
+    let num = Number.parseInt(node1.id.split("-")[1])
+
+    update(node1,-num)
+    update(node2,-1)
+    update(node1,num+1)
 }
 
 
@@ -309,7 +337,7 @@ function delChoice(){ //delete a choice for multi input
 
 
 function createDate(){
-    let question = Number.parseInt(this.id.slice(1,2))
+    let question = Number.parseInt(this.id.split("-")[0].slice(1))
     let div = document.getElementById('date-'+question)
     let value = this.value
 
@@ -321,10 +349,4 @@ function createDate(){
     else{
         div.innerHTML = '<input type="'+value+'" disabled>'
     }
-}
-
-try {
-    buttonOptions.forEach(e => e.addEventListener('click', newQuestion));
-} catch (error) {
-    console.error(error);
 }
