@@ -35,12 +35,35 @@ function newQuestion(){ //create a question input with response input in html
 
     switch (id){
         case 'new-text':
-            let divQ = document.createElement("div");
-            divQ.innerHTML = '<label>Réponse'+
-                '<input type="text" disabled>'+
-                '</label>'
+            div.appendChild(createSimpleInput('text'))
+            break
 
-            div.appendChild(divQ)
+        case 'new-email':
+            div.appendChild(createSimpleInput('email'))
+            break
+
+        case 'new-tel':
+            div.appendChild(createSimpleInput('tel'))
+            break
+
+        case 'new-color':
+            div.appendChild(createSimpleInput('color'))
+            break
+
+        case 'new-file':
+            div.appendChild(createSimpleInput('file'))
+            break
+
+        case 'new-url':
+            div.appendChild(createSimpleInput('url'))
+            break
+
+        case 'new-number':
+            div.appendChild(createRangeInput('number'))
+            break
+
+        case 'new-range':
+            div.appendChild(createRangeInput('range'))
             break
 
         case 'new-radio':
@@ -52,9 +75,9 @@ function newQuestion(){ //create a question input with response input in html
             break
 
         case 'new-date':
-            let divS = document.createElement("div");
+            let divD = document.createElement("div");
 
-            divS.innerHTML = '<p>Réponses</p>'+
+            divD.innerHTML = '<p>Réponses</p>'+
                 '<select id="q'+numQuestion+'-select" name="q'+numQuestion+'-select">'+
                 '<option value="date">Date</option>'+
                 '<option value="time">Heure</option>'+
@@ -66,7 +89,7 @@ function newQuestion(){ //create a question input with response input in html
                 '<input type="date" disabled>'+
                 '</div>'
 
-            div.appendChild(divS)
+            div.appendChild(divD)
             document.getElementById('q'+numQuestion+'-select').addEventListener('change',createDate)
             break
     }
@@ -183,6 +206,15 @@ function update(node,i){
 
     switch (typeBlock){
 
+        case 'range':
+            let min = document.getElementById('min-'+numBlock)
+            min.id = 'min-'+(numBlock + i)
+            min.setAttribute('name',min.id)
+            let max = document.getElementById('max-'+numBlock)
+            max.id = 'max-'+(numBlock + i)
+            max.setAttribute('name',max.id)
+            break
+
         case 'radio':
             updateNumRC(numBlock,typeBlock,i)
             break
@@ -246,6 +278,30 @@ function swapNodes(node1, node2) {
     update(node1,-num)
     update(node2,-1)
     update(node1,num+1)
+}
+
+
+function createSimpleInput(type){
+    let div = document.createElement("div");
+    div.innerHTML = '<label>Réponse <small>('+type+')</small>'+
+        '<input type="'+type+'" disabled>'+
+        '</label>'
+    return div
+}
+
+
+function createRangeInput(type){
+    let div = document.createElement("div");
+    div.innerHTML = '<label>Réponse <small>('+type+')</small>'+
+        '<input type="'+type+'" disabled>'+
+        '</label>'+
+        '<label>Min :'+
+        '<input id="min-'+numQuestion+'" type="number" name="min-'+numQuestion+'" value="0">'+
+        '</label>'+
+        '<label>Max :'+
+        '<input id="max-'+numQuestion+'" type="number" name="max-'+numQuestion+'" value="10">'+
+        '</label>'
+    return div
 }
 
 
