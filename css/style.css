@@ -694,8 +694,9 @@ dialog[class="content"] pre {
 
 #document {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
+  /*flex-wrap: wrap;*/
   width: 80%;
   margin-left: 10%;
 }
@@ -705,7 +706,7 @@ dialog[class="content"] pre {
   font-size: larger;
 }
 
-#document > div {
+#document > div:first-child, #form-content > div {
   display: flex;
   flex-direction: row;
   background-color: #404040BB;
@@ -775,7 +776,7 @@ dialog[class="content"] pre {
 }
 
 #document div:first-child label{
-  width: 5%;
+  /*width: 5%;*/
   font-weight: bold;
 }
 
@@ -789,6 +790,16 @@ dialog[class="content"] pre {
   padding-block: 1px;
   width: 95%;
 }
+
+/* form-content */
+
+#form-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
 
 /**Background bubble**/
 @keyframes move {

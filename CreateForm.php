@@ -76,7 +76,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                                 <rect x="0" y="10" width="10" height="4" rx="2" fill="currentColor" />
                             </svg>
                         </button>
-                        <button type="button" id="new-select" value="new-select" title="select" disabled>
+                        <button type="button" id="new-select" value="new-select" title="select">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.17154 11.508L7.75732 10.0938L12 5.85113L16.2426 10.0938L14.8284 11.508L12 8.67956L9.17154 11.508Z" fill="currentColor" />
                                 <path d="M9.17154 12.492L7.75732 13.9062L12 18.1489L16.2426 13.9062L14.8284 12.492L12 15.3204L9.17154 12.492Z" fill="currentColor" />
@@ -159,7 +159,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button class="buttonEXPORT" id="submit" type="submit" title="upload to database" disabled>
+            <button class="buttonEXPORT" id="submit" type="button" title="upload to database" disabled>
                 <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" fill="currentColor" />
                     <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" fill="currentColor" />
@@ -169,6 +169,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <form id="document" action="https://ressources.site/" method="post">
             <div><label>Titre : </label><input type="text" name="title" id="document-title"></div>
+            <div id="form-content"></div>
         </form>
     </main>
 
