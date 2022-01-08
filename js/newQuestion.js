@@ -23,9 +23,9 @@ function newQuestion(){ //create a question input with response input in html
 
     const id = this.value
 
-    addDivElement(id);
+    let question = addDivElement(id).id;
 
-    let div = document.getElementById('content-'+numQuestion)
+    let div = document.querySelector('#'+question+' .content')
 
 
     switch (id){
@@ -77,7 +77,7 @@ function newQuestion(){ //create a question input with response input in html
             let divD = document.createElement("div");
 
             divD.innerHTML = '<p>Réponses</p>'+
-                '<select id="q'+numQuestion+'-select" name="q'+numQuestion+'-select">'+
+                '<select id="select-date-'+numQuestion+'" name="select-date-'+numQuestion+'">'+
                 '<option value="date">Date</option>'+
                 '<option value="time">Heure</option>'+
                 '<option value="datetime-local">Date-heure</option>'+
@@ -89,7 +89,7 @@ function newQuestion(){ //create a question input with response input in html
                 '</div>'
 
             div.appendChild(divD)
-            document.getElementById('q'+numQuestion+'-select').addEventListener('change',createDate)
+            document.getElementById('select-date-'+numQuestion).addEventListener('change',createDate)
             break
     }
 
@@ -106,9 +106,10 @@ function addDivElement(id){ //create the div element for the question
     let div = document.createElement("div")
     div.id = 'form-'+numQuestion+'-'+type
 
-    div.innerHTML = '<div id="content-'+numQuestion+'" class="content">'+
-            '<label id="label-'+numQuestion+'" for="q'+numQuestion+'">Question ('+type+')</label>'+
-            '<textarea id="q'+numQuestion+'" class="question" name="q'+numQuestion+'" placeholder="Question" required></textarea>'+
+    div.innerHTML = '<div class="content">'+
+            '<label>Question ('+type+')'+
+                '<textarea class="question" name="q'+numQuestion+'" placeholder="Question" required></textarea>'+
+            '</label>'+
         '</div>'+
 
         '<div class="move">'+
@@ -135,6 +136,8 @@ function addDivElement(id){ //create the div element for the question
     document.getElementById('up-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
     document.getElementById('del-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
     document.getElementById('down-'+numQuestion+'-'+type).addEventListener('click',moveQuestion)
+
+    return div
 }
 
 
@@ -187,15 +190,7 @@ function update(node,i){
     let typeBlock = node.id.split("-")[2]
     node.id = 'form-'+(numBlock + i)+'-'+typeBlock
 
-    document.getElementById('content-' +numBlock).id = 'content-'+ (numBlock + i)
-
-    let label = document.getElementById('label-' + numBlock)
-    label.setAttribute('for', 'q' + (numBlock + i))
-    label.id = 'label-' + (numBlock + i)
-
-    let textArea = document.getElementById('q' + numBlock)
-    textArea.id = 'q' + (numBlock + i)
-    textArea.setAttribute('name', textArea.id)
+    document.querySelector('#'+node.id+' > div > label > textarea').setAttribute('name', 'q'+(numBlock+i))
 
     document.getElementById('up-'+numBlock+'-'+typeBlock).id = 'up-'+(numBlock + i)+'-'+typeBlock
     document.getElementById('del-'+numBlock+'-'+typeBlock).id = 'del-'+(numBlock + i)+'-'+typeBlock
@@ -225,8 +220,8 @@ function update(node,i){
             break
 
         case 'date':
-            let select = document.getElementById('q'+numBlock+'-select')
-            select.id = 'q'+(numBlock + i)+'-select'
+            let select = document.getElementById('select-date-'+numBlock)
+            select.id = 'select-date-'+(numBlock + i)
             select.setAttribute('name',select.id)
             document.getElementById('date-'+numBlock).id = 'date-'+(numBlock + i)
             break
@@ -423,7 +418,7 @@ function createSelect(div){
 
 
 function createDate(){
-    let question = Number.parseInt(this.id.split("-")[0].slice(1))
+    let question = Number.parseInt(this.id.split("-")[2])
     let div = document.getElementById('date-'+question)
     let value = this.value
 
