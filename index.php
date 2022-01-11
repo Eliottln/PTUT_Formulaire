@@ -131,7 +131,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     let log = document.getElementById('LogInForm');
 
     function windowResize() {
-        if (window.screen.width < 1330) {
+        if (window.innerWidth < 1330) {
             menu.style.display = 'flex';
             if (sign.innerHTML == "") {
                 let s = Msign.cloneNode(true);
@@ -197,18 +197,4 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     document.getElementById('LogIn').addEventListener('click', openLog);
 </script>
 
-
 </html>
-
-
-
-<!--
-<form class="" action="/exportBdd.php" method="post">
-
-    <button id="submit" type="submit">Enregistrer</button>
-        
-        
-            
-</form>
-
--->

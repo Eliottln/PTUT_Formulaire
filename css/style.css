@@ -1,23 +1,25 @@
 :root {
   /*Main*/
   --first: #000;
-  --second: #ac37fd;
+  --second: #fff;
 
   /*font*/
   --accueil_Color: #000;
   --debugFont: white;
-  --navFont: rgb(230, 0, 57);
+  --navFont: #000;
+
+  /*scrollBar*/
+  --Track: #0000;
+  --Thumb: #000;
 
   /*Background*/
-  --debugBG: #1e1e1e;
-  --navBG: #111111;
-  --navLi_HOVER: #2b2b2b;
-  --bgc_pallette: rgb(109, 0, 155);
-  --ButtonClass: rgb(230, 0, 57);
-  --buttonClassDarker: rgb(142 0 39);
-  --bubble1: #380070;
-  --bubble2: #520018;
-  --bubble3: #d60040;
+  --c_bg: #fff;
+  --navBG: #fff;
+  --navLi_HOVER: #000;
+  --bgc_pallette: #000;
+  --bubble1: #000000;
+  --bubble2: #111111;
+  --bubble3: #757575;
 }
 
 @font-face {
@@ -56,6 +58,9 @@ input:focus {
 main {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 84px);
 }
 
 .noselect {
@@ -75,16 +80,12 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--navBG, #111111);
+  background-color: var(--Track);
   padding-left: 1px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--ButtonClass);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--buttonClassDarker);
+  background: var(--Thumb);
 }
 
 /**button export**/
@@ -102,7 +103,7 @@ main {
   height: 3em;
   line-height: 2em;
   text-align: center;
-  background: linear-gradient(90deg, #9703f4, #cd014c, #ffa63b, #9703f4);
+  background: linear-gradient(90deg, #000000, #ffffff, #ffffff, #000000);
   background-size: 300%;
   border-radius: 35px;
   z-index: 1;
@@ -111,11 +112,13 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 }
 
 .buttonEXPORT[disabled] {
-  background: linear-gradient(90deg, #292929, #6b6b6b, #a7a7a7, #292929);
+  background: linear-gradient(90deg, #ffffff, #000000, #000000, #ffffff);
   cursor: not-allowed;
+  color: white;
 }
 
 .buttonEXPORT:hover {
@@ -140,14 +143,14 @@ main {
   right: -5px;
   bottom: -5px;
   z-index: -1;
-  background: linear-gradient(90deg, #9703f4, #cd014c, #ffa63b, #9703f4);
+  background: linear-gradient(90deg, #000000, #ffffff, #ffffff, #000000);
   background-size: 400%;
   border-radius: 35px;
   transition: 1s;
 }
 
 .buttonEXPORT[disabled]:before {
-  background: linear-gradient(90deg, #292929, #6b6b6b, #a7a7a7, #292929);
+  background: linear-gradient(90deg, #ffffff, #000000, #000000, #000000);
 }
 
 .buttonEXPORT:hover::before {
@@ -155,11 +158,21 @@ main {
 }
 
 .buttonEXPORT:active {
-  background: linear-gradient(32deg, #9703f4, #cd014c, #ffa63b, #9703f4);
+  background: linear-gradient(32deg, #000000, #ffffff, #ffffff, #000000);
 }
 
 .buttonEXPORT[disabled]:active {
-  background: linear-gradient(32deg, #292929, #6b6b6b, #a7a7a7, #292929);
+  background: linear-gradient(32deg, #ffffff, #000000, #000000, #ffffff);
+}
+
+.buttonEXPORT img,
+.buttonEXPORT svg {
+  width: 45px;
+  height: 45px;
+}
+
+.buttonEXPORT img {
+  filter: invert(1);
 }
 
 /*#################################################*/
@@ -173,11 +186,21 @@ html:not([class^="reflect"]) header {
   top: 0;
 }
 
+header {
+  box-shadow: 0px 0.9px 1.2px rgba(0, 0, 0, 0.034),
+    0px 1.9px 2.7px rgba(0, 0, 0, 0.05), 0px 3.2px 4.6px rgba(0, 0, 0, 0.061),
+    0px 4.9px 6.9px rgba(0, 0, 0, 0.071), 0px 7px 10px rgba(0, 0, 0, 0.08),
+    0px 9.9px 14.2px rgba(0, 0, 0, 0.089),
+    0px 14.1px 20.1px rgba(0, 0, 0, 0.099),
+    0px 20.4px 29.2px rgba(0, 0, 0, 0.11), 0px 31.5px 45px rgba(0, 0, 0, 0.126),
+    0px 56px 80px rgba(0, 0, 0, 0.16);
+}
+
 header nav ul {
   display: flex;
   justify-content: space-evenly;
   list-style: none;
-  background-color: var(--navBG, #111111);
+  background-color: var(--navBG);
 }
 
 header nav ul li {
@@ -193,8 +216,8 @@ header nav ul li:first-child > div {
   height: 100%;
 }
 
-header nav ul li:hover {
-  background-color: var(--navLi_HOVER, #2b2b2b);
+header nav ul li:hover:not(:first-child) {
+  background-color: var(--navLi_HOVER);
 }
 
 header nav ul li a {
@@ -373,20 +396,20 @@ header nav ul li:hover span {
   object-position: center;
 }
 
-#menu{
+#menu {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#menu>hr{
+#menu > hr {
   margin-block: 5px;
   border: 1px solid #000;
   background-color: #000;
   width: 100%;
 }
 
-#menu>div:not([id$="Form"]){
+#menu > div:not([id$="Form"]) {
   background-color: var(--accueil_Color);
   color: #fff;
   padding: 15px;
@@ -397,7 +420,7 @@ header nav ul li:hover span {
   margin-block: 5px;
 }
 
-#menu>div:not([id$="Form"]):hover{
+#menu > div:not([id$="Form"]):hover {
   margin-block: 3px;
   border: 2px solid #000;
   background-color: #fff;
@@ -481,23 +504,23 @@ header nav ul li:hover span {
   ::-webkit-scrollbar {
     width: 10px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background-color: white;
     padding-left: 1px;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: var(--accueil_Color);
   }
 
-  #LogInSignUp main > form{
+  #LogInSignUp main > form {
     display: none;
   }
-  #LogInSignUp main div[id^="slid"]{
+  #LogInSignUp main div[id^="slid"] {
     display: none;
   }
-  #LogInSignUp main{
+  #LogInSignUp main {
     margin: 0;
     overflow-y: auto;
     width: 100%;
@@ -505,17 +528,17 @@ header nav ul li:hover span {
   #brand > img {
     width: 240px;
   }
-  .ResponsiveForm{
+  .ResponsiveForm {
     width: 240px;
     margin-block: 0px !important;
   }
-  .ResponsiveInput{
+  .ResponsiveInput {
     min-width: 200px !important;
     width: 200px;
   }
-  .ResponsiveButton{
+  .ResponsiveButton {
     font-size: medium;
-    width:120px;
+    width: 120px;
   }
 }
 
@@ -535,17 +558,31 @@ header nav ul li:hover span {
 }
 
 #palette {
-  padding-block: 10px;
   background-color: var(--bgc_pallette);
   position: fixed;
   width: 200px;
   z-index: 2;
-  height: 78vh;
-  top: 157px;
+  height: calc(100vh - 84px);
+  top: 84px;
   left: -200px;
   transition: left 0.5s;
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#palette > div:first-child {
+  background-color: var(--second);
+  display: flex;
+  justify-content: center;
+  color: var(--first);
+}
+
+#palette > div:first-child:hover {
+  background-color: var(--first);
+  color: var(--second);
+  cursor: pointer;
 }
 
 #palette ul {
@@ -562,42 +599,37 @@ header nav ul li:hover span {
 
 .button {
   padding: 7px;
-  background-color: var(--ButtonClass);
+  background-color: var(--second);
   min-width: 200px;
   margin-block-start: 15px;
-  border-radius: 5px;
   text-align: center;
-  cursor: pointer;
+  color: var(--first);
 }
 
 .button:hover {
-  background-color: var(--buttonClassDarker);
+  background-color: var(--first);
+  color: var(--second);
+  cursor: pointer;
 }
 
 #palette ul li {
   position: relative;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
+/*
 #palette ul li div {
   min-width: 100px;
-}
+}*/
 
 #addSection {
-  width: 56%;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   margin-block-start: 15px;
-}
-
-#addSection select {
-  width: 100%;
-  background-color: var(--navLi_HOVER);
-  color: var(--navFont);
-  font-size: large;
-  padding: 5%;
 }
 
 #palette hr {
@@ -610,24 +642,22 @@ header nav ul li:hover span {
 }
 
 #addSection button {
-  background-color: var(--first);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  background-color: var(--second);
+  border: 2px solid var(--first);
   display: flex;
   padding: 5px;
-  margin: 3px;
   color: black;
-  min-width: 45px;
+  width: 100%;
   min-height: 45px;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   font-size: x-large;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#addSection button[disabled] {
-  background-color: #4e4e4e;
+#addSection button:hover,
+#addSection button > *:hover {
+  cursor: pointer;
 }
 
 #addSection button svg {
@@ -792,8 +822,9 @@ dialog[class="content"] pre {
 
 #document {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
+  /*flex-wrap: wrap;*/
   width: 80%;
   margin-left: 10%;
 }
@@ -803,7 +834,8 @@ dialog[class="content"] pre {
   font-size: larger;
 }
 
-#document > div {
+#form-content > div:first-child,
+#form-content > div {
   display: flex;
   flex-direction: row;
   background-color: #404040bb;
@@ -815,13 +847,13 @@ dialog[class="content"] pre {
   color: white;
 }
 
-#document div div:first-child {
+#form-content div div:first-child {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-#document div div:first-child textarea {
+#form-content div div:first-child textarea {
   width: 92%;
   margin-left: 2%;
   border: none;
@@ -833,19 +865,19 @@ dialog[class="content"] pre {
   resize: none;
 }
 
-#document div .content div {
+#form-content div .content div {
   display: flex;
   flex-direction: column;
   margin-block-start: 10px;
   width: 94%;
 }
 
-#document div .content div :not(p) {
+#form-content div .content div :not(p) {
   margin-inline-start: 20px;
 }
 
-#document div .content div input[type="radio"],
-#document div .content div input[type="checkbox"] {
+#form-content div .content div input[type="radio"],
+#form-content div .content div input[type="checkbox"] {
   margin-block-end: 10px;
 }
 
@@ -870,22 +902,44 @@ dialog[class="content"] pre {
 
 .move button:nth-child(2) {
   background-color: var(--first);
+  color: var(--second);
 }
 
-#document div:first-child label {
-  width: 5%;
+#form-content div:first-child label {
+  /*width: 5%;*/
   font-weight: bold;
 }
 
+/*title*/
 #document-title {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin-block: 10px;
+  align-items: center;
+}
+
+#document-title label {
+  width: 5%;
+}
+
+#document-title input {
   border: none;
   background-color: #0000;
-  color: white;
   padding-inline: 2px;
   font-size: large;
   border-block-end: 2px solid var(--first);
   padding-block: 1px;
   width: 95%;
+}
+
+/* form-content */
+
+#form-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 80%;
 }
 
 /**Background bubble**/
@@ -901,7 +955,7 @@ dialog[class="content"] pre {
   height: 100vh;
   top: 0;
   left: 0;
-  background: #0f0f0f;
+  background: var(--c_bg);
   overflow: hidden;
   z-index: -1;
 }
