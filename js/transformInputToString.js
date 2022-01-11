@@ -10,8 +10,8 @@ function addInput(){
     let tabInput = []
 
     //let allInput = document.querySelectorAll("input")
-    let allFormQuestion = document.querySelectorAll("#form-content > div")
-    let allTextArea = document.querySelectorAll(".question")
+    let allFormQuestion = document.querySelectorAll('#form-content div[id^="form-"]')
+    let allTextArea = document.querySelectorAll('.question')
 
 
     //AJOUTE LA QUESTION AU TABLEAU DINPUT
@@ -27,11 +27,10 @@ function addInput(){
 
     //AJOUTE LES CHOIX AU TABLEAU DINPUT
     function addTabChoice(type, counter){
-        let choice = document.querySelectorAll('#'+allFormQuestion[counter].id+' input[class="choice-input"]')
+        let choice = document.querySelectorAll('#'+allFormQuestion[counter].id+' .choice-input')
 
         for (let i = 0; i < choice.length; i++){
             let newInput = document.createElement('input')
-            console.log("Numero du choix  : " + (i+1))
             newInput.type = 'text'
             newInput.name = choice[i].name
             newInput.value = type + '/' + choice[i].value + '/' + (counter+1) + '/' + (i+1)
@@ -43,7 +42,7 @@ function addInput(){
 
     for (let counter = 0; counter < allFormQuestion.length; counter++){
 
-        let typeQuestion = allFormQuestion[counter].id.split("-")[2] //Contient le type de la question (radio/checkbox ...
+        let typeQuestion = allFormQuestion[counter].id.split('-')[2] //Contient le type de la question (radio/checkbox ...
 
 
         switch (typeQuestion) {

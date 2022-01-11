@@ -11,7 +11,6 @@ const content = document.getElementById('form-content')
 const button = document.getElementById('submit')
 
 let numQuestion = 0
-const choice = new Map();
 
 
 /****************************************************/
@@ -21,7 +20,7 @@ function newQuestion(){ //create a question input with response input in html
 
     button.removeAttribute('disabled')
 
-    const id = this.value
+    const id = this.id
 
     let question = addDivElement(id).id;
 
@@ -29,29 +28,6 @@ function newQuestion(){ //create a question input with response input in html
 
 
     switch (id){
-/*        case 'new-text':
-            div.appendChild(createSimpleInput('text'))
-            break
-
-        case 'new-email':
-            div.appendChild(createSimpleInput('email'))
-            break
-
-        case 'new-tel':
-            div.appendChild(createSimpleInput('tel'))
-            break
-
-        case 'new-color':
-            div.appendChild(createSimpleInput('color'))
-            break
-
-        case 'new-file':
-            div.appendChild(createSimpleInput('file'))
-            break
-
-        case 'new-url':
-            div.appendChild(createSimpleInput('url'))
-            break*/
 
         case 'new-number':
             div.appendChild(createRangeInput('number'))
@@ -170,9 +146,6 @@ function moveQuestion(){
                 }
             })
         }
-        if(typeof(choice.get(numQuestion+1)) !== 'undefined'){
-            choice.delete(numQuestion+1)
-        }
 
     }
 
@@ -194,7 +167,7 @@ function update(node,i){
     let typeBlock = node.id.split("-")[2]
     node.id = 'form-'+(numBlock + i)+'-'+typeBlock
 
-    document.querySelector('#'+node.id+' > div > label > textarea').setAttribute('name', 'q'+(numBlock+i))
+    document.querySelector('#'+node.id+' .question').setAttribute('name', 'q'+(numBlock+i))
 
     document.getElementById('up-'+numBlock+'-'+typeBlock).id = 'up-'+(numBlock + i)+'-'+typeBlock
     document.getElementById('del-'+numBlock+'-'+typeBlock).id = 'del-'+(numBlock + i)+'-'+typeBlock
@@ -239,30 +212,22 @@ function update(node,i){
 
 function updateNumRC(numBlock,typeBlock,j){
 
-    for (let i = 1; i <= choice.get(numBlock); i++) {
+    let update = numBlock+j
 
-        document.getElementById('choice-' + numBlock + '-' + i).id = 'choice-' + (numBlock + j) + '-' + i
+    let label = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > label')
+    let input = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice-input')
+    let trash = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > button')
 
-        let label = document.getElementById('label-' + numBlock + '-' + i)
-        label.setAttribute('for', 'q' + (numBlock + j) + '-' + i)
-        label.id = 'label-' + (numBlock + j) + '-' + i
+    for (let i = 1; i <= label.length; i++) {
 
-        let input = document.getElementById('q' + numBlock + '-' + i)
-        input.setAttribute('name', 'q' + (numBlock + j) + '-' + typeBlock + i)
-        input.id = 'q' + (numBlock + j) + '-' + i
+        label[i - 1].setAttribute('for', 'choice-' + update + i)
 
-        let button = document.getElementById('trash-' + numBlock + '-' + i + '-' + typeBlock)
-        button.id = 'trash-' + (numBlock + j) + '-' + i + '-' + typeBlock
-        button.addEventListener('click', delChoice)
+        input[i - 1].id = 'choice-' + update + i
+        input[i - 1].setAttribute('name', 'choice-' + update + i)
 
+        trash[i - 1].id = 'trash-' + update + i
+        trash[i - 1].addEventListener('click',delChoice)
     }
-
-    choice.set((numBlock+j),choice.get(numBlock))
-
-    let button2 = document.getElementById('q'+numBlock+'-add-'+typeBlock)
-    button2.setAttribute('name',(numBlock + j).toString())
-    button2.id = 'q'+(numBlock + j)+'-add-'+typeBlock
-    button2.addEventListener('click',newChoice)
 }
 
 
@@ -293,7 +258,7 @@ function createSimpleInput(type){
 function createRangeInput(type){
     let div = document.createElement("div");
     div.innerHTML = '<label>Réponse'+
-        '<input type="'+type+'" disabled>'+
+        '<input type="'+type+'" >'+
         '</label>'+
         '<label>Min :'+
         '<input id="min-'+numQuestion+'" type="number" name="min-'+numQuestion+'" value="0">'+
@@ -307,15 +272,13 @@ function createRangeInput(type){
 
 function createRadioOrCheckbox(type, div){
 
-    choice.set(numQuestion,2)
-
     let divQ = document.createElement("div");
     divQ.innerHTML = '<p>Réponses</p>'+
         '<div class="choice">'+
             '<input type="'+type+'" disabled>'+
             '<label for="choice-'+numQuestion+'1">Choix 1</label>'+
             '<input id="choice-'+numQuestion+'1" class="choice-input" type="text" name="choice-'+numQuestion+'1">'+
-            '<button id="trash-1" type="button">Supprimer</button>'+
+            '<button id="trash-'+numQuestion+'1" type="button">Supprimer</button>'+
         '</div>'+
 
 
@@ -323,7 +286,7 @@ function createRadioOrCheckbox(type, div){
             '<input type="'+type+'" disabled>'+
             '<label for="choice-'+numQuestion+'2">Choix 2</label>'+
             '<input id="choice-'+numQuestion+'2" class="choice-input" type="text" name="choice-'+numQuestion+'2">'+
-            '<button id="trash-2" type="button">Supprimer</button>'+
+            '<button id="trash-'+numQuestion+'2" type="button">Supprimer</button>'+
         '</div>'+
 
 
@@ -331,9 +294,37 @@ function createRadioOrCheckbox(type, div){
 
     div.appendChild(divQ)
 
-    document.getElementById('trash-1').addEventListener('click',delChoice)
-    document.getElementById('trash-2').addEventListener('click',delChoice)
+    document.getElementById('trash-'+numQuestion+'1').addEventListener('click',delChoice)
+    document.getElementById('trash-'+numQuestion+'2').addEventListener('click',delChoice)
     document.querySelector('#'+div.parentElement.id+' .add-'+type).addEventListener('click',newChoice)
+}
+
+
+function createSelect(div){
+
+
+    let divQ = document.createElement("div");
+    divQ.innerHTML = '<p>Réponses</p>'+
+        '<div class="choice">'+
+        '<label for="choice-'+numQuestion+'1">Choix 1</label>'+
+        '<input id="choice-'+numQuestion+'1" class="choice-input" type="text" name="choice-'+numQuestion+'1">'+
+        '<button id="trash-'+numQuestion+'1" type="button">Supprimer</button>'+
+        '</div>'+
+
+        '<div class="choice">'+
+        '<label for="choice-'+numQuestion+'2">Choix 2</label>'+
+        '<input id="choice-'+numQuestion+'2" class="choice-input" type="text" name="choice-'+numQuestion+'2">'+
+        '<button id="trash-'+numQuestion+'2" type="button">Supprimer</button>'+
+        '</div>'+
+
+        '<button class="add-select" type="button">Ajouter</button>'
+
+    div.appendChild(divQ)
+
+    document.getElementById('trash-'+numQuestion+'1').addEventListener('click',delChoice)
+    document.getElementById('trash-'+numQuestion+'2').addEventListener('click',delChoice)
+    document.querySelector('#'+div.parentElement.id+' .add-select').addEventListener('click',newChoice)
+
 }
 
 
@@ -343,16 +334,27 @@ function newChoice(){ //add a choice for multi input
     let question = this.closest('.content').parentElement.id.split('-')[1]
     let num = this.parentElement.childElementCount - 1
 
-    let add='<div class="choice">'+
-                '<input type="'+type+'" disabled>'+
-                '<label for="choice-'+question+num+'">Choix '+num+'</label>'+
-                '<input id="choice-'+question+num+'" class="choice-input" type="text" name="choice-'+question+num+'">'+
-                '<button id="trash-'+num+'" type="button">Supprimer</button>'+
+    let add
+    if (type === 'select'){
+        add='<div class="choice">'+
+            '<label for="choice-'+question+num+'">Choix '+num+'</label>'+
+            '<input id="choice-'+question+num+'" class="choice-input" type="text" name="choice-'+question+num+'">'+
+            '<button id="trash-'+numQuestion+num+'" type="button">Supprimer</button>'+
             '</div>'
+    }
+
+    else {
+        add = '<div class="choice">' +
+            '<input type="' + type + '" disabled>' +
+            '<label for="choice-' + question + num + '">Choix ' + num + '</label>' +
+            '<input id="choice-' + question + num + '" class="choice-input" type="text" name="choice-' + question + num + '">' +
+            '<button id="trash-' + numQuestion + num + '" type="button">Supprimer</button>' +
+            '</div>'
+    }
 
     this.insertAdjacentHTML("beforebegin", add);
 
-    document.getElementById('trash-'+num).addEventListener('click',delChoice)
+    document.getElementById('trash-'+numQuestion+num).addEventListener('click',delChoice)
 }
 
 
@@ -367,7 +369,7 @@ function delChoice(){ //delete a choice for multi input
 
         let label = document.querySelectorAll('#' + rootID + ' .choice > label')
         let input = document.querySelectorAll('#' + rootID + ' .choice-input')
-        let trash = document.querySelectorAll('#' + rootID + ' .choice button')
+        let trash = document.querySelectorAll('#' + rootID + ' .choice > button')
 
 
         for (let i = 1; i <= label.length; i++) {
@@ -378,40 +380,11 @@ function delChoice(){ //delete a choice for multi input
             input[i - 1].id = 'choice-' + question + i
             input[i - 1].setAttribute('name', 'choice-' + question + i)
 
-            trash[i - 1].id = 'trash-'+i
+            trash[i - 1].id = 'trash-'+question+i
             trash[i - 1].addEventListener('click',delChoice)
         }
     }
 
-}
-
-
-function createSelect(div){
-
-    choice.set(numQuestion,2)
-
-    let divQ = document.createElement("div");
-    divQ.innerHTML = '<p>Réponses</p>'+
-        '<div id="choice-'+numQuestion+'-1">'+
-        '<input id="q'+numQuestion+'-1" type="text" name="q'+numQuestion+'-select1">'+
-        '<label id="label-'+numQuestion+'-1" for="q'+numQuestion+'-1">Choix 1</label>'+
-        '<button id="trash-'+numQuestion+'-1-select" type="button">Supprimer</button>'+
-        '</div>'+
-
-        '<div id="choice-'+numQuestion+'-2">'+
-        '<input id="q'+numQuestion+'-2" type="text" name="q'+numQuestion+'-select2">'+
-        '<label id="label-'+numQuestion+'-2" for="q'+numQuestion+'-2">Choix 2</label>'+
-        '<button id="trash-'+numQuestion+'-2-select" type="button">Supprimer</button>'+
-        '</div>'+
-
-
-        '<button id="q'+numQuestion+'-add-select" type="button" name="'+numQuestion+'">Ajouter</button>'
-
-    div.appendChild(divQ)
-
-    document.getElementById('trash-'+numQuestion+'-1-select').addEventListener('click',delChoice)
-    document.getElementById('trash-'+numQuestion+'-2-select').addEventListener('click',delChoice)
-    document.getElementById('q'+numQuestion+'-add-select').addEventListener('click',newChoice)
 }
 
 
