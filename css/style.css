@@ -923,7 +923,7 @@ dialog[class="content"] pre {
   width: 5%;
 }
 
-#document-title input {
+#title {
   border: none;
   background-color: #0000;
   padding-inline: 2px;
@@ -932,6 +932,7 @@ dialog[class="content"] pre {
   padding-block: 1px;
   width: 95%;
 }
+
 
 /* form-content */
 

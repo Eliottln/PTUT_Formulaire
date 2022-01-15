@@ -13,7 +13,7 @@ const button = document.getElementById('submit')
 let numQuestion = 0
 
 
-/****************************************************/
+/*****************************************************/
 
 
 function newQuestion(){ //create a question input
@@ -97,7 +97,7 @@ function newQuestion(){ //create a question input
         case 'new-date':
             let divD = document.createElement("div");
 
-            divD.innerHTML = '<p>Réponses</p>'+
+            divD.innerHTML =
                 '<select id="select-date-'+numQuestion+'" name="select-date-'+numQuestion+'">'+
                 '<option value="date">Date</option>'+
                 '<option value="time">Heure</option>'+
@@ -121,7 +121,69 @@ function newQuestion(){ //create a question input
 }
 
 
-/****************************************************/
+/*****************************************************/
+
+
+function verification(index = 0){
+
+    let allQuestions = document.querySelectorAll('#form-content div[id^="form-"]')
+    numQuestion = allQuestions.length
+
+    if (index < numQuestion) {
+
+        for (let i = index; i < allQuestions.length; i++) {
+            let num = i + 1
+            console.log(num)
+            let type = allQuestions[i].id.split("-")[2]
+
+            allQuestions[i].id = 'form-' + num + '-' + type
+            let root = allQuestions[i].id
+
+            document.querySelector('#' + root + ' .question').setAttribute('name', 'q' + num)
+            document.querySelector('#' + root + ' .required input').setAttribute('name', 'required-' + num)
+
+            let move = document.querySelectorAll('#' + root + ' .move button')
+            move[0].id = 'up-' + num + '-' + type
+            move[1].id = 'del-' + num + '-' + type
+            move[2].id = 'down-' + num + '-' + type
+
+
+            switch (type) {
+
+                case 'range':
+                    let value = document.querySelectorAll('#' + root + ' .content input[type="text"]')
+                    value[0].id = 'choice-' + num + '1'
+                    value[0].setAttribute('name', value[0].id)
+                    value[1].id = 'choice-' + num + '2'
+                    value[1].setAttribute('name', value[1].id)
+                    break
+
+                case 'radio':
+                    updateNumRC(num, type, 0)
+                    break
+
+                case 'checkbox':
+                    updateNumRC(num, type, 0)
+                    break
+
+                case 'select':
+                    updateNumRC(num, type, 0)
+                    break
+
+                case 'date':
+                    let select = document.querySelector('#' + root + ' .content div select')
+                    select.id = 'select-date-' + num
+                    select.setAttribute('name', select.id)
+                    document.querySelector('#' + root + ' .content div div').id = 'date-' + num
+                    break
+
+                default:
+                    break
+            }
+        }
+    }
+
+}
 
 
 function moveQuestion(){
@@ -139,7 +201,8 @@ function moveQuestion(){
             button.setAttribute('disabled','')
         }else {
 
-            let q = document.querySelectorAll('div[id^="form-"]')
+            verification(question-1)
+            /*let q = document.querySelectorAll('div[id^="form-"]')
 
             q.forEach(e => {
 
@@ -147,7 +210,7 @@ function moveQuestion(){
                 if (numBlock > question) {
                     update(e, -1)
                 }
-            })
+            })*/
         }
 
     }
@@ -262,7 +325,7 @@ function createSimpleInput(type){
 
 function createRangeInput(){
     let div = document.createElement("div");
-    div.innerHTML = '<label>Réponse'+
+    div.innerHTML =
         '<input id="choice-'+numQuestion+'1" class="choice-input" type="text" name="choice-'+numQuestion+'1">'+
         '<input type="range">'+
         '<input id="choice-'+numQuestion+'2" class="choice-input" type="text" name="choice-'+numQuestion+'2">'
@@ -276,18 +339,18 @@ function createRadioOrCheckbox(type, div){
     let divQ = document.createElement("div");
     divQ.innerHTML =
         '<div class="choice">'+
-            '<input type="'+type+'" disabled>'+
-            '<label for="choice-'+numQuestion+'1">Option 1</label>'+
-            '<input id="choice-'+numQuestion+'1" class="choice-input" type="text" name="choice-'+numQuestion+'1">'+
-            '<button id="trash-'+numQuestion+'1" type="button">Supprimer</button>'+
+        '<input type="'+type+'" disabled>'+
+        '<label for="choice-'+numQuestion+'1">Option 1</label>'+
+        '<input id="choice-'+numQuestion+'1" class="choice-input" type="text" name="choice-'+numQuestion+'1">'+
+        '<button id="trash-'+numQuestion+'1" type="button">Supprimer</button>'+
         '</div>'+
 
 
         '<div class="choice">'+
-            '<input type="'+type+'" disabled>'+
-            '<label for="choice-'+numQuestion+'2">Option 2</label>'+
-            '<input id="choice-'+numQuestion+'2" class="choice-input" type="text" name="choice-'+numQuestion+'2">'+
-            '<button id="trash-'+numQuestion+'2" type="button">Supprimer</button>'+
+        '<input type="'+type+'" disabled>'+
+        '<label for="choice-'+numQuestion+'2">Option 2</label>'+
+        '<input id="choice-'+numQuestion+'2" class="choice-input" type="text" name="choice-'+numQuestion+'2">'+
+        '<button id="trash-'+numQuestion+'2" type="button">Supprimer</button>'+
         '</div>'+
 
 
