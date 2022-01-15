@@ -1,7 +1,32 @@
 <?php
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/ImportFile.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
+
+//TODO recup form
+
+function idFormExist($pdo, $id){
+    $result = $pdo->query('SELECT id FROM Forms WHERE id = ' . $id)->fetchColumn();
+    if($result == $id) return true;
+    return false;
+}
+
+function getRandomID($pdo){
+    if(!isset($_GET['id_form']) && empty($_GET['id_form'])){
+        $r_id = rand(100000, 999999);
+        while(idFormExist($pdo,$r_id)){
+            $r_id = rand(100000, 999999);
+        }
+        $_GET['id_form'] = $r_id;
+        return $r_id;
+    }
+    else{
+        return $_GET['id_form'];
+    }
+}
+
 ?>
+
 
 
 <!DOCTYPE html>
@@ -165,6 +190,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             <dialog id="settings-doc">
                 <label id="document-settings-label" for="document-settings">Settings</label>
                 <form id="document-settings">
+                    
+                    <h3> ID #<span id="document-settings-ID"><?=getRandomID($connect)?></span></h3>
+                        
                     <label for="d"> Title
                         <input id="d" type="text" name="title" placeholder="Form title">
                     </label>
@@ -190,7 +218,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <form id="document" action="https://ressources.site/" method="post">
             <div id="document-title">
                 <label>Titre :</label>
-                <input type="text" name="title" id="document-title"> 
+                <input type="text" name="title" id="document-title-input"> 
             </div>
             <div id="form-content"></div>
         </form>
@@ -235,6 +263,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="/js/addInputFromObject.js"></script>
     <script>
         <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
+
+        <?php 
+            if(isset($_SESSION['exportSucces'])){
+                unset($_SESSION['exportSucces']);
+                echo 'function Success(){alert("export réussi")}
+                        Success()';
+            }
+        ?>
     </script>
 
 </body>
