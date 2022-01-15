@@ -1,25 +1,25 @@
 :root {
   /*Main*/
-  --first:#ff0048;
-  --second:#ac37fd;
+  --first: #000;
+  --second: #fff;
 
   /*font*/
-  --accueil_Color:#ff0048;
-  --accueil_Color_Darker:#b40033;
+  --accueil_Color: #000;
   --debugFont: white;
-  --navFont: rgb(230, 0, 57);
-  
+  --navFont: #000;
+
+  /*scrollBar*/
+  --Track: #0000;
+  --Thumb: #000;
 
   /*Background*/
-  --debugBG: #1e1e1e;
-  --navBG: #111111;
-  --navLi_HOVER: #2b2b2b;
-  --bgc_pallette:rgb(109, 0, 155);
-  --ButtonClass:rgb(230, 0, 57);
-  --buttonClassDarker:rgb(142 0 39);
-  --bubble1:#380070;
-  --bubble2:#520018;
-  --bubble3:#d60040;
+  --c_bg: #fff;
+  --navBG: #fff;
+  --navLi_HOVER: #000;
+  --bgc_pallette: #000;
+  --bubble1: #000000;
+  --bubble2: #111111;
+  --bubble3: #757575;
 }
 
 @font-face {
@@ -35,6 +35,11 @@
 @font-face {
   font-family: "CFSamouraiBob";
   src: url("/fonts/CFSamuraiBob.ttf");
+}
+
+@font-face {
+  font-family: "Bebas-Regular";
+  src: url("/fonts/Bebas-Regular.ttf");
 }
 
 * {
@@ -53,15 +58,18 @@ input:focus {
 main {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 84px);
 }
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -72,23 +80,18 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--navBG, #111111);
+  background-color: var(--Track);
   padding-left: 1px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--ButtonClass);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--buttonClassDarker);
+  background: var(--Thumb);
 }
 
 /**button export**/
 
- 
- /*Create by @kirzin*/
- /*Modify by Alexis FORESTIER*/
+/*Create by @kirzin*/
+/*Modify by Alexis FORESTIER*/
 .buttonEXPORT {
   text-decoration: none;
   position: fixed;
@@ -100,7 +103,7 @@ main {
   height: 3em;
   line-height: 2em;
   text-align: center;
-  background: linear-gradient(90deg,#9703f4,#cd014c,#ffa63b,#9703f4);
+  background: linear-gradient(90deg, #000000, #ffffff, #ffffff, #000000);
   background-size: 300%;
   border-radius: 35px;
   z-index: 1;
@@ -109,73 +112,95 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
- }
+  color: black;
+}
 
- .buttonEXPORT[disabled]{
-  background: linear-gradient(90deg,#292929,#6b6b6b,#a7a7a7,#292929);
+.buttonEXPORT[disabled] {
+  background: linear-gradient(90deg, #ffffff, #000000, #000000, #ffffff);
   cursor: not-allowed;
- }
- 
- .buttonEXPORT:hover {
+  color: white;
+}
+
+.buttonEXPORT:hover {
   animation: ani 8s linear infinite;
   border: none;
- }
- 
- @keyframes ani {
+}
+
+@keyframes ani {
   0% {
-   background-position: 0%;
+    background-position: 0%;
   }
- 
+
   100% {
-   background-position: 400%;
+    background-position: 400%;
   }
- }
- .buttonEXPORT:before {
-  content: '';
+}
+.buttonEXPORT:before {
+  content: "";
   position: absolute;
   top: -5px;
   left: -5px;
   right: -5px;
   bottom: -5px;
   z-index: -1;
-  background: linear-gradient(90deg,#9703f4,#cd014c,#ffa63b,#9703f4);
+  background: linear-gradient(90deg, #000000, #ffffff, #ffffff, #000000);
   background-size: 400%;
   border-radius: 35px;
   transition: 1s;
- }
+}
 
- .buttonEXPORT[disabled]:before{
-  background: linear-gradient(90deg,#292929,#6b6b6b,#a7a7a7,#292929);
- }
- 
- .buttonEXPORT:hover::before {
+.buttonEXPORT[disabled]:before {
+  background: linear-gradient(90deg, #ffffff, #000000, #000000, #000000);
+}
+
+.buttonEXPORT:hover::before {
   filter: blur(20px);
- }
- 
- .buttonEXPORT:active {
-  background: linear-gradient(32deg,#9703f4,#cd014c,#ffa63b,#9703f4);
- }
+}
 
- .buttonEXPORT[disabled]:active{
-  background: linear-gradient(32deg,#292929,#6b6b6b,#a7a7a7,#292929);
- }
+.buttonEXPORT:active {
+  background: linear-gradient(32deg, #000000, #ffffff, #ffffff, #000000);
+}
+
+.buttonEXPORT[disabled]:active {
+  background: linear-gradient(32deg, #ffffff, #000000, #000000, #ffffff);
+}
+
+.buttonEXPORT img,
+.buttonEXPORT svg {
+  width: 45px;
+  height: 45px;
+}
+
+.buttonEXPORT img {
+  filter: invert(1);
+}
 
 /*#################################################*/
 /*HEADER*/
 /*#################################################*/
 /*NavBar*/
 
-html:not([class^="reflect"]) header{
+html:not([class^="reflect"]) header {
   z-index: 2;
   position: sticky;
   top: 0;
+}
+
+header {
+  box-shadow: 0px 0.9px 1.2px rgba(0, 0, 0, 0.034),
+    0px 1.9px 2.7px rgba(0, 0, 0, 0.05), 0px 3.2px 4.6px rgba(0, 0, 0, 0.061),
+    0px 4.9px 6.9px rgba(0, 0, 0, 0.071), 0px 7px 10px rgba(0, 0, 0, 0.08),
+    0px 9.9px 14.2px rgba(0, 0, 0, 0.089),
+    0px 14.1px 20.1px rgba(0, 0, 0, 0.099),
+    0px 20.4px 29.2px rgba(0, 0, 0, 0.11), 0px 31.5px 45px rgba(0, 0, 0, 0.126),
+    0px 56px 80px rgba(0, 0, 0, 0.16);
 }
 
 header nav ul {
   display: flex;
   justify-content: space-evenly;
   list-style: none;
-  background-color: var(--navBG, #111111);
+  background-color: var(--navBG);
 }
 
 header nav ul li {
@@ -187,12 +212,12 @@ header nav ul li {
   flex-direction: column;
 }
 
-header nav ul li:first-child>div{
+header nav ul li:first-child > div {
   height: 100%;
 }
 
-header nav ul li:hover {
-  background-color: var(--navLi_HOVER, #2b2b2b);
+header nav ul li:hover:not(:first-child) {
+  background-color: var(--navLi_HOVER);
 }
 
 header nav ul li a {
@@ -205,15 +230,14 @@ header nav ul li a {
 
 header nav ul li:hover a {
   color: var(--second);
+}
 
-} 
-
-header nav ul li:first-child{
+header nav ul li:first-child {
   width: 10%;
   align-items: center;
 }
 
-header nav ul li span{
+header nav ul li span {
   background-color: var(--first);
   height: 4px;
   width: 100%;
@@ -223,7 +247,7 @@ header nav ul li:hover span {
   background-color: var(--second);
 }
 
-#headerlogo{
+#headerlogo {
   width: 75px;
   object-fit: cover;
   object-position: center;
@@ -234,32 +258,33 @@ header nav ul li:hover span {
 /*LogInSignUp*/
 /*#################################################*/
 
-
-#LogInSignUp header, #LogInSignUp footer{
+#LogInSignUp header,
+#LogInSignUp footer {
   height: 10vh;
   width: 100%;
   background-color: var(--navBG);
 }
 
-#BackgroundAnime{
+#BackgroundAnime {
   height: 80vh;
   width: 100%;
-  background-image: url(/img/orangeBackground.gif);
   background-repeat: no-repeat;
   background-size: cover;
-  filter: blur(15px) contrast(0.85) hue-rotate(0deg);
-  animation-name: hue-rotate;
-  animation-duration: 60s;
-  animation-iteration-count: infinite;
 }
 
 @keyframes hue-rotate {
-  0% {filter: blur(15px) contrast(0.85) hue-rotate(0deg);}
-  50% {filter: blur(15px) contrast(0.85) hue-rotate(180deg);}
-  100% {filter: blur(15px) contrast(0.85) hue-rotate(360deg);}
+  0% {
+    filter: blur(15px) contrast(0.85) hue-rotate(0deg);
+  }
+  50% {
+    filter: blur(15px) contrast(0.85) hue-rotate(180deg);
+  }
+  100% {
+    filter: blur(15px) contrast(0.85) hue-rotate(360deg);
+  }
 }
 
-#LogInSignUp main{
+#LogInSignUp main {
   position: absolute;
   z-index: 1;
   top: 10vh;
@@ -272,163 +297,259 @@ header nav ul li:hover span {
   overflow: hidden;
 }
 
-#LogInSignUp main form{
+#LogInSignUp main form {
   background-color: #fff;
-  margin-block: 50px;
+  margin-block: 35px;
   border-radius: 35px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border : 2px solid var(--first);
+  border: 2px solid var(--first);
+  min-height: 70vh;
 }
 
-
-
-#LogInSignUp main form h2{
+#LogInSignUp main form h2 {
   font-size: xx-large;
   color: var(--accueil_Color);
   text-underline-position: from-font;
-  padding: 30px;
+  padding: 20px;
   font-family: "Unbutton";
 }
 
-#LogInSignUp main form > div{
+#LogInSignUp main form > div {
   width: 100%;
   display: flex;
   flex-direction: column;
   padding-inline: 15px;
-  padding-block: 10px;
+  padding-block: 7px;
   position: relative;
 }
 
-#LogInSignUp main form > div input{
+#LogInSignUp main form > div input {
   min-width: 250px;
   border: 2px solid var(--accueil_Color);
+  background-color: #0000;
   border-radius: 5px;
   height: 35px;
   font-size: large;
   padding-inline: 5px;
+  z-index: 1;
 }
 
-#LogInSignUp main form > div label{
+#LogInSignUp main form > div label {
   background-color: white;
   color: var(--accueil_Color);
   padding-inline: 4px;
   font-size: large;
   position: absolute;
   left: 25px;
-  top: 17px;
-  transition: font-size 0.3s, top 0.3s
+  top: 15px;
+  transition: font-size 0.3s, top 0.3s;
 }
 
-.notEmpty,#LogInSignUp main form > div input:focus ~ label{
+.notEmpty,
+#LogInSignUp main form > div input:focus ~ label {
   font-size: medium !important;
   top: -1px !important;
+  z-index: 1;
 }
 
-.buttonAccueil{
+.buttonAccueil {
   padding: 15px;
   font-size: larger;
   background-color: var(--accueil_Color);
-  color:white;
+  color: white;
   border: none;
   border-radius: 5px;
+  margin: 2px;
 }
 
-.buttonAccueil:hover{
-  background-color: var(--accueil_Color_Darker);
+.buttonAccueil:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid var(--accueil_Color);
   cursor: pointer;
+  margin: 0;
 }
 
-#blocLabel{
+#blocLabel {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
+  align-items: center;
 }
 
-#brand{
+/*Logo*/
+#brand {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 5vw;
+  font-size: 75px;
+  height: 200px;
 }
 
-#brand > div{
-  font-family: "CFSamouraiBob";
+#brand > img {
+  width: 350px;
+  object-fit: cover;
+  object-position: center;
 }
 
-#UwU, #UwU > span{
-  font-family: "LemonMilk";
-  font-size: 10vw;
+#menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#UwU:hover,#UwU:hover span{
-  cursor: pointer;
-  background: linear-gradient(211deg, rgba(172,55,253,1) 0%, rgba(255,0,72,1) 70%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+#menu > hr {
+  margin-block: 5px;
+  border: 1px solid #000;
+  background-color: #000;
+  width: 100%;
 }
 
-#UwU > span{
-  font-size: smaller;
-  position: relative;
-  top: 5px;
+#menu > div:not([id$="Form"]) {
+  background-color: var(--accueil_Color);
+  color: #fff;
+  padding: 15px;
+  font-size: x-large;
+  border-radius: 15px;
+  text-align: center;
+  width: 240px;
+  margin-block: 5px;
 }
 
-.slider{
-  color: white;
+#menu > div:not([id$="Form"]):hover {
+  margin-block: 3px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+}
+
+.slider {
+  color: Black;
   font-size: 18vh;
   padding-block: 30vh;
   padding-inline: 7.5px;
 }
 
-#slidL{
+#slidL {
   animation-name: bumpL;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
 
 @keyframes bumpL {
-  0% {padding-right: 7.5px;padding-left: 7.5px;}
-  12.5% {padding-right: 15px;padding-left: 0px;}
-  25% {padding-right: 7.5px;padding-left: 7.5px;}
-  37.5% {padding-right: 15px;padding-left: 0px;}
-  50% {padding-right: 7.5px;padding-left: 7.5px;}
-  100% {padding-right: 7.5px;padding-left: 7.5px;}
+  0% {
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
+  12.5% {
+    padding-right: 15px;
+    padding-left: 0px;
+  }
+  25% {
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
+  37.5% {
+    padding-right: 15px;
+    padding-left: 0px;
+  }
+  50% {
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
+  100% {
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+  }
 }
 
-#slidR{
+#slidR {
   animation-name: bumpR;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
 
 @keyframes bumpR {
-  0% {padding-left: 7.5px; padding-right: 7.5px;}
-  12.5% {padding-left: 15px; padding-right: 0px;}
-  25% {padding-left: 7.5px; padding-right: 7.5px;}
-  37.5% {padding-left: 15px; padding-right: 0px;}
-  50% {padding-left: 7.5px; padding-right: 7.5px;}
-  100% {padding-left: 7.5px; padding-right: 7.5px;}
+  0% {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+  }
+  12.5% {
+    padding-left: 15px;
+    padding-right: 0px;
+  }
+  25% {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+  }
+  37.5% {
+    padding-left: 15px;
+    padding-right: 0px;
+  }
+  50% {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+  }
+  100% {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+  }
 }
 
-@media(max-width:950px){
-  /*TODO RESPONSIVE COMING SOON ...*/
-}
+@media (max-width: 1330px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
 
+  ::-webkit-scrollbar-track {
+    background-color: white;
+    padding-left: 1px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accueil_Color);
+  }
+
+  #LogInSignUp main > form {
+    display: none;
+  }
+  #LogInSignUp main div[id^="slid"] {
+    display: none;
+  }
+  #LogInSignUp main {
+    margin: 0;
+    overflow-y: auto;
+    width: 100%;
+  }
+  #brand > img {
+    width: 240px;
+  }
+  .ResponsiveForm {
+    width: 240px;
+    margin-block: 0px !important;
+  }
+  .ResponsiveInput {
+    min-width: 200px !important;
+    width: 200px;
+  }
+  .ResponsiveButton {
+    font-size: medium;
+    width: 120px;
+  }
+}
 
 /*#################################################*/
 /*CreateForm*/
 /*#################################################*/
 
-
 /*--------------------------------------------------*/
 /*Palette de Création*/
 
-#togglePalette{
+#togglePalette {
   position: fixed;
   left: 5%;
   top: 90px;
@@ -437,17 +558,31 @@ header nav ul li:hover span {
 }
 
 #palette {
-  padding-block: 10px;
   background-color: var(--bgc_pallette);
   position: fixed;
   width: 200px;
   z-index: 2;
-  height: 78vh;
-  top: 157px;
+  height: calc(100vh - 84px);
+  top: 84px;
   left: -200px;
   transition: left 0.5s;
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#palette > div:first-child {
+  background-color: var(--second);
+  display: flex;
+  justify-content: center;
+  color: var(--first);
+}
+
+#palette > div:first-child:hover {
+  background-color: var(--first);
+  color: var(--second);
+  cursor: pointer;
 }
 
 #palette ul {
@@ -457,52 +592,47 @@ header nav ul li:hover span {
   align-items: center;
 }
 
-#paletteLogo{
+#paletteLogo {
   margin-block-start: 15px;
-  color: var(--first)
+  color: var(--first);
 }
 
 .button {
   padding: 7px;
-  background-color: var(--ButtonClass);
+  background-color: var(--second);
   min-width: 200px;
   margin-block-start: 15px;
-  border-radius: 5px;
   text-align: center;
-  cursor: pointer;
+  color: var(--first);
 }
 
 .button:hover {
-  background-color: var(--buttonClassDarker);
+  background-color: var(--first);
+  color: var(--second);
+  cursor: pointer;
 }
 
 #palette ul li {
   position: relative;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
+/*
 #palette ul li div {
   min-width: 100px;
-}
+}*/
 
 #addSection {
-  width: 56%;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   margin-block-start: 15px;
 }
 
-#addSection select {
-  width: 100%;
-  background-color: var(--navLi_HOVER);
-  color: var(--navFont);
-  font-size: large;
-  padding: 5%;
-}
-
-#palette hr{
+#palette hr {
   width: 50%;
   border: none;
   background-color: #545454;
@@ -511,25 +641,23 @@ header nav ul li:hover span {
   margin-block-start: 15px;
 }
 
-#addSection button{
-  background-color: var(--first);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+#addSection button {
+  background-color: var(--second);
+  border: 2px solid var(--first);
   display: flex;
   padding: 5px;
-  margin: 3px;
   color: black;
-  min-width: 45px;
+  width: 100%;
   min-height: 45px;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   font-size: x-large;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#addSection button[disabled]{
-  background-color: #4e4e4e;
+#addSection button:hover,
+#addSection button > *:hover {
+  cursor: pointer;
 }
 
 #addSection button svg {
@@ -537,20 +665,20 @@ header nav ul li:hover span {
   width: 35px;
 }
 
-#settings-doc{
+#settings-doc {
   display: none;
   flex-direction: column;
   align-items: center;
   margin-block-start: 15px;
 }
 
-#document-settings-label{
+#document-settings-label {
   font-size: x-large;
   color: var(--first);
   font-weight: bold;
 }
 
-#document-settings{
+#document-settings {
   display: flex;
   flex-direction: column;
   padding: 15px;
@@ -559,14 +687,14 @@ header nav ul li:hover span {
   background-color: var(--navLi_HOVER);
 }
 
-#document-settings label{
+#document-settings label {
   display: flex;
   flex-direction: column;
   color: white;
   margin-block-end: 5px;
 }
 
-#document-settings label input{
+#document-settings label input {
   background-color: #555;
   color: white;
   border: 0;
@@ -706,10 +834,11 @@ dialog[class="content"] pre {
   font-size: larger;
 }
 
-#document > div:first-child, #form-content > div {
+#form-content > div:first-child,
+#form-content > div {
   display: flex;
   flex-direction: row;
-  background-color: #404040BB;
+  background-color: #404040bb;
   border-radius: 5px;
   margin-block: 10px;
   margin-inline: 50px;
@@ -718,13 +847,13 @@ dialog[class="content"] pre {
   color: white;
 }
 
-#document div div:first-child {
+#form-content div div:first-child {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-#document div div:first-child textarea {
+#form-content div div:first-child textarea {
   width: 92%;
   margin-left: 2%;
   border: none;
@@ -736,28 +865,28 @@ dialog[class="content"] pre {
   resize: none;
 }
 
-#document div .content div {
+#form-content div .content div {
   display: flex;
   flex-direction: column;
   margin-block-start: 10px;
   width: 94%;
 }
 
-#document div .content div :not(p) {
+#form-content div .content div :not(p) {
   margin-inline-start: 20px;
 }
 
-#document div .content div input[type="radio"],
-#document div .content div input[type="checkbox"] {
+#form-content div .content div input[type="radio"],
+#form-content div .content div input[type="checkbox"] {
   margin-block-end: 10px;
 }
 
-.move{
+.move {
   display: flex;
   flex-direction: column;
 }
 
-.move button{
+.move button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -771,19 +900,32 @@ dialog[class="content"] pre {
   border-radius: 5px;
 }
 
-.move button:nth-child(2){
+.move button:nth-child(2) {
   background-color: var(--first);
+  color: var(--second);
 }
 
-#document div:first-child label{
+#form-content div:first-child label {
   /*width: 5%;*/
   font-weight: bold;
 }
 
-#document-title{
+/*title*/
+#document-title {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin-block: 10px;
+  align-items: center;
+}
+
+#document-title label {
+  width: 5%;
+}
+
+#document-title input {
   border: none;
   background-color: #0000;
-  color: white;
   padding-inline: 2px;
   font-size: large;
   border-block-end: 2px solid var(--first);
@@ -793,18 +935,17 @@ dialog[class="content"] pre {
 
 /* form-content */
 
-#form-content{
+#form-content {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   width: 80%;
 }
 
-
 /**Background bubble**/
 @keyframes move {
   100% {
-      transform: translate3d(0, 0, 1px) rotate(360deg);
+    transform: translate3d(0, 0, 1px) rotate(360deg);
   }
 }
 
@@ -814,7 +955,7 @@ dialog[class="content"] pre {
   height: 100vh;
   top: 0;
   left: 0;
-  background: #0f0f0f;
+  background: var(--c_bg);
   overflow: hidden;
   z-index: -1;
 }
@@ -830,7 +971,6 @@ dialog[class="content"] pre {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
-
 
 .background span:nth-child(0) {
   color: var(--bubble1);
