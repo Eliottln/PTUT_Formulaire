@@ -15,6 +15,7 @@
   /*Background*/
   --c_bg: #fff;
   --navBG: #fff;
+  --LogHeadFoot: #000;
   --navLi_HOVER: #000;
   --bgc_pallette: #000;
   --bubble1: #000000;
@@ -262,7 +263,7 @@ header nav ul li:hover span {
 #LogInSignUp footer {
   height: 10vh;
   width: 100%;
-  background-color: var(--navBG);
+  background-color: var(--LogHeadFoot);
 }
 
 #BackgroundAnime {

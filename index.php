@@ -1,8 +1,15 @@
+<?php
+if(isset($_SESSION['user'])&&!empty($_SESSION['user'])){
+    header('Location: visuAllForms.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr" class="reflect">
 
 <?php
-$pageName = "UwUniForm";
+$pageName = "Fill N Form";
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 ?>
 
