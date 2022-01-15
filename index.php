@@ -23,7 +23,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
 
-        <form id="form-signin" action="https://ressources.site/" method="post" class="ResponsiveForm">
+        <form id="form-signin" action="/signin.php" method="post" class="ResponsiveForm">
 
             <h2>S'inscrire</h2>
 

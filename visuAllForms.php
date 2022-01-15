@@ -2,6 +2,11 @@
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
+if(empty($_SESSION['user']) || empty($_SESSION['user']['id'])){
+    header('Location: index.php');
+    exit();
+}
+
 function displayAllForm($connect){
     $forms = "";
     try {

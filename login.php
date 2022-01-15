@@ -10,7 +10,7 @@ if(!empty($_POST) && isset($_POST["email"])){
         unset($user['password']);
         $_SESSION['user'] = $user;
 
-        header("Location: CreateForm.php"); //TODO changer le lien
+        header("Location: visuAllForms.php"); //TODO changer le lien
         exit();
     }
 }
