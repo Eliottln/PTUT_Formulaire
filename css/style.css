@@ -693,6 +693,7 @@ header nav ul li:hover span {
   flex-direction: column;
   color: white;
   margin-block-end: 5px;
+  align-items: center;
 }
 
 #document-settings label input {
