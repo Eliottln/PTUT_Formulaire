@@ -3,6 +3,8 @@
 $nbChamps = (count($_POST)-1); //moins le titre
 $form_title = explode('/',$_POST['form-title-ID'])[0];
 $form_ID = explode('/',$_POST['form-title-ID'])[1];
+$form_expire = explode('/',$_POST['form-title-ID'])[2];
+
 
 if ($nbChamps == 0) {
     header("Location: CreateForm.php?error=1");
@@ -16,6 +18,15 @@ if(!isset($_SESSION['user']) || empty($_SESSION['user'])){
     exit();
 }
 
+$origin = date_create(date("Y-m-d"));
+$target = date_create($form_expire);
+$interval = date_diff($origin, $target);
+if($interval->format('%R%a') < 0){
+    $_SESSION['exportWrongExpiredDate'] = true;
+    header("Location: CreateForm.php?id_form=".$form_ID);
+    exit();
+}
+
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 foreach (glob($_SERVER["DOCUMENT_ROOT"] . "/modules/export_function/*.php") as $filename)
 {
@@ -23,13 +34,13 @@ foreach (glob($_SERVER["DOCUMENT_ROOT"] . "/modules/export_function/*.php") as $
 }
 
 
-insert_form($connect, $form_ID, $_SESSION['user']['id'], $nbChamps, $form_title);
+insert_form($connect, $form_ID, $_SESSION['user']['id'], $nbChamps, $form_title, $form_expire);
 
 $connect->beginTransaction();
 try {
 
     $all_questions = array();
-    $all_chooses = array();
+    $all_choices = array();
     $all_input =  array_values($_POST);
 
     //On crée un document, on ne connait pas encore le nb de questions donc on le met à 0 pour le modifier plus bas
@@ -44,10 +55,10 @@ try {
             case "radio":
             case "checkbox":
             case "select":
-                $nbchoose = $parties[2];
+                $nbchoice = $parties[2];
                 for ($j=3; $j < count($parties); $j++) { 
                     array_push($all_questions, questionToSQLRequest($connect, $i, $form_ID, $_SESSION['user']['id'], $typeOfInput , $titleOfInput, 0));
-                    array_push($all_chooses, chooseToSQLRequest($connect, ($j-2),$i, $form_ID, $_SESSION['user']['id'],$parties[$j]));
+                    array_push($all_choices, choiceToSQLRequest($connect, ($j-2),$i, $form_ID, $_SESSION['user']['id'],$parties[$j]));
                 }
                 break;
 
@@ -73,8 +84,8 @@ try {
         insert_arrayRequest($connect, $all_questions);
     }
     
-    if(!empty($all_chooses)){
-        insert_arrayRequest($connect, $all_chooses);
+    if(!empty($all_choices)){
+        insert_arrayRequest($connect, $all_choices);
     }
     
     $connect->commit();
@@ -84,6 +95,7 @@ try {
     $connect->rollback();
     echo 'Erreur sql : (line : '. $e->getLine() . ") " . $e->getMessage();
     delete_form($connect, $id_form);
+    $_SESSION['exportFailed'] = true;
 }
 
 

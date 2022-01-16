@@ -29,18 +29,18 @@ function addInput() {
             case "radio":
             case "checkbox":
             case "select": //FIXME
-                let choosesList = allFormQuestion[counter].firstChild.lastChild.children
-                let nb_chooses = (choosesList.length - 2)
-                string += '/' + nb_chooses
-                for (let index = 1; index <= nb_chooses; index++) {
-                    string += '/' + choosesList[index].children[2].value
+                let choicesList = allFormQuestion[counter].firstChild.lastChild.children
+                let nb_choices = (choicesList.length - 1)
+                string += '/' + nb_choices
+                for (let index = 0; index < nb_choices; index++) {
+                    string += '/' + choicesList[index].children[2].value
                 }
                 break;
 
             case "number":
             case "range":
-                let min = allFormQuestion[counter].firstChild.lastChild.children[1].lastChild.value;
-                let max = allFormQuestion[counter].firstChild.lastChild.children[2].lastChild.value;
+                let min = allFormQuestion[counter].firstChild.lastChild.children[0].value;  //target min
+                let max = allFormQuestion[counter].firstChild.lastChild.children[2].value; //target max
                 string += '/' + min + '/' + max
                 break;
 
@@ -77,10 +77,13 @@ function addInput() {
     let title = document.createElement('input');
     title.setAttribute('type', 'hidden');
     let idForm = document.getElementById('document-settings-ID').innerHTML
+    let expireForm = document.getElementById('document-settings-date').value
     title.setAttribute('value',
         document.getElementById('document-title-input').value +
         '/' +
-        idForm
+        idForm +
+        '/' +
+        expireForm
     );
     title.setAttribute('name', "form-title-ID");
 

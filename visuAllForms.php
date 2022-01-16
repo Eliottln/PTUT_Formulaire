@@ -11,8 +11,9 @@ function displayAllForm($connect){
     $forms = "";
     try {
 
-        $sql = $connect->query("SELECT * FROM Forms ")->fetchAll();
-
+        $date = $connect->quote(date("Y-m-d"));
+        $sql = $connect->query("SELECT * FROM Forms WHERE expire >= ".$date." OR expire = ''")->fetchAll();
+        
 
         foreach ($sql as $value){
 
@@ -62,6 +63,17 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <?php require 'modules/footer.php'; ?>
 
     </body>
+
+    <script>
+        <?php
+        if (isset($_SESSION['formNotFound'])) {
+            unset($_SESSION['formNotFound']);
+            echo 'function Success(){alert("le form '.$_SESSION['formNotFoundID'].' n\'est plus accessible")}
+                        Success()';
+            unset($_SESSION['formNotFoundID']);
+        }
+        ?>
+    </script>
 
 
 </html>

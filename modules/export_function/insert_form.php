@@ -1,6 +1,6 @@
 <?php
 
-function insert_form($pdo, $id, $id_owner, $nb_question = null, $title = null)
+function insert_form($pdo, $id, $id_owner, $nb_question = null, $title = null, $expire = null)
 {
     if (!empty($id_owner)) {
         $pdo->beginTransaction();
@@ -10,7 +10,8 @@ function insert_form($pdo, $id, $id_owner, $nb_question = null, $title = null)
             $sql = 'INSERT OR REPLACE INTO Forms VALUES ('. $pdo->quote($id) .
                                                         ', ' . $pdo->quote($id_owner) . 
                                                         ', ' . $pdo->quote($nb_question) . 
-                                                        ', ' . $pdo->quote($title) . ');';
+                                                        ', ' . $pdo->quote($title) .
+                                                        ', ' . $pdo->quote($expire) . ');';
             $sth = $pdo->prepare($sql);
 
             $sth->execute();
