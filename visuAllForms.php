@@ -1,14 +1,52 @@
+<?php
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
+
+if(empty($_SESSION['user']) || empty($_SESSION['user']['id'])){
+    header('Location: index.php');
+    exit();
+}
+
+function displayAllForm($connect){
+    $forms = "";
+    try {
+
+        $sql = $connect->query("SELECT * FROM Forms ")->fetchAll();
+
+
+        foreach ($sql as $value){
+
+            $forms .=   '<div class="blocArticle">   
+                            <p> IdDoc = '. $value['id'].'</p>
+                            <a href="visuForm.php?identity='.$value['id'].'">
+                                <img style="width: 50px; height: 50px" src="img/formulaire.png" alt="Prévisualisation">
+                            </a> 
+                            <p> Titre : '. $value['title'] .'</p>
+                            <p> Nb Question : '. $value['nb_question'] .'</p>
+                        </div>';
+        }
+
+    } catch (PDOException $e) {
+        if(!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 1){
+            echo 'Erreur sql : (line : '. $e->getLine() . ") " . $e->getMessage();
+        }
+        else if(!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 0){
+            echo 'Il semblerait que les formulaires ne sont pas accessible';
+        }
+        
+    }
+    return $forms;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
-    <head>
-
-        <meta charset="utf-8">
-        <title>Accueil</title>
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="">
-
-    </head>
+<?php
+$pageName = "Tous les Forms";
+include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
+?>
 
     <body>
 
@@ -16,41 +54,7 @@
 
         <main>
 
-            <?php
-
-
-            try {
-
-                $connect = new PDO("sqlite:../database.db");
-                $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                $sql = $connect->query("SELECT * FROM Document ")->fetchAll();
-
-
-                foreach ($sql as $key => $value){
-
-                    echo '<div class="blocArticle">   
-                             <p> IdDoc = '. $value['idDocument'].'</p>
-                             <a href="visuForm.php?identity='.$value['idDocument'].'">
-                                <img style="width: 50px; height: 50px" src="img/formulaire.png" alt="Prévisualisation">
-                             </a> 
-                                
-                             
-                             <p> Nb Question : '. $value['nbQuestions'] .'</p>';
-
-                }
-
-
-
-            } catch (PDOException $e) {
-                echo 'Erreur sql : ' . $e->getMessage();
-            }
-
-            $connect = null;
-
-
-
-            ?>
+            <?= displayAllForm($connect)?>
 
 
         </main>

@@ -2,9 +2,10 @@
 
     <nav>
         <ul>
-            <li><a href="/creation.php">création non fusionné</a></li>
-            <li><a href="/index.php">Menu</a></li>
-            <li><a href="/CreateForm.php">Créer un nouveau formulaire</a></li>
+            <li><div><img src="/img/favicon.png" alt="UwUniForm logo" id="headerlogo"></div><span></span></li>
+            <li><a href="/visuAllForms.php">Tous les Forms</a><span></span></li>
+            <li><a href="/CreateForm.php">Créer un nouveau formulaire</a><span></span></li>
+            <li><a href="/logout.php">Se déconnecter</a><span></span></li>
         </ul>
     </nav>
 

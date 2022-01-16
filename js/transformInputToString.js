@@ -1,111 +1,89 @@
-
-const formTemp = document.getElementById('export');
-const buttonExport = document.getElementById("submit")
-
+const formTemp = document.getElementById('export')
+document.getElementById('submit').addEventListener('click', addInput)
 
 
-buttonExport.addEventListener('click',ajoutInput)
+/*******************************
+ * 
+ * forme des questions
+ * 
+ * choix unique : type/titre
+ * 
+ * choix multiple : type/titre/nombreDeChoix/titreChoix1/titreChoix2/titreChoix3/...
+ * 
+ *
+*/
 
+function addInput() {
 
-let counter;
-let counterInput;
+    let tabInput = []
 
+    let allFormQuestion = document.querySelectorAll('#form-content div[id^="form-"]')
+    let allTextArea = document.querySelectorAll('#form-content div .question')
 
-let tabInput = [];
+    //AJOUTE LES CHOIX AU QUESTION
+    function addTabChoice(type, counter) {
 
+        let string = "";
 
-
-function ajoutInput(){
-
-    const allInput = document.querySelectorAll("input")
-    const allTextArea = document.querySelectorAll("textarea")
-    const allFormQuestion = document.querySelectorAll("#form-document>div");
-
-
-
-    console.log(allFormQuestion.length)
-
-    for (counter =0; counter < allFormQuestion.length; counter++){
-
-        let parsing1 = allFormQuestion[counter].id.split("-");
-
-        numQuestion = parsing1[1];
-        typeQuestion = parsing1[2]; //Contient le type de la question (radio/checkbox ...
-        console.log(numQuestion);
-
-        //ON AJOUTE LA QUESTION AUX TABLEAU DINPUT
-        newInput = document.createElement('input');
-        newInput.type = 'text';
-
-        switch (typeQuestion) {
+        switch (type) {
             case "radio":
-                newInput.value = 'radioQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
-
-                break;
             case "checkbox":
-                newInput.value = 'checkBoxQuestion' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
+            case "select": //FIXME
+                let choosesList = allFormQuestion[counter].firstChild.lastChild.children
+                let nb_chooses = (choosesList.length - 2)
+                string += '/' + nb_chooses
+                for (let index = 1; index <= nb_chooses; index++) {
+                    string += '/' + choosesList[index].children[2].value
+                }
+                break;
+
+            case "number":
+            case "range":
+                let min = allFormQuestion[counter].firstChild.lastChild.children[1].lastChild.value;
+                let max = allFormQuestion[counter].firstChild.lastChild.children[2].lastChild.value;
+                string += '/' + min + '/' + max
                 break;
 
             case "date":
-                newInput.value = 'date' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion;
-
-            default:
-                newInput.value = 'question' + '/' + allTextArea[parseInt(counter)].value + '/' + numQuestion; // question/quelle est la couleur ?/1
+                let format = document.querySelectorAll('#form-content div[id^="form-"]')[0].firstChild.lastChild.children[1].value;
+                string += '/' + format
                 break;
         }
 
-        newInput.name = allTextArea[parseInt(counter)].name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
-        tabInput.push(newInput);
+        return string;
+    }
+
+    //AJOUTE LA QUESTION AU TABLEAU DINPUT
+    function addTabQuestion(type, counter) {
+        let newInput = document.createElement('input')
+        newInput.type = 'hidden'
+
+        newInput.value = type + '/' + allTextArea[counter].value + addTabChoice(type, counter)
+        newInput.name = allTextArea[counter].name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
+
+        tabInput.push(newInput)
+    }
 
 
+    for (let counter = 0; counter < allFormQuestion.length; counter++) {
 
+        let typeQuestion = allFormQuestion[counter].id.split('-')[2] //Contient le type de la question (radio/checkbox ...
 
-        //On vérifie tout les champs input pour vérifier si ce sont des choix radio ou check box de la question actuelle .
-        for(counterInput =0; counterInput < allInput.length; counterInput++){
-            let parsing2 = allInput[counterInput].id.split("-");
-            let numQuestionOfInput = parsing2[0].replace('q','');
-
-            if(numQuestionOfInput === numQuestion){ //numQuestion = numero de la question (Form), numQuestionInput= le numero de la question (Form) mais affiché a coté du choix. (voir le format)
-                switch (typeQuestion) {
-                    case "radio":
-                        let newInput = document.createElement('input');
-                        let indexChoice = parsing2[1] // Choix 1, choix 2 ...
-                        console.log("Numero du choix  : " + indexChoice);
-                        newInput.type = 'text';
-                        newInput.name = allInput[counterInput].name;
-                        newInput.value = 'radioChoice' + '/' + allInput[counterInput].value + '/' + numQuestion + '/' + indexChoice;
-                        tabInput.push(newInput);
-                        break;
-
-                    case "checkbox":
-                        let newInput2 = document.createElement('input');
-                        let indexChoice2 = parsing2[1] // Choix 1, choix 2 ...
-                        console.log("Numero du choix  : " + indexChoice2);
-                        newInput2.type = 'text'
-                        newInput2.name = allInput[counterInput].name;
-                        newInput2.value = 'checkBoxChoice' + '/' + allInput[counterInput].value + '/' + numQuestion + '/' + indexChoice2 ;
-                        tabInput.push(newInput2);
-                        break;
-                    default:
-                        console.log("Le champs n'est pas un choix ");
-                }
-            }
-
-
-        }
-
-        //on affiche le nouveau form
-        for (let i = 0; i < tabInput.length; i++){
-            formTemp.appendChild(tabInput[i]);
-        }
-
-
+        addTabQuestion(typeQuestion, counter)
 
     }
 
+    //on affiche le nouveau form
+    let title = document.createElement('input');
+    title.setAttribute('type', 'hidden');
+    let idForm = document.getElementById('document-settings-ID').innerHTML
+    title.setAttribute('value',
+        document.getElementById('document-title-input').value +
+        '/' +
+        idForm
+    );
+    title.setAttribute('name', "form-title-ID");
+
+    formTemp.appendChild(title)
+    tabInput.forEach(input => formTemp.appendChild(input))
 }
-
-
-/*Recréer un formulaire puis set les valeurs des inputs avec les balises des input entière.
-
- */
