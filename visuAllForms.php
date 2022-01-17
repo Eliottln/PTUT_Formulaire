@@ -68,8 +68,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <?php
         if (isset($_SESSION['formNotFound'])) {
             unset($_SESSION['formNotFound']);
-            echo 'function Success(){alert("le form '.$_SESSION['formNotFoundID'].' n\'est plus accessible")}
-                        Success()';
+            echo 'alert("le form '.$_SESSION['formNotFoundID'].' n\'est plus accessible")';
             unset($_SESSION['formNotFoundID']);
         }
         ?>

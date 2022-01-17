@@ -17,7 +17,7 @@ let numQuestion = 0
 
 
 function newQuestion(){ //create a question input
-
+    console.log("ok");
     button.removeAttribute('disabled')
 
     const id = this.id
