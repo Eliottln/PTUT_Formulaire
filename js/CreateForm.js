@@ -67,7 +67,7 @@ function sendConfirm() {
 
 function exportIcon() {
     let submit = document.getElementById("submit")
-    console.log(submit.disabled);
+    
     if (submit.disabled) {
         submit.innerHTML = '<img src="/img/lock.svg" alt="lock">';
     }
