@@ -7,20 +7,25 @@ foreach (glob($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/*.php") as $filenam
     include $filename;
 }
 
-function selectTypeOfSort( $sort,$connect,$idForm){
+function selectTypeOfSort( $sort,$connect,$idForm, $filter='none'){
 
 
     switch ($sort){
         case 'name':
-            $results = sortByName($connect,$idForm);
+            $results = sortByName($connect,$idForm,$filter);
             break;
 
         case 'question':
-            $results = sortByQuestion($connect,$idForm);
+            $results = sortByQuestion($connect,$idForm,$filter);
             break;
 
         case 'lastname':
-            $results = sortByLastName($connect,$idForm);
+            $results = sortByLastName($connect,$idForm,$filter);
+            break;
+
+        case 'none':
+            //PASSE ICI SEULEMENT LORSQUE SORT EST EGAL A 'none' CAR IL YA DEJA UNE CONDITION DANS visuResults
+            $results = notSorted($connect, $idForm, $filter);
             break;
 
     }
@@ -29,34 +34,49 @@ function selectTypeOfSort( $sort,$connect,$idForm){
 
 }
 
-function sortByName($connect,$idForm){
-
+function notSorted($connect, $idForm, $filter = 'none'){
     $results = $connect->query("SELECT * FROM Results 
                                 INNER JOIN Users AS Tusers      
                                 ON Tusers.id = Results.id_user   
-                                WHERE Results.id_form = ".$idForm ."
+                                WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )."
+                                ")->fetchAll();
+
+    return $results;
+}
+
+function sortByName($connect,$idForm, $filter = 'none'){
+
+        $results = $connect->query("SELECT * FROM Results 
+                                INNER JOIN Users AS Tusers      
+                                ON Tusers.id = Results.id_user   
+                                WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
                                 ORDER BY UPPER(Tusers.name) ASC
                                 ")->fetchAll();
 
-    return $results;
+        return $results;
+
+
 }
 
-function sortByQuestion($connect,$idForm){
+function sortByQuestion($connect,$idForm, $filter = 'none'){
+
+    $results = $connect->query("SELECT * FROM Results 
+                            INNER JOIN Users AS Tusers      
+                            ON Tusers.id = Results.id_user   
+                            WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
+                            ORDER BY Results.id_question ASC
+                            ")->fetchAll();
+
+    return $results;
+
+
+}
+
+function sortByLastName($connect, $idForm, $filter='none'){
     $results = $connect->query("SELECT * FROM Results 
                                 INNER JOIN Users AS Tusers      
                                 ON Tusers.id = Results.id_user   
-                                WHERE Results.id_form = ".$idForm ."
-                                ORDER BY Results.id_question ASC
-                                ")->fetchAll();
-
-    return $results;
-}
-
-function sortByLastName($connect, $idForm){
-    $results = $connect->query("SELECT * FROM Results 
-                                INNER JOIN Users AS Tusers      
-                                ON Tusers.id = Results.id_user   
-                                WHERE Results.id_form = ".$idForm ."
+                                WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
                                 ORDER BY UPPER(Tusers.lastname) ASC
                                 ")->fetchAll();
 
@@ -64,7 +84,7 @@ function sortByLastName($connect, $idForm){
 }
 
 
-function displayResults($connect,$idForm,$sort){
+function displayResults($connect,$idForm,$sort, $filter='none' ){
     $resultString = "
                         <tr>
                             <th>Question</th>
@@ -76,8 +96,8 @@ function displayResults($connect,$idForm,$sort){
 
     try {
 
-        $results = selectTypeOfSort($sort,$connect,$idForm);
-        //$results = sortByName($connect,$idForm);
+        $results = selectTypeOfSort($sort,$connect,$idForm,$filter);
+
 
         foreach($results as $value){
 
@@ -90,7 +110,6 @@ function displayResults($connect,$idForm,$sort){
                               </tr>";
 
         }
-
 
     } catch (PDOException $e) {
         echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
@@ -105,6 +124,9 @@ function displayResults($connect,$idForm,$sort){
 
 $sort = $_POST["sort"];
 $idForm = $_POST["identity"];
+$filter = $_POST["filter"];
 
 
-echo displayResults($connect,$idForm,$sort);
+$finalString = displayResults($connect,$idForm,$sort,$filter);
+
+echo $finalString;

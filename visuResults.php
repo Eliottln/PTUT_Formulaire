@@ -15,6 +15,21 @@ if (empty($_GET['identity'])) {
     exit();
 }
 
+function fileSelectQuestion($connect){
+    $ret = $connect->query("SELECT DISTINCT * FROM Results
+                            INNER JOIN Questions AS Tquestions
+                            ON Tquestions.id = Results.id_question
+                            WHERE Results.id_form = ". $_GET['identity'] . " AND Tquestions.id_form = ". $_GET['identity'] ." 
+                            GROUP BY Tquestions.title")->fetchAll();
+
+    $stringRet = "";
+    foreach ($ret as $value){
+        $stringRet .= "<option value=". $value['id_question'] ."> ". $value['title'] ."</option>";
+    }
+
+    return $stringRet;
+}
+
 function notSorted($connect){
 
     $results = $connect->query("SELECT * FROM Results 
@@ -53,6 +68,7 @@ function displayResults($connect)
                                   <td> ".$value['answer'] ."</td>
                               </tr>";
 
+
         }
 
     } catch (PDOException $e) {
@@ -80,11 +96,18 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <h2>Les résultats de ce formulaires sont:</h2> <br>
 
-    <select name="pets" id="sort-select">
+    <select name="sort" id="sort-select">
         <option value="none">--Selectionner un tri--</option>
         <option value="name">Trier par prénom</option>
         <option value="question">Trier par question</option>
         <option value="lastname">Trier par nom de famille</option>
+
+    </select>
+    <br>
+    <select name="filter-question" id="filter-question-select">
+        <option value="none">--Pas de filtre--</option>
+        <?= fileSelectQuestion($connect)?>
+
 
     </select>
 
@@ -99,18 +122,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
 
-
-
-
 <script>
     let sortMenu = document.getElementById('sort-select');
-
+    let filterMenu = document.getElementById('filter-question-select')
     function send(){
 
-        if(sortMenu.value != 'none') {
+        if(sortMenu.value != 'none' || filterMenu.value != 'none'){
             document.getElementById('table-resultats').innerHTML = "";
-
-
+            let filter = filterMenu.value;
             let sort = sortMenu.value;
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
@@ -118,13 +137,15 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             }
             xhttp.open("POST", "/asyncResults.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('sort=' + sort + '&identity=' + <?=$_GET['identity'] ?>);
+            xhttp.send('sort=' + sort + '&filter=' + filter + '&identity=' + <?=$_GET['identity'] ?>);
         }
+
+
+
     }
 
     sortMenu.addEventListener('change', send);
-
-
+    filterMenu.addEventListener('change',send);
 
 </script>
 
