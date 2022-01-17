@@ -7,7 +7,8 @@ if(empty($_SESSION['user']) || empty($_SESSION['user']['id'])){
     exit();
 }
 
-function displayAllForm($connect){
+function displayAllForm($connect): string
+{
     $forms = "";
     try {
 
@@ -24,6 +25,7 @@ function displayAllForm($connect){
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
                             <p> Nb Question : '. $value['nb_question'] .'</p>
+                            <a href="CreateForm.php?identity='.$value['id'].'">Modifier</a>
                         </div>';
         }
 

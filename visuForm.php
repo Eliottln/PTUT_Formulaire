@@ -32,7 +32,7 @@ else{
 }
 
 
-function displayForm($connect)
+function displayForm($connect): string
 {
     $forms = "";
 
