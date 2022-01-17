@@ -1,8 +1,15 @@
+<?php
+if(isset($_SESSION['user'])&&!empty($_SESSION['user'])){
+    header('Location: visuAllForms.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr" class="reflect">
 
 <?php
-$pageName = "UwUniForm";
+$pageName = "Fill N Form";
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 ?>
 
@@ -16,7 +23,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
 
-        <form id="form-signin" action="https://ressources.site/" method="post" class="ResponsiveForm">
+        <form id="form-signin" action="/signin.php" method="post" class="ResponsiveForm">
 
             <h2>S'inscrire</h2>
 

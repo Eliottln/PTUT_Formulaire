@@ -1,7 +1,33 @@
 <?php
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/ImportFile.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
+
+//TODO recup form
+
+function idFormExist($pdo, $id)
+{
+    $result = $pdo->query('SELECT id FROM Forms WHERE id = ' . $id)->fetchColumn();
+    if ($result == $id) return true;
+    return false;
+}
+
+function getRandomID($pdo)
+{
+    if (!isset($_GET['id_form']) && empty($_GET['id_form'])) {
+        $r_id = rand(100000, 999999);
+        while (idFormExist($pdo, $r_id)) {
+            $r_id = rand(100000, 999999);
+        }
+        $_GET['id_form'] = $r_id;
+        return $r_id;
+    } else {
+        return $_GET['id_form'];
+    }
+}
+
 ?>
+
 
 
 <!DOCTYPE html>
@@ -70,10 +96,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                             <label for="new-date">Date</label>
                         </button>
                         <button type="button" id="new-email" value="new-email" title="email">@
-                        <label for="new-email">Email</label>
+                            <label for="new-email">Email</label>
                         </button>
                         <button type="button" id="new-number" value="new-number" title="number">1
-                        <label for="new-number">Nombre</label>
+                            <label for="new-number">Nombre</label>
                         </button>
                         <button type="button" id="new-radio" value="new-radio" title="radio">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -128,7 +154,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                             <label for="new-url">URL</label>
                         </button>
                         <button type="button" id="new-file" value="new-file" title="file">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 18H17V16H7V18Z" fill="currentColor" /><path d="M17 14H7V12H17V14Z" fill="currentColor" /><path d="M7 10H11V8H7V10Z" fill="currentColor" /><path fill-rule="evenodd" clip-rule="evenodd" d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19V9C21 5.13401 17.866 2 14 2H6ZM6 4H13V9H19V19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V5C5 4.44772 5.44772 4 6 4ZM15 4.10002C16.6113 4.4271 17.9413 5.52906 18.584 7H15V4.10002Z" fill="currentColor" /></svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 18H17V16H7V18Z" fill="currentColor" />
+                                <path d="M17 14H7V12H17V14Z" fill="currentColor" />
+                                <path d="M7 10H11V8H7V10Z" fill="currentColor" />
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19V9C21 5.13401 17.866 2 14 2H6ZM6 4H13V9H19V19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V5C5 4.44772 5.44772 4 6 4ZM15 4.10002C16.6113 4.4271 17.9413 5.52906 18.584 7H15V4.10002Z" fill="currentColor" />
+                            </svg>
                             <label for="new-file">Fichier</label>
                         </button>
                     </form>
@@ -165,11 +196,20 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             <dialog id="settings-doc">
                 <label id="document-settings-label" for="document-settings">Settings</label>
                 <form id="document-settings">
-                    <label for="d"> Title
-                        <input id="d" type="text" name="title" placeholder="Form title">
+
+                    <h3> ID #<span id="document-settings-ID"><?= getRandomID($connect) ?></span></h3>
+
+                    <label for="document-settings-title"> Titre
+                        <input id="document-settings-title" type="text" name="title" placeholder="Form title">
                     </label>
-                    <label for="document-layout"> Layout
+
+                    <label for="document-settings-date"> Date d'expiration
+                        <input id="document-settings-date" type="date" name="expire" placeholder="Form expiry date">
+                    </label>
+
+                    <label for="document-layout"> Nombre de colonne
                         <input id="document-layout" type="range" min="1" max="3" value="1" name="layout">
+                        <span id="document-layout-counter">1</span>
                     </label>
                     <button id="confirmAS" type="button">Confirmer</button>
                     <button id="cancelAS" type="reset">Annuler</button>
@@ -189,8 +229,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <form id="document" action="https://ressources.site/" method="post">
             <div id="document-title">
-                <label for="title">Titre :</label>
-                <input type="text" name="title" id="title">
+                <label>Titre :</label>
+                <input type="text" name="title" id="document-title-input">
             </div>
             <div id="form-content"></div>
         </form>
@@ -224,9 +264,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script>
-        $( function() {
-            $( "#form-content" ).sortable();
-        } );
+        $(function() {
+            $("#form-content").sortable();
+        });
     </script>
 
     <script src="/js/newQuestion.js"></script>
@@ -235,6 +275,24 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="/js/addInputFromObject.js"></script>
     <script>
         <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
+
+        <?php
+        if (isset($_SESSION['exportSucces'])) {
+            unset($_SESSION['exportSucces']);
+            echo 'function Success(){alert("export réussi")}
+                        Success()';
+        }
+        else if (isset($_SESSION['exportWrongExpiredDate'])) {
+            unset($_SESSION['exportWrongExpiredDate']);
+            echo 'function Success(){alert("export echec mauvaise date d\'expiration")}
+                        Success()';
+        }
+        else if (isset($_SESSION['exportFailed'])) {
+                unset($_SESSION['exportFailed']);
+                echo 'function Success(){alert("export echec")}
+                            Success()';
+        }
+        ?>
     </script>
 
 </body>

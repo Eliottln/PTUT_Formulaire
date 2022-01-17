@@ -1,7 +1,7 @@
 
 Admin-----------------------------
 
-email : admin@gmail.com
+email : admin@admin.ad
 mdp : Admin0123
 
 Users-----------------------------

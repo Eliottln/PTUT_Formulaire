@@ -1,157 +1,143 @@
+<?php
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
+foreach (glob($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/*.php") as $filename) {
+    include $filename;
+}
+
+if (empty($_GET['identity'])) {
+
+    if (!empty($_POST)) {
+        sendMyResponse($connect, $_POST);
+    }
+
+    header("Location: visuAllForms.php");
+    exit();
+}
+
+//!!! GIGA LOURD !!!
+$date = $connect->quote(date("Y-m-d"));
+$form_data = $connect->query("SELECT id, title, id_owner FROM Forms WHERE id = " . $_GET['identity'] . " AND (expire >= " . $date ." OR expire = '')")->fetch() ?? NULL;
+
+if ($form_data) {
+    $form_title = $form_data['title'];
+    $owner_data = $connect->query("SELECT name,lastname FROM Users WHERE id = " . $form_data['id_owner'])->fetch() ?? NULL;
+    $form_owner = $owner_data['name'] . " " . $owner_data['lastname'];
+}
+else{
+    $_SESSION['formNotFound'] = true;
+    $_SESSION['formNotFoundID'] = $_GET['identity'];
+    header("Location: visuAllForms.php");
+    exit();
+}
+
+
+function displayForm($connect)
+{
+    $forms = "";
+
+
+    try {
+        $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Questions 
+                                            WHERE id_form = " . $_GET['identity'])->fetchAll();
+        $form_choices = $connect->query("SELECT * FROM Choices 
+                                            WHERE id_form = " . $_GET['identity'])->fetchAll();
+
+        $i = 1;
+        foreach ($form_questions as $value) {
+
+            switch ($value['type']) {
+                case 'radio':
+                    $forms .= addRadio($i, $value['title'], getChoicesArray($value['id'], $form_choices));
+                    break;
+                case 'checkbox':
+                    $forms .= addCheckbox($i, $value['title'], getChoicesArray($value['id'], $form_choices));
+                    break;
+                case 'select':
+                    //TODO
+                    break;
+
+                case 'range':
+                case 'number':
+                    $forms .= addQuestion($i, $value['title'], $value['type'], $value['min'], $value['max']);
+                    break;
+
+                case 'date':
+                    $forms .= addQuestion($i, $value['title'], $value['type'], $value['format']);
+                    break;
+
+                default:
+                    $forms .= addQuestion($i, $value['title'], $value['type']);
+                    break;
+            }
+            $i++;
+        }
+    } catch (PDOException $e) {
+        if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 1) {
+            echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
+        } else if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 0) {
+            echo 'Il semblerait que le formulaire ne soit pas accessible';
+        }
+    }
+
+    return $forms;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
-    <head>
+<?php
+$pageName = "Form " . $_GET['identity'];
+include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
+?>
 
-        <meta charset="utf-8">
-        <title>Accueil</title>
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="">
+<body>
 
-    </head>
+    <?php require 'modules/header.php'; ?>
 
-    <body>
+    <main>
 
-        <?php require 'modules/header.php'; ?>
+        <div>
+            <h1><?= 'Formulaire numéro : ' . $_GET['identity'] ?></h1>
+        </div>
 
-        <main>
+        <div>
+            <h2><?= 'Titre : ' . $form_title ?></h2>
+        </div>
 
+        <div>
+            <h3><?= 'by ' . $form_owner ?></h3>
+        </div>
+
+        <form action="/visuForm.php" method="post" enctype="multipart/form-data">
+
+            <?= '<input type="hidden" name="formID" value="' . $form_data['id'] . '">' .
+                '<input type="hidden" name="ownerID" value="' . $form_data['id_owner'] . '">' ?>
+
+            <?= displayForm($connect) ?>
             <div>
-                <h1><?php echo 'Formulaire numéro : '. $_GET['identity'] ?></h1>
+                <button id="S" type="submit">Envoyer</button>
+                <button id="R" type="reset">Effacer</button>
             </div>
+        </form>
 
-            <form action="">
+    </main>
 
+    <?php require 'modules/footer.php'; ?>
 
-            <?php
-
-
-            try {
-
-                $connect = new PDO("sqlite:../database.db");
-                $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                $sql = $connect->query("SELECT * FROM Form WHERE idDocument = ". $_GET['identity'] ."  ")->fetchAll();
-
-
-
-                foreach ($sql as $key => $value){
-
-
-                    switch ($value['typeOfQuestion']){
-                        case 'question':
-                            echo addQuestion($value['descript'],$value['idForm']);
-                            break;
-                        case 'radioQuestion':
-
-                            $sql2 = $connect->query('SELECT * FROM RadioChoice WHERE idForm='.$value['idForm'].' AND idDocument='.$value['idDocument'].';')->fetchAll();
-                            $tabRadioLab = array();
-                            foreach ($sql2 as $key2 => $value2){
-                                array_push($tabRadioLab,$value2['descript']);
-                            }
-
-                            echo addRadioQuestion($value['descript'],$value['idForm'],$tabRadioLab);
-                            break;
-
-                        case 'checkBoxQuestion':
-                            $sql3 = $connect->query('SELECT * FROM CheckBoxChoice WHERE idForm='.$value['idForm'].' AND idDocument='.$value['idDocument'].';')->fetchAll();
-                            $tabRadioLab = array();
-                            foreach ($sql3 as $key3 => $value3){
-                                array_push($tabRadioLab,$value3['descript']);
-                            }
-
-                            echo addCheckBoxQuestion($value['descript'],$value['idForm'],$tabRadioLab);
-                            break;
-
-                        case 'date':
-                            echo addDate($value['descript'],$value['idForm']);
-                            break;
-
-                        default:
-
-                    }
-
-
-                }
-
-
-
-
-            } catch (PDOException $e) {
-                echo 'Erreur sql : ' . $e->getMessage();
-            }
-
-            $connect = null;
-
-
-
-            ?>
-                <div >
-                    <button id="S" type="button" >Envoyer</button>
-                    <button id="R" type="reset">Effacer</button>
-                </div>
-            </form>
-
-        </main>
-
-        <?php require 'modules/footer.php'; ?>
-
-    </body>
-
+</body>
+<script>
+    function rangeCounter(id) {
+        console.log(id);
+        let value = document.getElementById(id).value;
+        document.getElementById(id + "-counter").innerHTML = value;
+    }
+    document.querySelectorAll("input[type='range']").forEach(
+        range => range.addEventListener("change", rangeCounter.bind(
+            null, range.id))
+    );
+</script>
 
 </html>
-
-<?php
-
-function addQuestion($_descript, $_id){
-    return '<div id="question-'. $_id .'-text">
-                <label for="question-'.$_id .'" > '. $_descript.'</label>
-                <input id="question-'. $_id  .'" type="text" name="question-'. $_id .'" required>
-            </div>
-    ';
-}
-
-function addDate($_descript, $_id){
-    return '<div id="question-'. $_id .'-date">
-                <label for="question-'.$_id .'" > '. $_descript.'</label>
-                <input id="question-'. $_id  .'" type="date" name="question-'. $_id .'" required>
-            </div>
-    ';
-}
-
-function addRadioQuestion($_descript, $_idQuestion, array $_tabRadioLabel):string{
-    $resultat =  '<div id="question-'. $_idQuestion .'-radio">
-                        <label> ' . $_descript . '</label>
-                        <div>';
-
-    for($i = 0; $i < count($_tabRadioLabel); $i++){
-        $resultat .= '<div> 
-                            <input class="radio" name="question-'. $_idQuestion .'" value="'. $_tabRadioLabel[$i] .'" type="radio" id="question-'. $_idQuestion .'-'. $i.'" >
-                            <label for="question-'. $_idQuestion .'-'. $i.'"> '. $_tabRadioLabel[$i] .'</label>
-                      </div>   ';
-    }
-
-    $resultat .= '    </div>
-                </div>';
-
-    return $resultat;
-}
-
-
-function addCheckBoxQuestion($_descript, $_idQuestion, array $_tabCheckBoxLabel):string{
-    $resultat =  '<div id="question-'. $_idQuestion .'-checkbox">
-                        <label> ' . $_descript . '</label>
-                        <div>';
-
-    for($i = 0; $i < count($_tabCheckBoxLabel); $i++){
-        $resultat .= '<div> 
-                            <input class="checkbox" name="question-'. $_idQuestion .'[]" value="'. $_tabCheckBoxLabel[$i] .'" type="checkbox" id="question-'. $_idQuestion .'-'. $i.'" >
-                            <label for="question-'. $_idQuestion .'-'. $i.'"> '. $_tabCheckBoxLabel[$i] .'</label>
-                      </div>   ';
-    }
-
-    $resultat .= '    </div>
-                </div>';
-
-    return $resultat;
-}
