@@ -13,20 +13,19 @@ function displayAllForm($connect)
     try {
 
         $date = $connect->quote(date("Y-m-d"));
-        if(!empty($_GET['search'])){
-            $sql = $connect->query("SELECT * FROM Forms WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%".strtolower($_GET['search'])."%'")->fetchAll();
-        }
-        else{
+        if (!empty($_GET['search'])) {
+            $sql = $connect->query("SELECT * FROM Forms WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%" . strtolower($_GET['search']) . "%'")->fetchAll();
+        } else {
             $sql = $connect->query("SELECT * FROM Forms WHERE expire >= " . $date . " OR expire = ''")->fetchAll();
         }
-        
+
 
 
         foreach ($sql as $value) {
 
             $forms .=   '<div class="blocArticle">
                             <div>
-                                <a href="#">
+                                <a href="/visuForm.php?identity=' . $value['id'] . '">
                                     <p>ID #' . $value['id'] . '</p>
                                     <div>
                                         <img src="img/formulaire.png" alt="image form">
@@ -88,6 +87,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         unset($_SESSION['formNotFoundID']);
     }
     ?>
+
+    function layoutVisuAllForms() {
+        let n = Math.round(window.innerWidth * 2 / 500)
+        document.documentElement.style.setProperty('--layoutVisuAllForms', n)
+    }
+
+    window.addEventListener('resize', layoutVisuAllForms)
+    layoutVisuAllForms()
 </script>
 
 

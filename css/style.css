@@ -21,6 +21,9 @@
   --bubble1: #000000;
   --bubble2: #111111;
   --bubble3: #757575;
+
+  /*value JS*/
+  --layoutVisuAllForms : 3;
 }
 
 @font-face {
@@ -1157,7 +1160,7 @@ dialog[class="content"] pre {
 }
 
 /*#################################################*/
-/*VisuAllForm*/
+/*VisuAllForms*/
 /*#################################################*/
 
 #visuAll{
@@ -1182,7 +1185,7 @@ dialog[class="content"] pre {
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: calc(100% / 3);
+  width: calc(100% / var(--layoutVisuAllForms,3));
 }
 
 .blocArticle > div {
@@ -1270,4 +1273,8 @@ dialog[class="content"] pre {
   top: 10px;
   left: 12px;
 }
+
+/*#################################################*/
+/*VisuForm*/
+/*#################################################*/
 
