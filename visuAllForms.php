@@ -80,6 +80,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 </body>
 
+<script src="/js/class_notification.js"></script>
 <script>
     <?php
     if (isset($_SESSION['formNotFound'])) {

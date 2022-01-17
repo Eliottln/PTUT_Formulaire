@@ -1205,6 +1205,7 @@ dialog[class="content"] pre {
   background-color: var(--first);
   text-align: center;
   padding: 5px;
+  width: 200px;
 }
 
 .blocArticle > div div{
