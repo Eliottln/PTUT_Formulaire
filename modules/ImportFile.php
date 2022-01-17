@@ -68,7 +68,7 @@ function foundObject($inputArray,$name){
     return null;
 }
 
-if(!empty($_POST)){
+if(!empty($_POST["fileType"])){
     switch ($_POST["fileType"]) {
         case 'xml':
         case 'html':

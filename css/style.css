@@ -858,7 +858,7 @@ dialog[class="content"] pre {
   width: 100%;
 }
 
-#form-content div div:first-child textarea {
+.question {
   width: 92%;
   margin-left: 2%;
   border: none;

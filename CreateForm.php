@@ -26,6 +26,13 @@ function getRandomID($pdo)
     }
 }
 
+function setTitle($pdo) : string
+{
+    if (isset($_GET['identity'])) {
+        return $pdo->query('SELECT title FROM Forms WHERE id = ' . $_GET['identity'])->fetchColumn();
+    }
+    return "";
+}
 ?>
 
 
@@ -229,8 +236,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <form id="document" action="https://ressources.site/" method="post">
             <div id="document-title">
-                <label>Titre :</label>
-                <input type="text" name="title" id="document-title-input">
+                <label for="document-title-input">Titre :</label>
+                <input type="text" name="title" id="document-title-input" value="<?= setTitle($connect)?>">
             </div>
             <div id="form-content"></div>
         </form>
@@ -274,22 +281,57 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="/js/CreateForm.js"></script>
     <script src="/js/addInputFromObject.js"></script>
     <script>
-        <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
+    <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
 
-        <?php
-        if (isset($_SESSION['exportSucces'])) {
-            unset($_SESSION['exportSucces']);
-            echo 'alert("export réussi")';
+    <?php
+    if (isset($_SESSION['exportSucces'])) {
+        unset($_SESSION['exportSucces']);
+        echo 'alert("export réussi")';
+    }
+    else if (isset($_SESSION['exportWrongExpiredDate'])) {
+        unset($_SESSION['exportWrongExpiredDate']);
+        echo 'alert("export echec mauvaise date d\'expiration")';
+    }
+    else if (isset($_SESSION['exportFailed'])) {
+        unset($_SESSION['exportFailed']);
+        echo 'alert("export echec")';
+    }
+
+
+    if (isset($_GET['identity'])) {
+
+        try {
+            $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Questions 
+                                            WHERE id_form = " . $_GET['identity'])->fetchAll();
+            $form_choices = $connect->query("SELECT * FROM Choices 
+                                            WHERE id_form = " . $_GET['identity'])->fetchAll();
+
+            foreach ($form_questions as $value) {
+
+                switch ($value['type']) {
+                    case 'checkbox':
+                    case 'radio':
+                    case 'select':
+                        echo 'newBloc(' . json_encode($value) . ', '. json_encode($form_choices) .')';
+                        break;
+
+                    default:
+                        echo 'newBloc(' . json_encode($value) . ')';
+                        break;
+
+                }
+
+                echo "\n";
+            }
+        } catch (PDOException $e) {
+            if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 1) {
+                echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
+            } else if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 0) {
+                echo 'Il semblerait que le formulaire ne soit pas accessible';
+            }
         }
-        else if (isset($_SESSION['exportWrongExpiredDate'])) {
-            unset($_SESSION['exportWrongExpiredDate']);
-            echo 'alert("export echec mauvaise date d\'expiration")';
-        }
-        else if (isset($_SESSION['exportFailed'])) {
-                unset($_SESSION['exportFailed']);
-                echo 'alert("export echec")';
-        }
-        ?>
+    }
+    ?>
     </script>
 
 </body>
