@@ -19,6 +19,10 @@ function selectTypeOfSort( $sort,$connect,$idForm){
             $results = sortByQuestion($connect,$idForm);
             break;
 
+        case 'lastname':
+            $results = sortByLastName($connect,$idForm);
+            break;
+
     }
 
     return $results;
@@ -31,7 +35,7 @@ function sortByName($connect,$idForm){
                                 INNER JOIN Users AS Tusers      
                                 ON Tusers.id = Results.id_user   
                                 WHERE Results.id_form = ".$idForm ."
-                                ORDER BY Tusers.name ASC
+                                ORDER BY UPPER(Tusers.name) ASC
                                 ")->fetchAll();
 
     return $results;
@@ -47,6 +51,18 @@ function sortByQuestion($connect,$idForm){
 
     return $results;
 }
+
+function sortByLastName($connect, $idForm){
+    $results = $connect->query("SELECT * FROM Results 
+                                INNER JOIN Users AS Tusers      
+                                ON Tusers.id = Results.id_user   
+                                WHERE Results.id_form = ".$idForm ."
+                                ORDER BY UPPER(Tusers.lastname) ASC
+                                ")->fetchAll();
+
+    return $results;
+}
+
 
 function displayResults($connect,$idForm,$sort){
     $resultString = "

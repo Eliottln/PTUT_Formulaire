@@ -84,6 +84,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <option value="none">--Selectionner un tri--</option>
         <option value="name">Trier par prénom</option>
         <option value="question">Trier par question</option>
+        <option value="lastname">Trier par nom de famille</option>
 
     </select>
 
