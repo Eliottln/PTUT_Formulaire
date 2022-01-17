@@ -1155,3 +1155,119 @@ dialog[class="content"] pre {
   transform-origin: 17vw -1vh;
   box-shadow: -34vmin 0 4.440481729958127vmin currentColor;
 }
+
+/*#################################################*/
+/*VisuAllForm*/
+/*#################################################*/
+
+#visuAll{
+  width: 100vw;
+  align-items: center;
+}
+
+/*SEARCH*/
+#visuAll > div:first-child{
+  display: flex;
+}
+
+
+/*List forms*/
+#visuAll > div:last-child{
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.blocArticle{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% / 3);
+}
+
+.blocArticle > div {
+  margin-block: 10px;
+  border: 2px solid var(--first);
+  border-radius: 10px;
+  background-color: var(--first);
+  overflow: hidden;
+}
+
+.blocArticle > div > a{
+  text-decoration: none;
+  color: var(--second);
+}
+
+.blocArticle > div p{
+  background-color: var(--first);
+  text-align: center;
+  padding: 5px;
+}
+
+.blocArticle > div div{
+  background-color: var(--second);
+}
+
+.blocArticle > div img{
+  object-fit: cover;
+  object-position: center;
+  width: 200px;
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  margin-block: 10px;
+  border: 2px solid var(--first);
+}
+
+.search input {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  width: 30vw;
+}
+
+.search button {
+  width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: var(--first);
+  position: relative;
+  top: -1px;
+  height: calc(100% - -1px);
+}
+
+.search button span {
+  background-color: #fff0;
+  color: white;
+}
+
+.gg-search {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs, 1));
+  width: 16px;
+  height: 16px;
+  border: 2px solid;
+  border-radius: 100%;
+  margin-left: -4px;
+  margin-top: -4px;
+}
+.gg-search::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  border-radius: 3px;
+  width: 2px;
+  height: 8px;
+  background: currentColor;
+  transform: rotate(-45deg);
+  top: 10px;
+  left: 12px;
+}
+
