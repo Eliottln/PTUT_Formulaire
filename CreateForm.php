@@ -26,6 +26,13 @@ function getRandomID($pdo)
     }
 }
 
+function setTitle($pdo) : string
+{
+    if (isset($_GET['identity'])) {
+        return $pdo->query('SELECT title FROM Forms WHERE id = ' . $_GET['identity'])->fetchColumn();
+    }
+    return "";
+}
 ?>
 
 
@@ -230,7 +237,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <form id="document" action="https://ressources.site/" method="post">
             <div id="document-title">
                 <label for="document-title-input">Titre :</label>
-                <input type="text" name="title" id="document-title-input">
+                <input type="text" name="title" id="document-title-input" value="<?= setTitle($connect)?>">
             </div>
             <div id="form-content"></div>
         </form>
@@ -300,19 +307,19 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                                             WHERE id_form = " . $_GET['identity'])->fetchAll();
 
             foreach ($form_questions as $value) {
-                echo 'newBloc("' . $value["title"] . '", "'.$value['type'].'")';
 
-                /*switch ($value['type']) {
-                    case 'radio':
-
-                        break;
+                switch ($value['type']) {
                     case 'checkbox':
+                    case 'radio':
+                    case 'select':
+                        echo 'newBloc(' . json_encode($value) . ', '. json_encode($form_choices) .')';
                         break;
 
                     default:
+                        echo 'newBloc(' . json_encode($value) . ')';
                         break;
 
-                }*/
+                }
 
                 echo "\n";
             }
