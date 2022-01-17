@@ -2,7 +2,7 @@
 let buttonOptions = document.querySelectorAll("#addSection > button");
 
 try {
-    buttonOptions.forEach(e => e.addEventListener('click', newQuestion));
+    buttonOptions.forEach(e => e.addEventListener('click', newBloc));
 } catch (error) {
     console.error(error);
 }
@@ -16,11 +16,18 @@ let numQuestion = 0
 /*****************************************************/
 
 
-function newQuestion(){ //create a question input
+function newBloc(qValue,type){ //create a question input
 
+    if (typeof(qValue) != "string")
+        qValue=null
     button.removeAttribute('disabled')
 
-    const id = this.id
+    let id
+    if (typeof(type) != "string")
+        id = this.id
+    else
+        id = 'new-'+type
+
 
     //create the bloc for the question
     function addDivElement(id){ //create the div element for the question
@@ -67,9 +74,10 @@ function newQuestion(){ //create a question input
     }
 
 
-    let question = addDivElement(id).id;
+    let bloc = addDivElement(id).id;
 
-    let div = document.querySelector('#'+question+' .content')
+    document.querySelector('#'+bloc+' .question').value = qValue
+    let div = document.querySelector('#'+bloc+' .content')
 
 
     switch (id){
@@ -213,57 +221,6 @@ function moveQuestion(){
         let node = document.querySelector('div[id^="form-'+(question+1)+'"]')
         swapNodes(current, node)
     }
-}
-
-
-function update(node,i){
-
-    let numBlock = Number.parseInt(node.id.split("-")[1])
-    let typeBlock = node.id.split("-")[2]
-    node.id = 'form-'+(numBlock + i)+'-'+typeBlock
-
-    document.querySelector('#'+node.id+' .question').setAttribute('name', 'q'+(numBlock+i))
-
-    document.querySelector('#'+node.id+' .required').setAttribute('name', 'required-'+(numBlock+i))
-
-    document.getElementById('up-'+numBlock+'-'+typeBlock).id = 'up-'+(numBlock + i)+'-'+typeBlock
-    document.getElementById('del-'+numBlock+'-'+typeBlock).id = 'del-'+(numBlock + i)+'-'+typeBlock
-    document.getElementById('down-'+numBlock+'-'+typeBlock).id = 'down-'+(numBlock + i)+'-'+typeBlock
-
-    switch (typeBlock){
-
-        case 'range':
-            let min = document.getElementById('min-'+numBlock)
-            min.id = 'min-'+(numBlock + i)
-            min.setAttribute('name',min.id)
-            let max = document.getElementById('max-'+numBlock)
-            max.id = 'max-'+(numBlock + i)
-            max.setAttribute('name',max.id)
-            break
-
-        case 'radio':
-            updateNumRC(numBlock,typeBlock,i)
-            break
-
-        case 'checkbox':
-            updateNumRC(numBlock,typeBlock,i)
-            break
-
-        case 'select':
-            updateNumRC(numBlock,typeBlock,i)
-            break
-
-        case 'date':
-            let select = document.getElementById('select-date-'+numBlock)
-            select.id = 'select-date-'+(numBlock + i)
-            select.setAttribute('name',select.id)
-            document.getElementById('date-'+numBlock).id = 'date-'+(numBlock + i)
-            break
-
-        default:
-            break
-    }
-
 }
 
 
