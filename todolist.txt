@@ -1,6 +1,0 @@
--Moduler tout en fonction, parce que la frero c'est cringe
--Ajouter une question dans le champ des questions
--gerer les checkbox et autres choix multiples
-
--RECUPERER TOUT LES TEXT AREA -->  1 question = 1 textarea
--MODIFIER LES NOM DANS CHAMSPS
