@@ -133,7 +133,6 @@ function verification(index = 0){
 
         for (let i = index; i < allQuestions.length; i++) {
             let num = i + 1
-            console.log(num)
             let type = allQuestions[i].id.split("-")[2]
 
             allQuestions[i].id = 'form-' + num + '-' + type
@@ -200,17 +199,7 @@ function moveQuestion(){
         if (numQuestion===0){
             button.setAttribute('disabled','')
         }else {
-
             verification(question-1)
-            /*let q = document.querySelectorAll('div[id^="form-"]')
-
-            q.forEach(e => {
-
-                let numBlock = Number.parseInt(e.id.split("-")[1])
-                if (numBlock > question) {
-                    update(e, -1)
-                }
-            })*/
         }
 
     }
@@ -220,7 +209,7 @@ function moveQuestion(){
         swapNodes(node, current)
     }
 
-    else if (id.startsWith('down') && question !== numQuestion){
+    else if (id.startsWith('down') && question < numQuestion){
         let node = document.querySelector('div[id^="form-'+(question+1)+'"]')
         swapNodes(current, node)
     }
@@ -308,9 +297,7 @@ function swapNodes(node1, node2) {
 
     let num = Number.parseInt(node1.id.split("-")[1])
 
-    update(node1,-num)
-    update(node2,-1)
-    update(node1,num+1)
+    verification(num-1)
 }
 
 
