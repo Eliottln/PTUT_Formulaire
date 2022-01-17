@@ -1,7 +1,7 @@
 
 <?php
 
-include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
+
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 foreach (glob($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/*.php") as $filename) {
     include $filename;
