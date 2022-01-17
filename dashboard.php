@@ -12,8 +12,8 @@ function displayAllForm($connect){
     try {
 
         $date = $connect->quote(date("Y-m-d"));
-        echo "Id = " . $_SESSION['user']['id'];
-        $sql = $connect->query("SELECT * FROM Forms WHERE (expire >= ".$date." OR expire = '') AND id_owner =". $_SESSION['user']['id'] ." ")->fetchAll();
+
+        $sql = $connect->query("SELECT * FROM Forms WHERE id_owner =". $_SESSION['user']['id'] ." ")->fetchAll();
 
 
         foreach ($sql as $value){
@@ -42,8 +42,8 @@ function displayAllForm($connect){
 
 function displayProfil(){
     $profil = " <div>
-                    <h2>Votre profil</h2> <br>;
-                    <p> Bonjour : " . $_SESSION['user']['name'] . "</p>
+                    <h2>Votre profil</h2> <br>
+                    <p> Bonjour : " . $_SESSION['user']['name'] . " - ". $_SESSION['user']['lastname'] ."</p> <br>
                 </div>";
 
     return $profil;
@@ -75,17 +75,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 <?php require 'modules/footer.php'; ?>
 
 </body>
-
-<script>
-    <?php
-    if (isset($_SESSION['formNotFound'])) {
-        unset($_SESSION['formNotFound']);
-        echo 'function Success(){alert("le form '.$_SESSION['formNotFoundID'].' n\'est plus accessible")}
-                        Success()';
-        unset($_SESSION['formNotFoundID']);
-    }
-    ?>
-</script>
 
 
 </html>
