@@ -14,15 +14,15 @@ function idFormExist($pdo, $id)
 
 function getRandomID($pdo)
 {
-    if (!isset($_GET['id_form']) && empty($_GET['id_form'])) {
+    if (!isset($_GET['identity']) && empty($_GET['identity'])) {
         $r_id = rand(100000, 999999);
         while (idFormExist($pdo, $r_id)) {
             $r_id = rand(100000, 999999);
         }
-        $_GET['id_form'] = $r_id;
+        $_GET['identity'] = $r_id;
         return $r_id;
     } else {
-        return $_GET['id_form'];
+        return $_GET['identity'];
     }
 }
 
