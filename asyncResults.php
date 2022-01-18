@@ -37,8 +37,8 @@ function selectTypeOfSort( $sort,$connect,$idForm, $filter='none'){
 }
 
 function notSorted($connect, $idForm, $filter = 'none'){
-    $results = $connect->query("SELECT * FROM Results 
-                                INNER JOIN Users AS Tusers      
+    $results = $connect->query("SELECT * FROM Result 
+                                INNER JOIN User AS Tusers      
                                 ON Tusers.id = Results.id_user   
                                 WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )."
                                 ")->fetchAll();
@@ -48,8 +48,8 @@ function notSorted($connect, $idForm, $filter = 'none'){
 
 function sortByName($connect,$idForm, $filter = 'none'){
 
-        $results = $connect->query("SELECT * FROM Results 
-                                INNER JOIN Users AS Tusers      
+        $results = $connect->query("SELECT * FROM Result 
+                                INNER JOIN Users AS Tuser      
                                 ON Tusers.id = Results.id_user   
                                 WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
                                 ORDER BY UPPER(Tusers.name) ASC
@@ -62,8 +62,8 @@ function sortByName($connect,$idForm, $filter = 'none'){
 
 function sortByQuestion($connect,$idForm, $filter = 'none'){
 
-    $results = $connect->query("SELECT * FROM Results 
-                            INNER JOIN Users AS Tusers      
+    $results = $connect->query("SELECT * FROM Result 
+                            INNER JOIN Users AS Tuser      
                             ON Tusers.id = Results.id_user   
                             WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
                             ORDER BY Results.id_question ASC
@@ -75,8 +75,8 @@ function sortByQuestion($connect,$idForm, $filter = 'none'){
 }
 
 function sortByLastName($connect, $idForm, $filter='none'){
-    $results = $connect->query("SELECT * FROM Results 
-                                INNER JOIN Users AS Tusers      
+    $results = $connect->query("SELECT * FROM Result 
+                                INNER JOIN Users AS Tuser      
                                 ON Tusers.id = Results.id_user   
                                 WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
                                 ORDER BY UPPER(Tusers.lastname) ASC
@@ -103,7 +103,7 @@ function displayResults($connect,$idForm,$sort, $filter='none' ){
 
         foreach($results as $value){
 
-            $question = $connect->query("SELECT title FROM Questions WHERE id_form = ".$idForm." AND id = ". $value['id_question'] ." ")->fetch();
+            $question = $connect->query("SELECT title FROM Question WHERE id_form = ".$idForm." AND id = ". $value['id_question'] ." ")->fetch();
             $resultString .= "<tr> 
                                   <td> ".$question['title'] ." </td> 
                                   <td> ".$value['name'] . "</td>

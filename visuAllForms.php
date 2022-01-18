@@ -14,9 +14,9 @@ function displayAllForm($connect): string
 
         $date = $connect->quote(date("Y-m-d"));
         if (!empty($_GET['search'])) {
-            $sql = $connect->query("SELECT * FROM Forms WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%" . strtolower($_GET['search']) . "%'")->fetchAll();
+            $sql = $connect->query("SELECT * FROM Form WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%" . strtolower($_GET['search']) . "%'")->fetchAll();
         } else {
-            $sql = $connect->query("SELECT * FROM Forms WHERE expire >= " . $date . " OR expire = ''")->fetchAll();
+            $sql = $connect->query("SELECT * FROM Form WHERE expire >= " . $date . " OR expire = ''")->fetchAll();
         }
 
 
