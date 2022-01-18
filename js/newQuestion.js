@@ -20,7 +20,7 @@ function newBloc(qValue, choiceArray){ //create a question input
     button.removeAttribute('disabled')
 
     let id, title, required
-    if (typeof(qValue["id"]) == "undefined") {
+    if (typeof(qValue["id"]) != "string") {
         title = ""
         id = this.id
         required = ""
@@ -98,7 +98,7 @@ function newBloc(qValue, choiceArray){ //create a question input
 
         case 'new-radio':
         case 'new-checkbox':
-            createRadioOrCheckbox(id.split('-')[1], div, choiceArray)
+            createRadioOrCheckbox('checkbox', div, choiceArray)
             break
 
         case 'new-select':
@@ -285,7 +285,6 @@ function createRadioOrCheckbox(type, div, choiceArray){
 
     let divQ = document.createElement("div")
 
-    console.log(type)
     if (typeof(choiceArray) == "object") {
         let i=1
         choiceArray.forEach(c => {
@@ -343,12 +342,13 @@ function createSelect(div, choiceArray){
     let divQ = document.createElement("div");
 
     if (typeof(choiceArray) == "object") {
-        divQ.insertAdjacentHTML("beforeend", '<select><option>Options...</option></select>')
+        divQ.insertAdjacentHTML("beforeend", '<select><option>Choisir...</option></select>')
         let i=1
         choiceArray.forEach(c => {
             if (c["id_question"] == numQuestion) {
                 let tmp =
                     '<div class="choice">' +
+                    '<label for="choice-' + numQuestion + i + '">Option ' + i + '</label>' +
                     '<input id="choice-' + numQuestion + i + '" class="choice-input" type="text" name="choice-' + numQuestion + i + '" value="' + c["description"] + '">' +
                     '<button id="trash-' + numQuestion + i + '" type="button">Supprimer</button>' +
                     '</div>'
@@ -370,11 +370,13 @@ function createSelect(div, choiceArray){
             '<select><option>Choisir...</option></select>' +
 
             '<div class="choice">' +
+            '<label for="choice-' + numQuestion + '1">Option 1</label>' +
             '<input id="choice-' + numQuestion + '1" class="choice-input" type="text" name="choice-' + numQuestion + '1">' +
             '<button id="trash-' + numQuestion + '1" type="button">Supprimer</button>' +
             '</div>' +
 
             '<div class="choice">' +
+            '<label for="choice-' + numQuestion + '2">Option 2</label>' +
             '<input id="choice-' + numQuestion + '2" class="choice-input" type="text" name="choice-' + numQuestion + '2">' +
             '<button id="trash-' + numQuestion + '2" type="button">Supprimer</button>' +
             '</div>' +
@@ -402,6 +404,7 @@ function newChoice(){ //add a choice for multi input
         num = this.parentElement.childElementCount - 1
 
         add='<div class="choice">'+
+            '<label for="choice-'+question+num+'">Option '+num+'</label>'+
             '<input id="choice-'+question+num+'" class="choice-input" type="text" name="choice-'+question+num+'">'+
             '<button id="trash-'+numQuestion+num+'" type="button">Supprimer</button>'+
             '</div>'
@@ -433,20 +436,15 @@ function delChoice(){ //delete a choice for multi input
 
         this.parentElement.remove()
 
-        let label
-        if (rootID.split('-')[2] !== "select") {
-            label = document.querySelectorAll('#' + rootID + ' .choice > label')
-        }
+        let label = document.querySelectorAll('#' + rootID + ' .choice > label')
         let input = document.querySelectorAll('#' + rootID + ' .choice-input')
         let trash = document.querySelectorAll('#' + rootID + ' .choice > button')
 
 
-        for (let i = 1; i <= input.length; i++) {
+        for (let i = 1; i <= label.length; i++) {
 
-            if (rootID.split('-')[2] !== "select") {
-                label[i - 1].innerHTML = 'Option ' + i
-                label[i - 1].setAttribute('for', 'choice-' + question + i)
-            }
+            label[i - 1].innerHTML = 'Option ' + i
+            label[i - 1].setAttribute('for', 'choice-' + question + i)
 
             input[i - 1].id = 'choice-' + question + i
             input[i - 1].setAttribute('name', 'choice-' + question + i)
