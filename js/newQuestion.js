@@ -20,8 +20,10 @@ function newBloc(qValue, choiceArray){ //create a question input
     button.removeAttribute('disabled')
 
     let id, title, required
-    if (typeof(qValue["id"]) != "string") {
+    console.log(typeof(qValue['id']))
+    if (typeof(qValue["id"]) == "undefined") {
         title = ""
+
         id = this.id
         required = ""
     }
