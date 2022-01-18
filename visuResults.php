@@ -127,18 +127,18 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     let filterMenu = document.getElementById('filter-question-select')
     function send(){
 
-        if(sortMenu.value != 'none' || filterMenu.value != 'none'){
-            document.getElementById('table-resultats').innerHTML = "";
-            let filter = filterMenu.value;
-            let sort = sortMenu.value;
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                document.getElementById('table-resultats').innerHTML = this.responseText;
-            }
-            xhttp.open("POST", "/asyncResults.php");
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('sort=' + sort + '&filter=' + filter + '&identity=' + <?=$_GET['identity'] ?>);
+        console.log("changement")
+        document.getElementById('table-resultats').innerHTML = "";
+        let filter = filterMenu.value;
+        let sort = sortMenu.value;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            document.getElementById('table-resultats').innerHTML = this.responseText;
         }
+        xhttp.open("POST", "/asyncResults.php");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('sort=' + sort + '&filter=' + filter + '&identity=' + <?=$_GET['identity'] ?>);
+
 
 
 
