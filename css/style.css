@@ -1191,14 +1191,14 @@ dialog[class="content"] pre {
   flex-wrap: wrap;
 }
 
-.blocArticle{
+.blocForm{
   align-items: center;
   display: flex;
   flex-direction: column;
   width: calc(100% / var(--layoutVisuAllForms,3));
 }
 
-.blocArticle > div {
+.blocForm > div {
   margin-block: 10px;
   border: 2px solid var(--first);
   border-radius: 10px;
@@ -1206,23 +1206,23 @@ dialog[class="content"] pre {
   overflow: hidden;
 }
 
-.blocArticle > div > a{
+.blocForm > div > a{
   text-decoration: none;
   color: var(--second);
 }
 
-.blocArticle > div p{
+.blocForm > div p{
   background-color: var(--first);
   text-align: center;
   padding: 5px;
   width: 200px;
 }
 
-.blocArticle > div div{
+.blocForm > div div{
   background-color: var(--second);
 }
 
-.blocArticle > div img{
+.blocForm > div img{
   object-fit: cover;
   object-position: center;
   width: 200px;
@@ -1322,6 +1322,16 @@ font-family: "Bebas-Regular";
 
 }
 
+@media(max-width:850px){
+  #VisuForm #page{
+    width: 96%;
+  }
+}
+
+#VisuForm #page > *{
+  max-width: 100%;
+}
+
 #VisuForm #page h1{
   font-size: x-large;
   font-family: 'LemonMilk';
@@ -1337,7 +1347,123 @@ font-family: "Bebas-Regular";
   font-family: 'LemonMilk';
 }
 
+#VisuForm #page form > div:not(:last-child){
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
 #VisuForm #page form div:not(:last-child) label{
   font-family: "Rockford";
   font-size: large;
+}
+
+#VisuForm #page h1,
+#VisuForm #page h2,
+#VisuForm #page h3,
+#VisuForm #page form div:not(:last-child) label{
+  text-overflow: clip;
+  text-align: center;
+}
+
+#VisuForm #page form > div:last-child {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.buttonVisuForm {
+  background-color: var(--first);
+  border: 2px solid var(--c_form);
+  color: var(--c_form);
+  padding: 10px;
+  font-size: smaller;
+  border-radius: 5px;
+}
+
+.buttonVisuForm:hover {
+  background-color: var(--c_form);
+  border: 2px solid var(--first);
+  color: var(--first);
+  cursor: pointer;
+}
+
+.buttonBack {
+  text-decoration: none;
+  background-color: var(--first);
+  border: 2px solid var(--c_page);
+  color: var(--c_page);
+  padding: 10px;
+  font-size: medium;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.buttonBack:hover {
+  background-color: var(--c_page);
+  border: 2px solid var(--first);
+  color: var(--first);
+  cursor: pointer;
+}
+
+.questionTitle{
+  font-weight: bold;
+}
+
+.checkboxVisuForm{
+  display: flex;
+  height: 35px;
+}
+.checkboxVisuForm input[type=checkbox]{
+  margin: 0;
+  visibility: hidden;
+  left: 1px;
+  top: 1px;
+}
+.checkboxVisuForm label{
+  font-size: 20px;
+  line-height: 26px;
+  padding-left: 35px;
+  margin: 0;
+  display: block;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease 0s;
+}
+.checkboxVisuForm label:before,
+.checkboxVisuForm label:after{
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.25s;
+}
+.checkboxVisuForm label:after{
+  height: 10px;
+  width: 16px;
+  border-radius: 0 0 0 4px;
+  border: 5px solid var(--c_font);
+  border-top: none;
+  border-right: none;
+  opacity: 0;
+  transform: rotate(-45deg);
+  top: 15px;
+  left: 6px;
+}
+.checkboxVisuForm input[type=checkbox]:checked+label{ font-weight: 600; }
+.checkboxVisuForm input[type=checkbox]:checked+label:before{
+  opacity: 0;
+  top: -10px;
+}
+.checkboxVisuForm input[type=checkbox]:checked+label:after{
+  opacity: 1;
+  top: 6px;
+}
+@media only screen and (max-width:767px){
+  .checkboxVisuForm{ margin: 0 0 20px; }
 }

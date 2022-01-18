@@ -108,12 +108,12 @@ class VueForm
 
     private function addCheckbox($_id, $_title, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
-                            <label>' . $_title . '</label>
-                            <div>';
+                            <label class="questionTitle">' . $_title . '</label>
+                            <div >';
     
         foreach ($_RadioChoices as $choice) {
-            $resultat .= '<div> 
-                                <input class="checkbox" name="question-'. $_id .'[]" value="'. strtolower($choice['description']) .'" type="checkbox" id="question-'. $_id .'-'. $choice['id'].'" >
+            $resultat .= '<div class="checkboxVisuForm"> 
+                                <input name="question-'. $_id .'[]" value="'. strtolower($choice['description']) .'" type="checkbox" id="question-'. $_id .'-'. $choice['id'].'" >
                                 <label for="question-'. $_id .'-'. $choice['id'].'"> '. $choice['description'] .'</label>
                           </div>   ';
         }
@@ -126,7 +126,7 @@ class VueForm
 
     private function addRadio($_id, $_title, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
-                            <label>' . $_title . '</label>
+                            <label class="questionTitle">' . $_title . '</label>
                             <div>';
     
         foreach ($_RadioChoices as $choice) {
@@ -147,20 +147,20 @@ class VueForm
         switch ($_type) {
         case 'range':
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" required>
                         <span id="question-' . $_id  . '-counter">' . $option1 . '</span>
                     </div>';
         case 'number':
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" required>
                     </div>';
 
         case 'date':
             if($option1 == "duration"){
                 return '<div id="question-' . $_id . '-' . $_type . '">
-                            <label for="question-' . $_id . '" > ' . $_title . '</label>
+                            <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                             <p>Du </p>
                             <input id="question-' . $_id  . '-1" type="datetime-local" name="question-' . $_id . '" required>
                             <p>Du </p>
@@ -168,13 +168,13 @@ class VueForm
                         </div>';
             }
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $option1 . '" name="question-' . $_id . '" required>
                     </div>';
 
         default:
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" required>
                     </div>';
         }
@@ -203,8 +203,8 @@ class VueForm
         }
 
         $string .= '<div>
-                        <button id="S" type="submit">Envoyer</button>
-                        <button id="R" type="reset">Effacer</button>
+                        <button id="S" class="buttonVisuForm" type="submit">Envoyer</button>
+                        <button id="R" class="buttonVisuForm" type="reset">Effacer</button>
                     </div>
                 </form>';
         return $string;

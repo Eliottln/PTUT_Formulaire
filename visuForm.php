@@ -39,6 +39,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <main id="VisuForm">
 
+        <a class="buttonBack" href="/visuAllForms.php">&laquo; retour vers tous les forms</a>
+
         <div id="page">
 
             <div>

@@ -23,7 +23,7 @@ function displayAllForm($connect): string
 
         foreach ($sql as $value) {
 
-            $forms .=   '<div class="blocArticle">
+            $forms .=   '<div class="blocForm">
                             <div>
                                 <a href="/visuForm.php?identity=' . $value['id'] . '">
                                     <p>ID #' . $value['id'] . '</p>
