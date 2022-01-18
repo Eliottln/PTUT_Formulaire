@@ -16,6 +16,7 @@ function stringCheckToTab($stringCheckValues){
 }
 
 function creatTabGroup($connect,$idGroup){
+    //REFAIRE LA REQUETE QUI FONCTIONNE PAS AVEC SQLITE 
     $tabUser = $connect->query("SELECT * FROM Groups WHERE id = ".$idGroup ." 
                                 INNER JOIN isMember AS TisMember ON TisMember.id_group = id
                                 INNER JOIN Users AS Tusers ON Tusers.id = TisMember.id_user
