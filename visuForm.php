@@ -37,21 +37,25 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <?php require 'modules/header.php'; ?>
 
-    <main>
+    <main id="VisuForm">
 
-        <div>
-            <h1><?= 'Form : #' . $form->getID() ?></h1>
+        <div id="page">
+
+            <div>
+                <h1><?= '#' . $form->getID() ?></h1>
+            </div>
+
+            <div>
+                <h2><?= $form->getTitle() ?></h2>
+            </div>
+
+            <div>
+                <h3><?= 'by ' . $form->getOwner() ?></h3>
+            </div>
+
+            <?= $form->toString() ?>
+
         </div>
-
-        <div>
-            <h2><?= 'Titre : ' . $form->getTitle() ?></h2>
-        </div>
-
-        <div>
-            <h3><?= 'by ' . $form->getOwner() ?></h3>
-        </div>
-
-        <?= $form->toString() ?>
 
     </main>
 

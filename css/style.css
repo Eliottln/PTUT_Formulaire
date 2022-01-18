@@ -22,8 +22,18 @@
   --bubble2: #111111;
   --bubble3: #757575;
 
+  --c_page: rgb(231, 231, 231);
+  --c_form: #fff;
+  --c_font:#000;
+  --c_inputBG: #fff;
+
   /*value JS*/
   --layoutVisuAllForms : 3;
+}
+
+@font-face {
+  font-family: "Rockford";
+  src: url("/fonts/RockfordSans-Light.otf");
 }
 
 @font-face {
@@ -1279,3 +1289,55 @@ dialog[class="content"] pre {
 /*VisuForm*/
 /*#################################################*/
 
+
+#VisuForm{
+  font-family: LemonMilk, sans-serif;
+  align-items: center;
+  height: calc(100vh - 84px);
+  background-color: var(--c_page);
+}
+
+#VisuForm #page{
+  margin-block: 20px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+  0.9px 1.5px 1.5px rgba(0, 0, 0, 0.04),
+  2px 3.3px 3.4px rgba(0, 0, 0, 0.059),
+  3.3px 5.6px 5.8px rgba(0, 0, 0, 0.073),
+  5.1px 8.6px 8.9px rgba(0, 0, 0, 0.084),
+  7.6px 12.8px 13.2px rgba(0, 0, 0, 0.096),
+  11.2px 18.8px 19.4px rgba(0, 0, 0, 0.107),
+  16.7px 28.1px 29.1px rgba(0, 0, 0, 0.121),
+  26.7px 44.8px 46.4px rgba(0, 0, 0, 0.14),
+  50px 84px 87px rgba(0, 0, 0, 0.18)
+;
+background-color: var(--c_form);
+border-radius: 15px;
+padding: 10px;
+font-family: "Bebas-Regular";
+
+}
+
+#VisuForm #page h1{
+  font-size: x-large;
+  font-family: 'LemonMilk';
+}
+
+#VisuForm #page h2{
+  font-size: xx-large;
+  font-family: 'LemonMilk';
+}
+
+#VisuForm #page h3{
+  font-size: large;
+  font-family: 'LemonMilk';
+}
+
+#VisuForm #page form div:not(:last-child) label{
+  font-family: "Rockford";
+  font-size: large;
+}
