@@ -22,7 +22,12 @@ function selectTypeOfSort( $sort,$connect,$idForm, $filter='none'){
 
         case 'none':
             //PASSE ICI SEULEMENT LORSQUE SORT EST EGAL A 'none' CAR IL YA DEJA UNE CONDITION DANS visuResults
-            $results = notSorted($connect, $idForm, $filter);
+            if($filter != 'none'){
+                $results = notSorted($connect,$idForm,$filter);
+            }else{
+                $results = notSorted($connect, $idForm, $filter);
+            }
+
             break;
 
     }
