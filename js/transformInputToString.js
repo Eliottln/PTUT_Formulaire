@@ -18,7 +18,7 @@ function addInput() {
     let tabInput = []
 
     let allFormQuestion = document.querySelectorAll('#form-content div[id^="form-"]')
-    let allTextArea = document.querySelectorAll('#form-content div .question')
+    let allTextArea = document.querySelectorAll('#form-content .question')
 
     //AJOUTE LES CHOIX AU QUESTION
     function addTabChoice(type, counter) {
