@@ -15,33 +15,54 @@ function stringCheckToTab($stringCheckValues){
 
 }
 
-function creatTabGroup($connect,$idGroup){
-    //REFAIRE LA REQUETE QUI FONCTIONNE PAS AVEC SQLITE 
-    $tabUser = $connect->query("SELECT * FROM Groups WHERE id = ".$idGroup ." 
-                                INNER JOIN isMember AS TisMember ON TisMember.id_group = id
+function usersToTab($connect, $idGroup){
+
+    $tabUsers = Array();
+    $sqlUsers = $connect->query("SELECT * FROM Groups 
+                                INNER JOIN isMember AS TisMember ON TisMember.id_group = Groups.id
                                 INNER JOIN Users AS Tusers ON Tusers.id = TisMember.id_user
-                                WHERE id = ". $idGroup ." ")->fetchAll();
+                                WHERE Groups.id = ".$idGroup ." ")->fetchAll();
+
+    foreach($sqlUsers as $user){
+        array_push($tabUsers,$user['name']);
+    }
+
+    return $tabUsers;
+}
+
+function displayUsers($tabUser){
+
+    $stringRet = "";
+
+    $stringRet .= "<ul style='display: flex; flex-direction: column' >";
+    foreach($tabUser as $userName){
+        $stringRet .= "<li> ". $userName ." </li>";
+    }
+    $stringRet .= "</ul>";
+
+    return $stringRet;
 }
 
 function displayGroups($connect,$user){
 
-
     try {
         $ret = "";
         $groups = $connect->query("SELECT * FROM Groups WHERE id_creator =".$user ." ")->fetchAll();
-        foreach ($groups as $group){
 
-            $ret .= '<div class="bloc-groups">
+        foreach ($groups as $group){
+            $tabUsers = usersToTab($connect, $group['id']);
+            $ret .= '<div  class="bloc-groups">
                         <p>ID : '. $group['id'].' </p>
                         <p>ID Creator : '. $group['id_creator'].' </p>
                         <div>
                             <img style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
                         </div>
-                            <a href="">Modifier</a>
+                            <p id="display-members">Afficher membres:</p>
+                             '. displayUsers($tabUsers) . '
+                            <p id="modify-group">Modifier:</p>
                         </div>
                     </div>';
         }
-
 
     }catch (PDOException $e){
         echo "Sql ERROR : " . $e;
