@@ -268,15 +268,16 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <span></span>
     </div>
 
+
+    <script src="/js/newQuestion.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script>
         $(function() {
             $("#form-content").sortable();
+            verification()
         });
     </script>
-
-    <script src="/js/newQuestion.js"></script>
     <script src="/js/transformInputToString.js"></script>
     <script src="/js/CreateForm.js"></script>
     <script src="/js/addInputFromObject.js"></script>
