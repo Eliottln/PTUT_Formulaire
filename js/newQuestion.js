@@ -124,6 +124,10 @@ function newBloc(qValue, choiceArray){ //create a question input
             document.getElementById('select-date-'+numQuestion).addEventListener('change',createDate)
             break
 
+        case 'new-textarea':
+            createTextarea(div)
+            break
+
         default:
             div.appendChild(createSimpleInput(id.split('-')[1]))
             break
@@ -263,8 +267,8 @@ function swapNodes(node1, node2) {
 
 function createSimpleInput(type){
     let div = document.createElement("div");
-    div.innerHTML = '<label>Réponse'+
-        '<input type="'+type+'" disabled>'+
+    div.innerHTML =
+        '<input type="'+type+'" placeholder="Ecrire ici..." disabled>'+
         '</label>'
     return div
 }
@@ -472,4 +476,15 @@ function createDate(){
     else{
         div.innerHTML = '<input type="'+value+'" disabled>'
     }
+}
+
+
+function createTextarea(div){
+    let divT = document.createElement("div");
+
+    divT.innerHTML =
+        '<textarea disabled placeholder="Ecrire ici..."></textarea>'
+
+    div.appendChild(divT)
+    document.getElementById('select-date-'+numQuestion).addEventListener('change',createDate)
 }
