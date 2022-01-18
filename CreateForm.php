@@ -289,11 +289,13 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
     <script src="/js/newQuestion.js"></script>
+    <script src="/js/class_FormCreation.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script>
         $(function() {
             $("#form-content").sortable();
+            $(".page").sortable();
         });
     </script>
     <script src="/js/transformInputToString.js"></script>
