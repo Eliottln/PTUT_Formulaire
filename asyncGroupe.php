@@ -36,7 +36,7 @@ function displayUsers($tabUser){
 
     $stringRet .= "<ul style='display: flex; flex-direction: column' >";
     foreach($tabUser as $userName){
-        $stringRet .= "<li> ". $userName ." </li>";
+        $stringRet .= "<li> -". $userName ." </li>";
     }
     $stringRet .= "</ul>";
 
@@ -57,7 +57,7 @@ function displayGroups($connect,$user){
                         <div>
                             <img style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
                         </div>
-                            <p id="display-members">Afficher membres:</p>
+                            <p style="border:5px solid black; width: 100px" id="display-members">Afficher membres:</p>
                              '. displayUsers($tabUsers) . '
                             <p id="modify-group">Modifier:</p>
                         </div>
@@ -71,10 +71,48 @@ function displayGroups($connect,$user){
     return $ret;
 }
 
+function addGroup($connect, $stringCheckValues,$user){
+
+    $tabUsers = stringCheckToTab($stringCheckValues);
+
+    $connect->beginTransaction();
+    try {
+        $sql = "INSERT INTO Groups (id_creator)
+                VALUES (" .$user. ")";
+        //echo $sql;
+        $statement = $connect->prepare($sql);
+        $statement->execute();
+
+        $lastIdquery = $connect->query("SELECT id FROM Groups WHERE id = (SELECT MAX(id)FROM Groups);")->fetch();
+        $lastId = $lastIdquery['id'];
+
+        $sql = "";
+        foreach ($tabUsers as $idUser){
+            if($idUser != ""){
+
+                $sql = "INSERT INTO IsMember(id_user,id_group)
+                VALUES (".$idUser . ",".$lastId . ");";
+                $statement2 = $connect->prepare($sql);
+                $statement2->execute();
+            }
+
+        }
+
+        $connect->commit();
+    } catch (PDOException $e) {
+        echo $e->getLine() . " " . $e->getMessage();
+        exit();
+    }
+}
+
 $user = $_POST["id-user"];
 $stringCheckValues = $_POST["tabcheck"];
+$state = $_POST['state-page'];
+
+if($state == 1){
+    addGroup($connect,$stringCheckValues,$user);
+}
 
 $finalString = displayGroups($connect, $user);
-//$finalString = "        tabcheck : " . $stringCheckValues. " user : " . $user;
 
 echo $finalString;

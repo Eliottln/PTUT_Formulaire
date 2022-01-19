@@ -84,19 +84,20 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <div>
         <h2> Consulter vos groupes : </h2> <br>
-        <a href=""><img style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe"></a>
+        <img id="pannel-group-button" style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe">
         <div id="all-groups">
 
         </div>
     </div>
 
 
-    <dialog style="display: flex" id="pannel-users" >
-
+    <dialog style="display: none" id="pannel-group" >
+        <h2>Titre</h2>
+        <input type="text" id="title-group" name="title-group">
         <h2>Sélectionner Des utilisteurs</h2>
 
         <label for="all-users">Tout sélectionner</label>
-        <input id="select-all-users" type="checkbox" name="all-users">
+        <input id="select-all-users" type="checkbox" name="select-all-users">
 
         <?= displayUsers($connect) ?>
 
@@ -113,6 +114,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 <?php require 'modules/footer.php'; ?>
 
 <script>
+
+    function displayGroupMenu(){
+        menuGroup.style.display = 'flex';
+    }
+
+    function exitGroupMenu(){
+        menuGroup.style.display = 'none';
+    }
 
     function selectAll(){
 
@@ -147,10 +156,16 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         let ret = "";
 
         for(let i=0; i < tabCheck.length; i++){
-            if(i === tabCheck.length-1)
-                ret += tabCheck[i].id ;
-            else
-                ret += tabCheck[i].id + "/";
+            if(tabCheck[i].checked === true) {
+                if (i === tabCheck.length - 1)
+                    ret += tabCheck[i].id;
+
+
+                else {
+                    ret += tabCheck[i].id + "/";
+                }
+            }
+
 
 
         }
@@ -160,6 +175,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     }
 
     function send(){
+
         let strSend = tabCheckToString(checkbox);
 
         console.log("changement")
@@ -171,7 +187,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
         xhttp.open("POST", "/asyncGroupe.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend );
+        xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage);
+        if(isArrivedOnPage === 0){
+            isArrivedOnPage = 1;
+
+        }
+        console.log(isArrivedOnPage);
 
 
     }
@@ -179,13 +200,21 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     let checkboxAll = document.getElementById("select-all-users");
     let confirmButton = document.getElementById("confirm");
 
+    displayUserButton = document.getElementById("display-members");
+    exitMenuGroupButton = document.getElementById("cancel");
+
+    menuGroup = document.getElementById("pannel-group");
+    menuGroupButton = document.getElementById("pannel-group-button");
     checkbox = document.getElementsByClassName("user-checkb");
 
     state=0;
-
+    isArrivedOnPage = 0;
     checkboxAll.addEventListener('change',selection);
-
+    menuGroupButton.addEventListener('click',displayGroupMenu);
     confirmButton.addEventListener('click', send);
+    exitMenuGroupButton.addEventListener('click',exitGroupMenu)
+
+    send();
 
 
 </script>
