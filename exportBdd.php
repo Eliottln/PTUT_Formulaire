@@ -1,6 +1,6 @@
 <?php
 
-/*Recup form data*/
+/*Get form data*/
 $nbChamps = (count($_POST) - 1); //moins le titre
 $form_title = explode('/', $_POST['form-title-ID'])[0];
 $form_ID = explode('/', $_POST['form-title-ID'])[1];
@@ -14,11 +14,13 @@ if ($nbChamps == 0) {
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 
+/*Security */
 if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
     header("Location: index.php");
     exit();
 }
 
+/*Fail if the expiration date has already passed*/
 $origin = date_create(date("Y-m-d"));
 $target = date_create($form_expire);
 $interval = date_diff($origin, $target);
@@ -67,37 +69,38 @@ try {
             }
         } else {
             $typeOfInput = $parties[1];
-            $titleOfInput = $parties[2];
+            $isRequired = ($parties[2]=='true'?1:0);
+            $titleOfInput = $parties[3];
 
             switch ($typeOfInput) {
                 case "radio":
                 case "checkbox":
                 case "select":
                     $num_question++;
-                    $nbchoice = $parties[3];
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0));
-                    for ($j = 4; $j < count($parties); $j++) {
-                        array_push($all_choices, choiceToSQLRequest($connect, ($j - 3), $num_page_ok, $num_question, $form_ID, $_SESSION['user']['id'], $parties[$j]));
+                    $nbchoice = $parties[4];
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, $isRequired));
+                    for ($j = 5; $j < count($parties); $j++) {
+                        array_push($all_choices, choiceToSQLRequest($connect, ($j - 4), $num_page_ok, $num_question, $form_ID, $_SESSION['user']['id'], $parties[$j]));
                     }
                     break;
 
                 case "number":
                 case "range":
                     $num_question++;
-                    $min = $parties[3];
-                    $max = $parties[4];
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0, $min, $max));
+                    $min = $parties[4];
+                    $max = $parties[5];
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, $isRequired, $min, $max));
                     break;
 
                 case "date":
                     $num_question++;
-                    $format = $parties[3];
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0, null, null, $format));
+                    $format = $parties[4];
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, $isRequired, null, null, $format));
                     break;
 
                 default:
                     $num_question++;
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0));
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, $isRequired));
                     break;
             }
         }

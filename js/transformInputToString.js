@@ -52,12 +52,14 @@ function addInput() {
     }
 
     //AJOUTE LA QUESTION AU TABLEAU DINPUT
-    function addTabQuestion(type, title, name, counter, question) {
+    function addTabQuestion(type, title, name, required , question) {
         let newInput = document.createElement('input')
         newInput.type = 'hidden'
 
         newInput.value = 'in_page'+n+'/'        
-                        + type                  
+                        + type   
+                        + '/' 
+                        + required               
                         + '/' 
                         + title 
                         + addTabChoice(type, question)
@@ -70,9 +72,10 @@ function addInput() {
     function questionToInput(questions){
         for (let index = 0; index < questions.length; index++) {
             let _type = questions[index].id.split('-')[2]
+            let _required = questions[index].children[1].firstElementChild.checked
             let _title = questions[index].firstChild.firstChild.lastChild.value
             let _name = questions[index].firstChild.firstChild.lastChild.name
-            addTabQuestion(_type, _title, _name, index, questions[index])
+            addTabQuestion(_type, _title, _name, _required , questions[index])
             
         }
     }

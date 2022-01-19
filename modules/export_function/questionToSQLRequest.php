@@ -1,6 +1,6 @@
 <?php
 
-function questionToSQLRequest($pdo, $id, $id_page, $id_form, $id_owner, $type, $title = "", $required = 0, $min = NULL, $max = NULL, $format = NULL)
+function questionToSQLRequest($pdo, $id, $id_page, $id_form, $id_owner, $type, $title, $required, $min = NULL, $max = NULL, $format = NULL)
 {
     $type = $pdo->quote($type);
     $title = $pdo->quote($title);

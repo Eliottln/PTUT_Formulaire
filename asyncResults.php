@@ -1,114 +1,77 @@
 
 <?php
 
-
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
-function selectTypeOfSort( $sort,$connect,$idForm, $filter='none'){
-
+function selectTypeOfSort($sort, $connect, $_SQL_REQUEST,$asc_desc){
 
     switch ($sort){
         case 'name':
-            $results = sortByName($connect,$idForm,$filter);
+            $results = sortByName($connect, $_SQL_REQUEST,$asc_desc);
             break;
 
+        case 'name':
+                $results = sortByDate($connect, $_SQL_REQUEST,$asc_desc);
+                break;
+
         case 'question':
-            $results = sortByQuestion($connect,$idForm,$filter);
+            $results = sortByQuestion($connect, $_SQL_REQUEST,$asc_desc);
             break;
 
         case 'lastname':
-            $results = sortByLastName($connect,$idForm,$filter);
+            $results = sortByLastName($connect, $_SQL_REQUEST,$asc_desc);
             break;
 
         case 'none':
+        default:
             //PASSE ICI SEULEMENT LORSQUE SORT EST EGAL A 'none' CAR IL YA DEJA UNE CONDITION DANS visuResults
-            if($filter != 'none'){
-                $results = notSorted($connect,$idForm,$filter);
-            }else{
-                $results = notSorted($connect, $idForm, $filter);
-            }
-
+            $results = notSorted($connect, $_SQL_REQUEST);
             break;
-
     }
-
-    return $results;
-
-}
-
-function notSorted($connect, $idForm, $filter = 'none'){
-    $results = $connect->query("SELECT * FROM Result 
-                                INNER JOIN User AS Tusers      
-                                ON Tusers.id = Results.id_user   
-                                WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )."
-                                ")->fetchAll();
-
     return $results;
 }
 
-function sortByName($connect,$idForm, $filter = 'none'){
+function notSorted($connect,$_SQL_REQUEST){
 
-        $results = $connect->query("SELECT * FROM Result 
-                                INNER JOIN Users AS Tuser      
-                                ON Tusers.id = Results.id_user   
-                                WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
-                                ORDER BY UPPER(Tusers.name) ASC
-                                ")->fetchAll();
+    return $connect->query($_SQL_REQUEST)->fetchAll();
+}
 
-        return $results;
+function sortByName($connect,$_SQL_REQUEST,$asc_desc){
 
+    return $connect->query($_SQL_REQUEST." ORDER BY UPPER(U.name) ".$asc_desc)->fetchAll();
+}
+
+function sortByDate($connect,$_SQL_REQUEST,$asc_desc){
+
+    return $connect->query($_SQL_REQUEST." ORDER BY UPPER(Result.'update') ".$asc_desc)->fetchAll();
+}
+
+function sortByQuestion($connect,$_SQL_REQUEST,$asc_desc){
+    
+    return $connect->query($_SQL_REQUEST."ORDER BY UPPER(Result.id_question) ".$asc_desc)->fetchAll();
 
 }
 
-function sortByQuestion($connect,$idForm, $filter = 'none'){
-
-    $results = $connect->query("SELECT * FROM Result 
-                            INNER JOIN Users AS Tuser      
-                            ON Tusers.id = Results.id_user   
-                            WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
-                            ORDER BY Results.id_question ASC
-                            ")->fetchAll();
-
-    return $results;
-
-
-}
-
-function sortByLastName($connect, $idForm, $filter='none'){
-    $results = $connect->query("SELECT * FROM Result 
-                                INNER JOIN Users AS Tuser      
-                                ON Tusers.id = Results.id_user   
-                                WHERE Results.id_form = ".$idForm." ". (($filter!='none')? "AND Results.id_question=".$filter : "" )." 
-                                ORDER BY UPPER(Tusers.lastname) ASC
-                                ")->fetchAll();
-
-    return $results;
+function sortByLastName($connect,$_SQL_REQUEST,$asc_desc){
+    
+    return $connect->query($_SQL_REQUEST."ORDER BY UPPER(U.lastname) ".$asc_desc)->fetchAll();
 }
 
 
-function displayResults($connect,$idForm,$sort, $filter='none' ){
-    $resultString = "
-                        <tr>
-                            <th>Question</th>
-                            <th>Prénom</th>
-                            <th>Nom</th>
-                            <th>Réponses</th>
-                            
-                        </tr>";
+function displayResults($connect, $sort, $_SQL_REQUEST,$asc_desc){
+    $resultString = "";
 
     try {
 
-        $results = selectTypeOfSort($sort,$connect,$idForm,$filter);
-
+        $results = selectTypeOfSort($sort, $connect, $_SQL_REQUEST,$asc_desc);
 
         foreach($results as $value){
 
-            $question = $connect->query("SELECT title FROM Question WHERE id_form = ".$idForm." AND id = ". $value['id_question'] ." ")->fetch();
             $resultString .= "<tr> 
-                                  <td> ".$question['title'] ." </td> 
+                                  <td> ".$value['title'] ." </td> 
                                   <td> ".$value['name'] . "</td>
-                                  <td>".$value['lastname'] ."</td>
-                                  <td> ".$value['answer'] ."</td>
+                                  <td>".$value['answer'] ."</td>
+                                  <td> ".$value['date'] ."</td>
                               </tr>";
 
         }
@@ -116,7 +79,6 @@ function displayResults($connect,$idForm,$sort, $filter='none' ){
     } catch (PDOException $e) {
         echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
     }
-
     return $resultString;
 }
 
@@ -127,8 +89,15 @@ function displayResults($connect,$idForm,$sort, $filter='none' ){
 $sort = $_POST["sort"];
 $idForm = $_POST["identity"];
 $filter = $_POST["filter"];
+$asc_desc = $_POST["asc_desc"];
+
+define("_SQL_REQUEST", "SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
+                        FROM Result 
+                        INNER JOIN User AS U ON U.id = Result.id_user  
+                        INNER JOIN Question AS Q ON Q.id = Result.id_question
+                        WHERE Result.id_form = ".$idForm." ". (($filter!='none') ? "AND Result.id_question=".$filter : NULL));
 
 
-$finalString = displayResults($connect,$idForm,$sort,$filter);
+$finalString = displayResults($connect,$sort,_SQL_REQUEST,$asc_desc);
 
 echo $finalString;

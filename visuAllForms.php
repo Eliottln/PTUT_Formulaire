@@ -18,14 +18,13 @@ function displayAllForm($connect): string
             FROM Form INNER JOIN Page ON Page.id_form = Form.id 
             WHERE (expire >= " . $date . " OR expire = '')  AND LOWER(Form.title) LIKE '%" . strtolower($_GET['search']) . "%'
             Group BY Form.id
-            ORDER BY Form.expire DESC")->fetchAll();
+            ORDER BY Form.expire NOT LIKE '' DESC, Form.expire")->fetchAll();
         } else {
-            
             $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,Form.expire,SUM(Page.nb_question) 
             FROM Form INNER JOIN Page ON Page.id_form = Form.id 
-            WHERE expire >= " . $date . " OR expire = ''
-            Group BY Form.id
-            ORDER BY COALESCE(Form.expire, (select max(Form.expire) from Form)+1);")->fetchAll();
+            WHERE expire >= " . $date . " OR expire = '' 
+            Group BY Form.id 
+            ORDER BY Form.expire NOT LIKE '' DESC, Form.expire")->fetchAll();
         }
 
 
