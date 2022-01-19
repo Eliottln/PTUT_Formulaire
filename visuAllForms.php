@@ -14,11 +14,16 @@ function displayAllForm($connect): string
 
         $date = $connect->quote(date("Y-m-d"));
         if (!empty($_GET['search'])) {
-            $sql = $connect->query("SELECT * FROM Form WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%" . strtolower($_GET['search']) . "%'")->fetchAll();
+            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,SUM(Page.nb_question)
+            FROM Form INNER JOIN Page ON Page.id_form = Form.id 
+            WHERE (expire >= " . $date . " OR expire = '')  AND LOWER(Form.title) LIKE '%" . strtolower($_GET['search']) . "%'
+            Group BY Form.id")->fetchAll();
         } else {
-            $sql = $connect->query("SELECT * FROM Form WHERE expire >= " . $date . " OR expire = ''")->fetchAll();
+            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,SUM(Page.nb_question) 
+            FROM Form INNER JOIN Page ON Page.id_form = Form.id 
+            WHERE expire >= " . $date . " OR expire = ''
+            Group BY Form.id")->fetchAll();
         }
-
 
 
         foreach ($sql as $value) {
@@ -31,8 +36,8 @@ function displayAllForm($connect): string
                                         <img src="img/formulaire.png" alt="image form">
                                     </div>
                                     <p>Titre : ' . $value['title'] . '</p>
-                                    <p>' . $value['nb_question'] . ' question' . (($value['nb_question'] > 1) ? "s" : null) . '</p>
-                                    <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
+                                    <p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
+                                    <p>' . $value['SUM(Page.nb_question)'] . ' question' . (($value['SUM(Page.nb_question)'] > 1) ? "s" : null) . '</p>
                                 </a>
                             </div>
                         </div>';

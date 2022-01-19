@@ -1428,6 +1428,13 @@ font-family: "Bebas-Regular";
   font-family: 'LemonMilk';
 }
 
+#VisuForm #page h4{
+  text-align: center;
+  font-size: x-large;
+  margin-top: 10px;
+  font-family: 'LemonMilk';;
+}
+
 #VisuForm #page form > div:not(:last-child){
   margin-top: 10px;
   display: flex;
