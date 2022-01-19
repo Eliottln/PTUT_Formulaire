@@ -127,11 +127,24 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     </dialog>
 
 
+
+
 </main>
 
 <?php require 'modules/footer.php'; ?>
 
 <script>
+
+
+    function displayMembersOfGroup(group){
+        let liste = document.getElementById("liste-"+group);
+        liste.style.display = "flex";
+    }
+
+    function hideMembersOfGroup(group){
+        let liste = document.getElementById("liste-"+group);
+        liste.style.display = "none";
+    }
 
     function displayDeleteMenu(){
         menuDelete.style.display = 'flex';
@@ -197,13 +210,24 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         return ret;
     }
 
+    //TODO TERMINER ICI
+    function setEventListnerOnMembers(){
+        console.log("dans la fonction")
+        let liste = document.querySelectorAll('[id^="listeof-"]');
+        let listesOfMembers = document.getElementsByClassName("liste-members");
+        console.log(liste);
 
+
+    }
 
     function send(todo){
         console.log("todo :::" + todo);
         let strSend = tabCheckToString(checkbox);
         let selectGroup = document.getElementById("group-select");
+        let inputTitle = document.getElementById("title-group");
+        let titleGroup = inputTitle.value;
         let groupToDel = selectGroup.value;
+
 
         document.getElementById('all-groups').innerHTML = "";
         document.getElementById('group-select').innerHTML = "";
@@ -217,7 +241,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
         xhttp.open("POST", "/asyncGroupe.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage + '&todo=' + todo + '&deleted-group=' + groupToDel);
+        xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage
+                    + '&todo=' + todo + '&deleted-group=' + groupToDel + '&title-group=' + titleGroup);
         if(isArrivedOnPage === 0){
             isArrivedOnPage = 1;
 
@@ -264,12 +289,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     exitDeleteGroupButton.addEventListener('click',exitDeleteMenu)
 
 
-
-
     send("start");
+    setEventListnerOnMembers();
+
+
 
 
 </script>
+
 
 </body>
 

@@ -8,7 +8,7 @@ if (!empty($_POST) && isset($_POST)) {
 
     $connect->beginTransaction();
     try {
-        $sql = 'INSERT INTO Users (email,name,lastname,password,active,admin,\'update\')
+        $sql = 'INSERT INTO User (email,name,lastname,password,active,admin,\'update\')
                 VALUES (:email,:name,:lastname,:password,1,0,' . $connect->quote($date) . ')';
 
         $statement = $connect->prepare($sql);
@@ -29,7 +29,7 @@ if (!empty($_POST) && isset($_POST)) {
     }
 
     $user = $connect->query('SELECT *
-                            FROM Users 
+                            FROM User 
                             WHERE email = ' . $connect->quote($_POST['email']))->fetch();
 
     unset($user['password']);

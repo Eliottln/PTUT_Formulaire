@@ -63,11 +63,11 @@ function usersToTab($connect, $idGroup){
     return $tabUsers;
 }
 
-function displayUsers($tabUser){
+function displayUsers($tabUser,$group){
 
     $stringRet = "";
 
-    $stringRet .= "<ul style='display: flex; flex-direction: column' >";
+    $stringRet .= '<ul class="liste-members" id="listeof-'.$group.'" style="display: none; flex-direction: column" >';
     foreach($tabUser as $userName){
         $stringRet .= "<li> -". $userName ." </li>";
     }
@@ -85,19 +85,23 @@ function displayGroups($connect,$user){
 
         foreach ($groups as $group){
             $tabUsers = usersToTab($connect, $group['id']);
-            $ret .= '<div  class="bloc-groups">
-                        <p>ID : '. $group['id'].' </p>
-                        <p>ID Creator : '. $group['id_creator'].' </p>
+            $ret .= '
+                     <div>
                         <div>
-                            <img style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
+                            <img id="img-group-'. $group['id'].'" style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
+                            <h2>'.$group['title'] .'</h2>
                         </div>
-                            <img id="display-members-'.$group['id'] .'" style = "height: 20px; width: 20px" src="img/plusvert.png" alt="afficher les membres">
-                            <img id="hide-members-'.$group['id'] .'" style = "height: 20px; width: 20px" src="img/moinsrouge.png" alt="masquer les membres">
-                             '. displayUsers($tabUsers) . '
-                            <p id="modify-group">Modifier:</p>
+                        
+                        <div>
+                            
+                             '. displayUsers($tabUsers,$group['id']) . '
+                            
                         </div>
-                    </div>';
+                     </div>   
+                    ';
         }
+
+
 
     }catch (PDOException $e){
         echo "Sql ERROR : " . $e;
@@ -106,14 +110,16 @@ function displayGroups($connect,$user){
     return $ret;
 }
 
-function addGroup($connect, $stringCheckValues,$user){
+function addGroup($connect, $stringCheckValues,$user,$title){
 
     $tabUsers = stringCheckToTab($stringCheckValues);
 
     $connect->beginTransaction();
     try {
-        $sql = "INSERT INTO 'Group' (id_creator)
-                VALUES (" .$user. ")";
+
+        $sql = "INSERT INTO 'Group' (id_creator,title)
+                VALUES (" .$user. ",".$connect->quote($title) .");";
+
 
         $statement = $connect->prepare($sql);
         $statement->execute();
@@ -146,7 +152,8 @@ $state = $_POST['state-page'];
 $todo = $_POST['todo'];
 
 if($todo == "add"){
-    addGroup($connect,$stringCheckValues,$user);
+    $title = $_POST['title-group'];
+    addGroup($connect,$stringCheckValues,$user,$title);
 }
 else if($todo == "del"){
     $groupToDel = $_POST['deleted-group'];
@@ -157,4 +164,4 @@ else if($todo == "del"){
 $finalStringBloc = displayGroups($connect, $user);
 $finalStringSelect = displaySelectGroups($connect, $user);
 
-echo $finalStringBloc . "///" . $finalStringSelect ;
+echo $finalStringBloc. "///" . $finalStringSelect ;
