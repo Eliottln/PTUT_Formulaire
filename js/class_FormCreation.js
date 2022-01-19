@@ -5,8 +5,7 @@ class FormCreation {
     static button = document.getElementById('submit')
     static numQuestion = 0
     static numPage = 0
-    static selectedQuestion = null
-    static selectedPage = null
+    static selectedElement = null
 
     constructor() {
         FormCreation.buttonOptions.forEach(e => e.addEventListener('click', FormCreation.newBloc))
@@ -19,6 +18,7 @@ class FormCreation {
     static resetForm() {
         FormCreation.CONTENT.innerHTML = ''
         FormCreation.numQuestion = 0
+        FormCreation.numPage = 0
         FormCreation.button.setAttribute('disabled', '')
         FormCreation.newPage()
     }
@@ -29,61 +29,65 @@ class FormCreation {
         let page= document.createElement("div")
         page.className = 'page'
         page.innerHTML =    '<div class="page-title">'+
-                                '<label for="page-title-input'+FormCreation.numPage+'">Titre :</label>'+
-                                '<input type="text" name="title" id="document-title-input'+FormCreation.numPage+'" value="">'+ //TODO insert title value if exist
+                                '<label for="page-title-input-'+FormCreation.numPage+'">Titre :</label>'+
+                                '<input id="page-title-input-'+FormCreation.numPage+'" type="text" name="page-title-input-'+FormCreation.numPage+'" value="">'+ //TODO insert title value if exist
                             '</div>'+
                             '<div class="page-content"></div>'
-
-        //double clic to select a page
-        page.addEventListener('dblclick', function(){
-            if (FormCreation.selectedPage != null){
-                FormCreation.selectedPage.classList.remove('selectedElement')
-            }
-            else if(FormCreation.selectedQuestion != null){
-                FormCreation.selectedQuestion.classList.remove('selectedElement')
-                FormCreation.selectedQuestion = null
-            }
-            FormCreation.selectedPage = page
-            FormCreation.selectedPage.classList.add('selectedElement')
-        })
 
         //delete button
         let deletedButton = document.createElement("button")
         deletedButton.className = 'deletePage'
+        deletedButton.type = 'button'
         deletedButton.innerHTML = '<img src="/img/deletePage.svg" alt="delete page">'
         page.appendChild(deletedButton)
 
         //delete Page
-        deletedButton.addEventListener('click', function(){ 
-            if(deletedButton.parentNode.classList.contains('selectedElement')){
-                FormCreation.selectedPage = null
-            }
-            deletedButton.parentNode.remove()
-            FormCreation.numPage--
-            console.log(FormCreation.numPage)
-            if(FormCreation.numPage <= 0){
-                FormCreation.lockExport()
+        deletedButton.addEventListener('click', function(){
+            if (FormCreation.numPage > 1) {
+                if (deletedButton.parentElement.classList.contains('selectedElement')) {
+                    FormCreation.selectedElement = null
+                }
+                deletedButton.previousElementSibling.childNodes.forEach(e =>{
+                    if (e.classList.contains('selectedElement')) {
+                        FormCreation.selectedElement = null
+                    }
+                })
+
+                FormCreation.numQuestion -= deletedButton.previousElementSibling.childElementCount
+                deletedButton.parentElement.remove()
+                FormCreation.numPage--
+
+                if (FormCreation.numQuestion === 0) {
+                    FormCreation.lockExport()
+                }
+                else {
+                    FormCreation.verification()
+                }
             }
         })
 
-        //select this new page
-        if (FormCreation.selectedPage != null){
-            FormCreation.selectedPage.classList.remove('selectedElement')
+        if (FormCreation.selectedElement != null && FormCreation.selectedElement.classList.contains('page')) {
+            FormCreation.selectedElement.insertAdjacentElement("afterend", page)
         }
-        else if(FormCreation.selectedQuestion != null){
-            FormCreation.selectedQuestion.classList.remove('selectedElement')
-            FormCreation.selectedQuestion = null
-        }
-        FormCreation.selectedPage = page
-        FormCreation.selectedPage.classList.add('selectedElement')
+        else
+            FormCreation.CONTENT.appendChild(page)
 
-        FormCreation.CONTENT.appendChild(page)
+
+        //double clic to select a page
+        page.addEventListener('dblclick', FormCreation.selectElement)
+        page.addEventListener('blur', FormCreation.selectElement)
+        if (FormCreation.selectedElement != null)
+            FormCreation.selectedElement.classList.remove('selectedElement')
+        FormCreation.selectedElement = page
+        FormCreation.selectedElement.classList.add('selectedElement')
     }
+
 
     static lockExport(){
         FormCreation.button.innerHTML = '<img src="/img/lock.svg" alt="lock">';
-        FormCreation.button.setAttribute('disabled',true)
+        FormCreation.button.setAttribute('disabled','')
     }
+
 
     static newBloc(qValue, choiceArray){ //create a question input
 
@@ -112,8 +116,8 @@ class FormCreation {
             let div = document.createElement("div")
             div.id = 'form-'+FormCreation.numQuestion+'-'+type
             div.className = 'question-bloc'
-            div.addEventListener("click",FormCreation.selectQuestion)
-            div.addEventListener("blur",FormCreation.selectQuestion)
+            div.addEventListener("click",FormCreation.selectElement)
+            div.addEventListener("blur",FormCreation.selectElement)
 
             div.innerHTML = '<div class="content">'+
                 '<label>Question ('+type+')'+
@@ -144,22 +148,23 @@ class FormCreation {
                 '</div>'
 
             
-            if (FormCreation.selectedQuestion != null && FormCreation.selectedQuestion != undefined){
-                FormCreation.selectedQuestion.insertAdjacentElement("afterend", div)
+            if (FormCreation.selectedElement != null && FormCreation.selectedElement.classList.contains('question-bloc')){
+                FormCreation.selectedElement.insertAdjacentElement("afterend", div)
             }
-            else if(FormCreation.selectedPage != null && FormCreation.selectedPage != undefined){
-                FormCreation.selectedPage.children[1].appendChild(div)
+            else if (FormCreation.selectedElement != null && FormCreation.selectedElement.classList.contains('page')){
+                FormCreation.selectedElement.children[1].insertAdjacentElement("beforeend", div)
             }
             else{
-                FormCreation.CONTENT.lastChild.children[1].appendChild(div)
+                FormCreation.CONTENT.lastElementChild.children[1].appendChild(div)
             }
-                
+
+            console.log(FormCreation.selectedElement)
             try {
                 document.getElementById('up-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
                 document.getElementById('del-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
                 document.getElementById('down-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
             } catch (error) {
-                console.error('tkt y a pas d\'error, mais selectionne un truc quand même')
+                console.error(error)
                 return null
             }
             
@@ -228,17 +233,16 @@ class FormCreation {
     }
 
 
-    static selectQuestion(){
-        if (FormCreation.selectedQuestion != null){
-            FormCreation.selectedQuestion.classList.remove('selectedElement')
+    static selectElement(){
+        if (FormCreation.selectedElement != null){
+            FormCreation.selectedElement.classList.remove('selectedElement')
+            FormCreation.selectedElement = this
         }
-        else if(FormCreation.selectedPage != null){
-            FormCreation.selectedPage.classList.remove('selectedElement')
-            FormCreation.selectedPage = null
+        else
+        {
+            FormCreation.selectedElement = FormCreation.CONTENT.lastElementChild
         }
-
-        FormCreation.selectedQuestion = this
-        FormCreation.selectedQuestion.classList.add('selectedElement')
+        FormCreation.selectedElement.classList.add('selectedElement')
     }
 
 
@@ -306,13 +310,13 @@ class FormCreation {
 
         if (id.startsWith('del')){
             if(current.classList.contains('selectedElement')){
-                FormCreation.selectQuestion = null;
+                FormCreation.selectedElement = null;
             }
             current.remove()
             FormCreation.numQuestion--
 
             if (FormCreation.numQuestion===0){
-                FormCreation.button.setAttribute('disabled','')
+                FormCreation.lockExport()
             }else {
                 FormCreation.verification(question-1)
             }
