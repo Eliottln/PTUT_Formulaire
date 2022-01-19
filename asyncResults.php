@@ -10,7 +10,7 @@ function selectTypeOfSort($sort, $connect, $_SQL_REQUEST,$asc_desc){
             $results = sortByName($connect, $_SQL_REQUEST,$asc_desc);
             break;
 
-        case 'name':
+        case 'date':
                 $results = sortByDate($connect, $_SQL_REQUEST,$asc_desc);
                 break;
 
