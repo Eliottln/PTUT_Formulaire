@@ -5,15 +5,26 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/sendMyResponse.php")
 
 if (empty($_GET['identity'])) {
 
-    if (!empty($_POST)) {
-        sendMyResponse($connect, $_POST);
-    }
-
     header("Location: visuAllForms.php");
     exit();
+} else if (empty($_GET['page'])) {
+    $_GET['page'] = 1;
 }
 
-$form = new VueForm($connect, $_GET['identity']);
+$form = new VueForm($connect, $_GET['identity'], $_GET['page']);
+
+if (!empty($_POST)) {
+    $notLastPage = !empty(($_GET['page'] - 1) < $form->getNBPage());
+    sendMyResponse($connect, $_POST,$notLastPage);
+
+    if ($notLastPage) {
+        header("Location: visuForm.php?identity=" . $_GET['identity'] . "&page=" . $_GET['page']);
+        exit();
+    } else {
+        header("Location: visuAllForms.php");
+        exit();
+    }
+}
 
 //!!! GIGA LOURD !!!
 if ($form->getError()) {
@@ -37,21 +48,27 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <?php require 'modules/header.php'; ?>
 
-    <main>
+    <main id="VisuForm">
 
-        <div>
-            <h1><?= 'Form : #' . $form->getID() ?></h1>
+        <a class="buttonBack" href="/visuAllForms.php">&laquo; retour vers tous les forms</a>
+
+        <div id="page">
+
+            <div>
+                <h1><?= '#' . $form->getID() ?></h1>
+            </div>
+
+            <div>
+                <h2><?= $form->getTitle() ?></h2>
+            </div>
+
+            <div>
+                <h3><?= 'by ' . $form->getOwner() ?></h3>
+            </div>
+
+            <?= $form->toString() ?>
+
         </div>
-
-        <div>
-            <h2><?= 'Titre : ' . $form->getTitle() ?></h2>
-        </div>
-
-        <div>
-            <h3><?= 'by ' . $form->getOwner() ?></h3>
-        </div>
-
-        <?= $form->toString() ?>
 
     </main>
 

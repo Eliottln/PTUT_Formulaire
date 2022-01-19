@@ -11,18 +11,22 @@ class VueForm
     private string $title;
     private $ownerID;
     private string $owner;
+    private $page;
+    private $nb_page;
+    private $pageTitle;
 
     private array $questions;
 
     private bool $error;
 
-    function __construct($connect, $id)
+    function __construct($connect, $id, $page)
     {
 
         $this->error = false;
 
         $this->pdo = $connect;
         $this->id = $id;
+        $this->page = $page;
 
         if ($this->getFormDATA()) {
             $this->questions = array();
@@ -35,16 +39,19 @@ class VueForm
     private function getFormDATA(): bool
     {
         $date = $this->pdo->quote(date("Y-m-d"));
-        $_data = $this->pdo->query("SELECT f.title, f.id_owner, u.name, u.lastname 
-                                        FROM Forms as f 
-                                        INNER JOIN Users as u ON f.id_owner = u.id 
+        $_data = $this->pdo->query("SELECT f.title as 'title', f.id_owner, f.nb_page, u.name, u.lastname, p.title as 'titlePage'
+                                        FROM Form as f 
+                                        INNER JOIN User as u ON f.id_owner = u.id 
+                                        INNER JOIN Page as p ON f.id = p.id_form 
                                         WHERE f.id = " . $this->id . " 
                                         AND (expire >= " . $date . " OR expire = '')")->fetch() ?? NULL;
-
+        
         if ($_data) {
             $this->title = $_data['title'];
             $this->ownerID = $_data['id_owner'];
             $this->owner = $_data['name'] . " " . $_data['lastname'];
+            $this->nb_page = $_data['nb_page'];
+            $this->pageTitle = $_data['titlePage'];
             return true;
         }
         return false;
@@ -54,14 +61,13 @@ class VueForm
     {
 
         try {
+            $_questions = $this->pdo->query("SELECT q.id,q.type,q.title,q.required, q.min, q.max,q.format 
+                                            FROM Question as q INNER JOIN 'Page' as p ON q.id_page = p.id
+                                            WHERE q.id_form = " . $this->id ." AND p.id = " . $this->page." GROUP BY q.id")->fetchAll();
 
-            $_questions = $this->pdo->query("SELECT id,type,title,required, min, max,format 
-                                            FROM Questions 
-                                            WHERE id_form = " . $this->id)->fetchAll();
-
-            $_choices = $this->pdo->query("SELECT * 
-                                        FROM Choices 
-                                        WHERE id_form = " . $this->id)->fetchAll();
+            $_choices = $this->pdo->query("SELECT c.* 
+                                        FROM Choice as c INNER JOIN 'Page' as p ON c.id_page = p.id
+                                        WHERE c.id_form = " . $this->id ." AND p.id = " . $this->page ." GROUP BY c.id")->fetchAll();
 
             $i = 1;
             foreach ($_questions as $value) {
@@ -71,6 +77,7 @@ class VueForm
                         array_push($this->questions, $this->addRadio($i, $value['title'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'checkbox':
+                        
                         array_push($this->questions, $this->addCheckbox($i, $value['title'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'select':
@@ -108,12 +115,12 @@ class VueForm
 
     private function addCheckbox($_id, $_title, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
-                            <label>' . $_title . '</label>
-                            <div>';
+                            <label class="questionTitle">' . $_title . '</label>
+                            <div >';
     
         foreach ($_RadioChoices as $choice) {
-            $resultat .= '<div> 
-                                <input class="checkbox" name="question-'. $_id .'[]" value="'. strtolower($choice['description']) .'" type="checkbox" id="question-'. $_id .'-'. $choice['id'].'" >
+            $resultat .= '<div class="checkboxVisuForm"> 
+                                <input name="question-'. $_id .'[]" value="'. strtolower($choice['description']) .'" type="checkbox" id="question-'. $_id .'-'. $choice['id'].'" >
                                 <label for="question-'. $_id .'-'. $choice['id'].'"> '. $choice['description'] .'</label>
                           </div>   ';
         }
@@ -126,7 +133,7 @@ class VueForm
 
     private function addRadio($_id, $_title, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
-                            <label>' . $_title . '</label>
+                            <label class="questionTitle">' . $_title . '</label>
                             <div>';
     
         foreach ($_RadioChoices as $choice) {
@@ -147,20 +154,20 @@ class VueForm
         switch ($_type) {
         case 'range':
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" required>
                         <span id="question-' . $_id  . '-counter">' . $option1 . '</span>
                     </div>';
         case 'number':
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" required>
                     </div>';
 
         case 'date':
             if($option1 == "duration"){
                 return '<div id="question-' . $_id . '-' . $_type . '">
-                            <label for="question-' . $_id . '" > ' . $_title . '</label>
+                            <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                             <p>Du </p>
                             <input id="question-' . $_id  . '-1" type="datetime-local" name="question-' . $_id . '" required>
                             <p>Du </p>
@@ -168,13 +175,13 @@ class VueForm
                         </div>';
             }
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $option1 . '" name="question-' . $_id . '" required>
                     </div>';
 
         default:
             return '<div id="question-' . $_id . '-' . $_type . '">
-                        <label for="question-' . $_id . '" > ' . $_title . '</label>
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                         <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" required>
                     </div>';
         }
@@ -192,19 +199,24 @@ class VueForm
         return $this->owner;
     }
 
+    public function getNBPage(){
+        return $this->nb_page;
+    }
+
     public function toString() {
         $string = "";
-        $string .= '<form action="/visuForm.php" method="post" enctype="multipart/form-data">
+        $string .= '<form action="/visuForm.php?identity='.$this->id.'&page='.($this->page+1).'" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="formID" value="' . $this->id . '">
-                        <input type="hidden" name="ownerID" value="' . $this->ownerID . '">';
+                        <input type="hidden" name="ownerID" value="' . $this->ownerID . '">
+                        <h4>'.$this->pageTitle.'</h4>';
   
         foreach ($this->questions as $question){
             $string .= $question;
         }
 
         $string .= '<div>
-                        <button id="S" type="submit">Envoyer</button>
-                        <button id="R" type="reset">Effacer</button>
+                        <button id="S" class="buttonVisuForm" type="submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Save and next').'</button>
+                        <button id="R" class="buttonVisuForm" type="reset">Effacer</button>
                     </div>
                 </form>';
         return $string;

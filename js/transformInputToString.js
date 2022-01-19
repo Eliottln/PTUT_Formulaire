@@ -16,20 +16,18 @@ document.getElementById('submit').addEventListener('click', addInput)
 function addInput() {
 
     let tabInput = []
-
-    let allFormQuestion = document.querySelectorAll('#form-content div[id^="form-"]')
-    let allTextArea = document.querySelectorAll('#form-content div .question')
+    let n = 1
+    let allPage = document.querySelectorAll('#form-content .page')
 
     //AJOUTE LES CHOIX AU QUESTION
-    function addTabChoice(type, counter) {
-
+    function addTabChoice(type, question) {
         let string = "";
 
         switch (type) {
             case "radio":
             case "checkbox":
             case "select": //FIXME
-                let choicesList = allFormQuestion[counter].firstChild.lastChild.children
+                let choicesList = question.firstChild.lastChild.children
                 let nb_choices = (choicesList.length - 1)
                 string += '/' + nb_choices
                 for (let index = 0; index < nb_choices; index++) {
@@ -38,14 +36,14 @@ function addInput() {
                 break;
 
             case "number":
-            case "range":
-                let min = allFormQuestion[counter].firstChild.lastChild.children[0].value;  //target min
-                let max = allFormQuestion[counter].firstChild.lastChild.children[2].value; //target max
-                string += '/' + min + '/' + max
+            case "range": //FIXME
+                //let min = allFormQuestion[counter].firstChild.lastChild.children[0].value;  //target min
+                //let max = allFormQuestion[counter].firstChild.lastChild.children[2].value; //target max
+                //string += '/' + min + '/' + max
                 break;
 
             case "date":
-                let format = document.querySelectorAll('#form-content div[id^="form-"]')[0].firstChild.lastChild.children[1].value;
+                let format = question.firstChild.lastChild.firstChild.value;
                 string += '/' + format
                 break;
         }
@@ -54,24 +52,50 @@ function addInput() {
     }
 
     //AJOUTE LA QUESTION AU TABLEAU DINPUT
-    function addTabQuestion(type, counter) {
+    function addTabQuestion(type, title, name, counter, question) {
         let newInput = document.createElement('input')
         newInput.type = 'hidden'
 
-        newInput.value = type + '/' + allTextArea[counter].value + addTabChoice(type, counter)
-        newInput.name = allTextArea[counter].name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
+        newInput.value = 'in_page'+n+'/'        
+                        + type                  
+                        + '/' 
+                        + title 
+                        + addTabChoice(type, question)
+        newInput.name = name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
 
+        console.log(newInput)
         tabInput.push(newInput)
     }
 
-
-    for (let counter = 0; counter < allFormQuestion.length; counter++) {
-
-        let typeQuestion = allFormQuestion[counter].id.split('-')[2] //Contient le type de la question (radio/checkbox ...
-
-        addTabQuestion(typeQuestion, counter)
-
+    function questionToInput(questions){
+        for (let index = 0; index < questions.length; index++) {
+            let _type = questions[index].id.split('-')[2]
+            let _title = questions[index].firstChild.firstChild.lastChild.value
+            let _name = questions[index].firstChild.firstChild.lastChild.name
+            addTabQuestion(_type, _title, _name, index, questions[index])
+            
+        }
     }
+
+    
+    function pageToInput(page){
+        let addPage = document.createElement('input')
+        addPage.type = 'hidden'
+
+        addPage.value = 'page/' +                           //type
+                        page.firstChild.lastChild.value +   //title
+                        '/' + 
+                        page.children[1].children.length    //nb_question
+        addPage.name = 'page'+n;
+        console.log('ok')
+        tabInput.push(addPage)
+        questionToInput(page.children[1].children)
+        n++
+    }
+
+
+    console.log(allPage)
+    allPage.forEach(page => pageToInput(page))
 
     //on affiche le nouveau form
     let title = document.createElement('input');
@@ -88,5 +112,6 @@ function addInput() {
     title.setAttribute('name', "form-title-ID");
 
     formTemp.appendChild(title)
+    console.log(tabInput)
     tabInput.forEach(input => formTemp.appendChild(input))
 }
