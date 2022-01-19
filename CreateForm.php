@@ -3,11 +3,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/ImportFile.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
-//TODO recup form
 
-function idFormExist($pdo, $id)
+function idFormExist($pdo, $id): bool
 {
-    $result = $pdo->query('SELECT id FROM Form WHERE id = ' . $id)->fetchColumn();
+    $result = $pdo->query('SELECT id FROM Forms WHERE id = ' . $id)->fetchColumn();
     if ($result == $id) return true;
     return false;
 }
@@ -29,7 +28,7 @@ function getRandomID($pdo)
 function setTitle($pdo) : string
 {
     if (isset($_GET['identity'])) {
-        return $pdo->query('SELECT title FROM Form WHERE id = ' . $_GET['identity'])->fetchColumn();
+        return $pdo->query('SELECT title FROM Forms WHERE id = ' . $_GET['identity'])->fetchColumn();
     }
     return "";
 }
@@ -327,9 +326,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     if (isset($_GET['identity'])) {
 
         try {
-            $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Question 
+            $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Questions
                                             WHERE id_form = " . $_GET['identity'])->fetchAll();
-            $form_choices = $connect->query("SELECT * FROM Choice 
+            $form_choices = $connect->query("SELECT * FROM Choices
                                             WHERE id_form = " . $_GET['identity'])->fetchAll();
 
             foreach ($form_questions as $value) {
