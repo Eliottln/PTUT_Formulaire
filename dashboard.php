@@ -12,7 +12,7 @@ function displayAllForm($connect){
     try {
 
 
-        $sql = $connect->query("SELECT * FROM Forms WHERE id_owner =". $_SESSION['user']['id'] ." ")->fetchAll();
+        $sql = $connect->query("SELECT * FROM Form WHERE id_owner =". $_SESSION['user']['id'] ." ")->fetchAll();
 
 
         foreach ($sql as $value){
@@ -23,7 +23,7 @@ function displayAllForm($connect){
                                 <img style="width: 50px; height: 50px" src="img/formulaire.png" alt="Prévisualisation">
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
-                            <p> Nb Question : '. $value['nb_question'] .'</p>
+                            
                         </div>';
         }
 
@@ -46,7 +46,7 @@ function displayProfil(){
 
 function displayUsers($connect){
     $ret = "";
-    $users = $connect->query("SELECT * FROM Users ")->fetchAll();
+    $users = $connect->query("SELECT * FROM User ")->fetchAll();
     foreach ($users as $item) {
         $ret .= ' <label for="'. $item['id'] .'">'. $item['name'] . ' </label>
                   <input class="user-checkb" type="checkbox" name="'. $item['id'] .'" id="'. $item['id'] .'" >';

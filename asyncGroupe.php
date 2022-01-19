@@ -9,7 +9,7 @@ function deleteGroups($connect, $group){
         $stmt = $connect->prepare("DELETE FROM IsMember WHERE id_group = ".$group ." ");
         $stmt->execute();
 
-        $stmt2 = $connect->prepare("DELETE FROM Groups WHERE id = ".$group ." ");
+        $stmt2 = $connect->prepare("DELETE FROM 'Group' WHERE id = ".$group ." ");
         $stmt2->execute();
 
     }catch(PDOException $e){
@@ -21,7 +21,7 @@ function deleteGroups($connect, $group){
 function displaySelectGroups($connect,$user){
     $retString ='<option value="none">--Selectionner un groupe--</option>';
     try {
-        $groups = $connect->query("SELECT * FROM Groups where id_creator = ". $user." ")->fetchAll();
+        $groups = $connect->query("SELECT * FROM 'Group' where id_creator = ". $user." ")->fetchAll();
         foreach ($groups as $group){
             $retString .= '<option value="'.$group['id'] . '">'.$group['id'].'</option>';
         }
@@ -51,10 +51,10 @@ function stringCheckToTab($stringCheckValues){
 function usersToTab($connect, $idGroup){
 
     $tabUsers = Array();
-    $sqlUsers = $connect->query("SELECT * FROM Groups 
-                                INNER JOIN isMember AS TisMember ON TisMember.id_group = Groups.id
-                                INNER JOIN Users AS Tusers ON Tusers.id = TisMember.id_user
-                                WHERE Groups.id = ".$idGroup ." ")->fetchAll();
+    $sqlUsers = $connect->query("SELECT * FROM 'Group' 
+                                INNER JOIN isMember AS TisMember ON TisMember.id_group = 'Group'.id
+                                INNER JOIN User AS Tusers ON Tusers.id = TisMember.id_user
+                                WHERE 'Group'.id = ".$idGroup ." ")->fetchAll();
 
     foreach($sqlUsers as $user){
         array_push($tabUsers,$user['name']);
@@ -80,7 +80,8 @@ function displayGroups($connect,$user){
 
     try {
         $ret = "";
-        $groups = $connect->query("SELECT * FROM Groups WHERE id_creator =".$user ." ")->fetchAll();
+        
+        $groups = $connect->query("SELECT * FROM 'Group' WHERE id_creator = ".$user ." ")->fetchAll();
 
         foreach ($groups as $group){
             $tabUsers = usersToTab($connect, $group['id']);
@@ -111,13 +112,13 @@ function addGroup($connect, $stringCheckValues,$user){
 
     $connect->beginTransaction();
     try {
-        $sql = "INSERT INTO Groups (id_creator)
+        $sql = "INSERT INTO 'Group' (id_creator)
                 VALUES (" .$user. ")";
 
         $statement = $connect->prepare($sql);
         $statement->execute();
 
-        $lastIdquery = $connect->query("SELECT id FROM Groups WHERE id = (SELECT MAX(id)FROM Groups);")->fetch();
+        $lastIdquery = $connect->query("SELECT id FROM 'Group' WHERE id = (SELECT MAX(id)FROM 'Group's);")->fetch();
         $lastId = $lastIdquery['id'];
 
 
