@@ -70,7 +70,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <div>
             <form class="search" action="/visuAllForms.php" method="get">
-                <input type="search" name="search">
+                <input type="search" name="search" value="<?= $_GET["search"]??NULL ?>">
                 <button type="submit"><span class="gg-search"></span></button>
             </form>
         </div>
