@@ -147,40 +147,27 @@ class FormCreation {
                 +'</button>'+
                 '</div>'
 
-            
-            if (FormCreation.selectedElement != null && FormCreation.selectedElement.classList.contains('question-bloc')){
-                FormCreation.selectedElement.insertAdjacentElement("afterend", div)
-            }
-            else if (FormCreation.selectedElement != null && FormCreation.selectedElement.classList.contains('page')){
-                FormCreation.selectedElement.children[1].insertAdjacentElement("beforeend", div)
-            }
-            else{
+
+            if (FormCreation.selectedElement == null){
                 FormCreation.CONTENT.lastElementChild.children[1].appendChild(div)
             }
-
-            console.log(FormCreation.selectedElement)
-            try {
-                document.getElementById('up-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
-                document.getElementById('del-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
-                document.getElementById('down-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
-            } catch (error) {
-                console.error(error)
-                return null
+            else if (FormCreation.selectedElement.classList.contains('question-bloc')){
+                FormCreation.selectedElement.insertAdjacentElement("afterend", div)
             }
-            
+            else if (FormCreation.selectedElement.classList.contains('page')){
+                FormCreation.selectedElement.children[1].insertAdjacentElement("beforeend", div)
+            }
+
+            document.getElementById('up-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
+            document.getElementById('del-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
+            document.getElementById('down-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
 
             return div
         }
 
-        let bloc = addDivElement(id)
-        if(!bloc){
-            return false
-        }
-        bloc = bloc.id
-        
+        let bloc = addDivElement(id).id
+
         document.querySelector('#'+bloc+' .question').value = title
-
-
         let div = document.querySelector('#'+bloc+' .content')
 
         switch (id){
@@ -228,8 +215,10 @@ class FormCreation {
             default:
                 div.appendChild(FormCreation.createSimpleInput(id.split('-')[1]))
                 break
-            
+
         }
+
+        FormCreation.verification()
     }
 
 
@@ -309,9 +298,6 @@ class FormCreation {
 
 
         if (id.startsWith('del')){
-            if(current.classList.contains('selectedElement')){
-                FormCreation.selectedElement = null;
-            }
             current.remove()
             FormCreation.numQuestion--
 
@@ -321,6 +307,10 @@ class FormCreation {
                 FormCreation.verification(question-1)
             }
 
+            if (FormCreation.selectedElement != null && !FormCreation.selectedElement.classList.contains('question-bloc')){
+                FormCreation.selectedElement.classList.remove('selectedElement')
+            }
+            FormCreation.selectedElement = null;
         }
 
         else if (id.startsWith('up') && (question-1) > 0){
