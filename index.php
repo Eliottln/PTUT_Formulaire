@@ -1,4 +1,6 @@
 <?php
+include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
+
 if(isset($_SESSION['user'])&&!empty($_SESSION['user'])){
     header('Location: visuAllForms.php');
     exit();

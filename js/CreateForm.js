@@ -131,12 +131,6 @@ function hideAS() {
     }
 }
 
-function resetForm() {
-    content.innerHTML = '';
-    numQuestion = 0;
-    button.setAttribute('disabled', '');
-}
-
 let layout = 1;
 function setLayout() {
     layout = document.getElementById("document-layout").value;
@@ -167,7 +161,6 @@ try {
 
     document.getElementById("document-layout").addEventListener('change', setLayout);
     document.getElementById("document-layout").addEventListener('change', rangeCounter);
-    document.getElementById("ClearForm").addEventListener('click', resetForm);
     document.getElementById("ClearForm").addEventListener("click", exportIcon);
     document.getElementById("ImportForm").addEventListener('click', showDialog);
     document.getElementById("AdvancedSettings").addEventListener('click', showAdvancedSettings);

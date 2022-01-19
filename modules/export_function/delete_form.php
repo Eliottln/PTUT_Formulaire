@@ -7,7 +7,7 @@ function delete_form($pdo, $id_form)
         try {
 
             //On crée un document, on ne connait pas encore le nb de questions donc on le met à 0 pour le modifier plus bas
-            $sql = 'DELETE FROM Forms WHERE id = '.$id_form;
+            $sql = 'DELETE FROM Form WHERE id = '.$id_form;
             $sth = $pdo->prepare($sql);
 
             $sth->execute();
