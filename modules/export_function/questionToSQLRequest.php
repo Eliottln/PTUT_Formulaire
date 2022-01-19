@@ -1,6 +1,6 @@
 <?php
 
-function questionToSQLRequest($pdo, $id, $id_form, $id_owner, $type, $title = "", $required = 0, $min = NULL, $max = NULL, $format = NULL)
+function questionToSQLRequest($pdo, $id, $id_page, $id_form, $id_owner, $type, $title = "", $required = 0, $min = NULL, $max = NULL, $format = NULL)
 {
     $type = $pdo->quote($type);
     $title = $pdo->quote($title);
@@ -8,16 +8,16 @@ function questionToSQLRequest($pdo, $id, $id_form, $id_owner, $type, $title = ""
     switch ($type){
         case '\'range\'':
         case '\'number\'': 
-            return "INSERT OR REPLACE INTO Questions(id, id_form, id_owner, type, title, required, min, max) 
-                    VALUES ($id, $id_form, $id_owner, $type, $title, $required, $min, $max);";
+            return "INSERT OR REPLACE INTO Question(id, id_page, id_form, id_owner, type, title, required, min, max) 
+                    VALUES ($id, $id_page, $id_form, $id_owner, $type, $title, $required, $min, $max);";
         
         case '\'date\'':
-            return "INSERT OR REPLACE INTO Questions(id, id_form, id_owner, type, title, required, format) 
-                    VALUES ($id, $id_form, $id_owner, $type, $title, $required, $format);";
+            return "INSERT OR REPLACE INTO Question(id, id_page, id_form, id_owner, type, title, required, format) 
+                    VALUES ($id, $id_page, $id_form, $id_owner, $type, $title, $required, $format);";
 
         default:
-            return "INSERT OR REPLACE INTO Questions(id, id_form, id_owner, type, title, required) 
-                    VALUES ($id, $id_form, $id_owner, $type, $title, $required);";
+            return "INSERT OR REPLACE INTO Question(id, id_page, id_form, id_owner, type, title, required) 
+                    VALUES ($id, $id_page, $id_form, $id_owner, $type, $title, $required);";
     }
     
 }
