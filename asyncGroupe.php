@@ -2,6 +2,39 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
+function deleteGroups($connect, $group){
+
+    try {
+
+        $stmt = $connect->prepare("DELETE FROM IsMember WHERE id_group = ".$group ." ");
+        $stmt->execute();
+
+        $stmt2 = $connect->prepare("DELETE FROM Groups WHERE id = ".$group ." ");
+        $stmt2->execute();
+
+    }catch(PDOException $e){
+        echo "SQL ERROR : " . $e->getMessage();
+    }
+
+}
+
+function displaySelectGroups($connect,$user){
+    $retString ='<option value="none">--Selectionner un groupe--</option>';
+    try {
+        $groups = $connect->query("SELECT * FROM Groups where id_creator = ". $user." ")->fetchAll();
+        foreach ($groups as $group){
+            $retString .= '<option value="'.$group['id'] . '">'.$group['id'].'</option>';
+        }
+
+        foreach($groups as $group){
+
+        }
+    }catch (PDOException $e){
+        echo "SQL ERROR : " . $e->getMessage();
+    }
+
+    return $retString;
+}
 
 function stringCheckToTab($stringCheckValues){
     $tab = array();
@@ -57,7 +90,8 @@ function displayGroups($connect,$user){
                         <div>
                             <img style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
                         </div>
-                            <p style="border:5px solid black; width: 100px" id="display-members">Afficher membres:</p>
+                            <img id="display-members-'.$group['id'] .'" style = "height: 20px; width: 20px" src="img/plusvert.png" alt="afficher les membres">
+                            <img id="hide-members-'.$group['id'] .'" style = "height: 20px; width: 20px" src="img/moinsrouge.png" alt="masquer les membres">
                              '. displayUsers($tabUsers) . '
                             <p id="modify-group">Modifier:</p>
                         </div>
@@ -79,14 +113,14 @@ function addGroup($connect, $stringCheckValues,$user){
     try {
         $sql = "INSERT INTO Groups (id_creator)
                 VALUES (" .$user. ")";
-        //echo $sql;
+
         $statement = $connect->prepare($sql);
         $statement->execute();
 
         $lastIdquery = $connect->query("SELECT id FROM Groups WHERE id = (SELECT MAX(id)FROM Groups);")->fetch();
         $lastId = $lastIdquery['id'];
 
-        $sql = "";
+
         foreach ($tabUsers as $idUser){
             if($idUser != ""){
 
@@ -108,11 +142,18 @@ function addGroup($connect, $stringCheckValues,$user){
 $user = $_POST["id-user"];
 $stringCheckValues = $_POST["tabcheck"];
 $state = $_POST['state-page'];
+$todo = $_POST['todo'];
 
-if($state == 1){
+if($todo == "add"){
     addGroup($connect,$stringCheckValues,$user);
 }
+else if($todo == "del"){
+    $groupToDel = $_POST['deleted-group'];
+    deleteGroups($connect, $groupToDel);
+}
 
-$finalString = displayGroups($connect, $user);
 
-echo $finalString;
+$finalStringBloc = displayGroups($connect, $user);
+$finalStringSelect = displaySelectGroups($connect, $user);
+
+echo $finalStringBloc . "///" . $finalStringSelect ;

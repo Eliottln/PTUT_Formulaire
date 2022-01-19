@@ -57,6 +57,7 @@ function displayUsers($connect){
 }
 
 
+
 ?>
 
 
@@ -85,6 +86,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <div>
         <h2> Consulter vos groupes : </h2> <br>
         <img id="pannel-group-button" style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe">
+        <img id="delete-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/moins.png">
         <div id="all-groups">
 
         </div>
@@ -108,12 +110,36 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </dialog>
 
+    <dialog style="display: none" id="pannel-delete" >
+
+        <h2>Sélectionner un groupe</h2>
+
+        <select name="group-select" id="group-select">
+
+
+        </select>
+
+
+        <button id="confirm-delete" type="submit">Confirmer</button>
+        <button id="cancel-delete" type="reset">Annuler</button>
+
+
+    </dialog>
+
 
 </main>
 
 <?php require 'modules/footer.php'; ?>
 
 <script>
+
+    function displayDeleteMenu(){
+        menuDelete.style.display = 'flex';
+    }
+
+    function exitDeleteMenu(){
+        menuDelete.style.display = 'none';
+    }
 
     function displayGroupMenu(){
         menuGroup.style.display = 'flex';
@@ -160,13 +186,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 if (i === tabCheck.length - 1)
                     ret += tabCheck[i].id;
 
-
                 else {
                     ret += tabCheck[i].id + "/";
                 }
             }
-
-
 
         }
 
@@ -174,47 +197,76 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         return ret;
     }
 
-    function send(){
 
+
+    function send(todo){
+        console.log("todo :::" + todo);
         let strSend = tabCheckToString(checkbox);
+        let selectGroup = document.getElementById("group-select");
+        let groupToDel = selectGroup.value;
 
-        console.log("changement")
         document.getElementById('all-groups').innerHTML = "";
+        document.getElementById('group-select').innerHTML = "";
 
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
-            document.getElementById('all-groups').innerHTML = this.responseText;
+            let $returnString = this.responseText.split("///");
+
+            document.getElementById('all-groups').innerHTML = $returnString[0];
+            document.getElementById('group-select').innerHTML = $returnString[1];
         }
         xhttp.open("POST", "/asyncGroupe.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage);
+        xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage + '&todo=' + todo + '&deleted-group=' + groupToDel);
         if(isArrivedOnPage === 0){
             isArrivedOnPage = 1;
 
         }
-        console.log(isArrivedOnPage);
+
+        console.log("iSarrive ::: "  + isArrivedOnPage);
 
 
     }
 
+
     let checkboxAll = document.getElementById("select-all-users");
     let confirmButton = document.getElementById("confirm");
+    let confirmDeleteButton = document.getElementById("confirm-delete");
+
 
     displayUserButton = document.getElementById("display-members");
-    exitMenuGroupButton = document.getElementById("cancel");
 
     menuGroup = document.getElementById("pannel-group");
     menuGroupButton = document.getElementById("pannel-group-button");
+    exitMenuGroupButton = document.getElementById("cancel");
+
+
+    menuDelete = document.getElementById("pannel-delete");
+    deleteGroupButton = document.getElementById("delete-group-button");
+    exitDeleteGroupButton = document.getElementById("cancel-delete")
+
+
+
     checkbox = document.getElementsByClassName("user-checkb");
 
     state=0;
-    isArrivedOnPage = 0;
-    checkboxAll.addEventListener('change',selection);
-    menuGroupButton.addEventListener('click',displayGroupMenu);
-    confirmButton.addEventListener('click', send);
-    exitMenuGroupButton.addEventListener('click',exitGroupMenu)
 
-    send();
+    isArrivedOnPage = 0;
+
+    checkboxAll.addEventListener('change',selection);
+
+    menuGroupButton.addEventListener('click',displayGroupMenu);
+    exitMenuGroupButton.addEventListener('click',exitGroupMenu)
+    confirmButton.addEventListener('click', send.bind(null,"add"));
+
+    confirmDeleteButton.addEventListener('click',send.bind(null,"del"));
+    deleteGroupButton.addEventListener('click',displayDeleteMenu)
+    exitDeleteGroupButton.addEventListener('click',exitDeleteMenu)
+
+
+
+
+    send("start");
 
 
 </script>
