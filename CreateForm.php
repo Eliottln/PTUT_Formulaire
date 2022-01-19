@@ -302,7 +302,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                         FormCreation.verification()
                     }
                 }
-            );
+            )
             $(".page-content").sortable(
                 {cursor: "move"},
                 {connectWith: ".page-content"},
@@ -311,10 +311,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                         FormCreation.verification()
                     }
                 }
-            );
+            )
         }
-        $('#NewPage').click(sort());
-        sort();
+        $('#NewPage').click(sort())
+        sort()
     </script>
     <script src="/js/transformInputToString.js"></script>
     <script src="/js/CreateForm.js"></script>

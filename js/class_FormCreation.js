@@ -166,7 +166,7 @@ class FormCreation {
         }
 
         let bloc = addDivElement(id).id
-        
+
         document.querySelector('#'+bloc+' .question').value = title
         let div = document.querySelector('#'+bloc+' .content')
 
@@ -215,7 +215,7 @@ class FormCreation {
             default:
                 div.appendChild(FormCreation.createSimpleInput(id.split('-')[1]))
                 break
-            
+
         }
 
         FormCreation.verification()
@@ -307,6 +307,9 @@ class FormCreation {
                 FormCreation.verification(question-1)
             }
 
+            if (FormCreation.selectedElement != null && !FormCreation.selectedElement.classList.contains('question-bloc')){
+                FormCreation.selectedElement.classList.remove('selectedElement')
+            }
             FormCreation.selectedElement = null;
         }
 
