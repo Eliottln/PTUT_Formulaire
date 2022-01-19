@@ -22,7 +22,7 @@ function addInput() {
     //AJOUTE LES CHOIX AU QUESTION
     function addTabChoice(type, question) {
         let string = "";
-
+        console.log(type);
         switch (type) {
             case "radio":
             case "checkbox":
@@ -36,10 +36,10 @@ function addInput() {
                 break;
 
             case "number":
-            case "range": //FIXME
-                //let min = allFormQuestion[counter].firstChild.lastChild.children[0].value;  //target min
-                //let max = allFormQuestion[counter].firstChild.lastChild.children[2].value; //target max
-                //string += '/' + min + '/' + max
+            case "range":
+                let min = question.firstChild.lastChild.children[0].value;  //target min
+                let max = question.firstChild.lastChild.children[2].value; //target max
+                string += '/' + min + '/' + max
                 break;
 
             case "date":

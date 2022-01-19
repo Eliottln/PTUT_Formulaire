@@ -51,7 +51,7 @@ try {
     //On crée un document, on ne connait pas encore le nb de questions donc on le met à 0 pour le modifier plus bas
     for ($i = 1; $i < count($all_input); $i++) {
         $parties = explode("/", $all_input[$i]);
-
+        
 
         $typeOfInput = $parties[0];
         $titleOfInput = $parties[1];
@@ -75,9 +75,9 @@ try {
                 case "select":
                     $num_question++;
                     $nbchoice = $parties[3];
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0));
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0));
                     for ($j = 4; $j < count($parties); $j++) {
-                        array_push($all_choices, choiceToSQLRequest($connect, ($j - 3), $num_page, $num_question, $form_ID, $_SESSION['user']['id'], $parties[$j]));
+                        array_push($all_choices, choiceToSQLRequest($connect, ($j - 3), $num_page_ok, $num_question, $form_ID, $_SESSION['user']['id'], $parties[$j]));
                     }
                     break;
 
@@ -86,18 +86,18 @@ try {
                     $num_question++;
                     $min = $parties[3];
                     $max = $parties[4];
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0, $min, $max));
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0, $min, $max));
                     break;
 
                 case "date":
                     $num_question++;
                     $format = $parties[3];
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0, null, null, $format));
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0, null, null, $format));
                     break;
 
                 default:
                     $num_question++;
-                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0));
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, 0));
                     break;
             }
         }
@@ -115,7 +115,6 @@ try {
             }
         }
     }
-
     
     $connect->commit();
     $_SESSION['exportSucces'] = true;
