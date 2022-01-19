@@ -853,6 +853,12 @@ dialog[class="content"] pre {
   font-size: larger;
 }
 
+.page-content{
+  height: 100%;
+  width: 70%;
+  max-width: 700px;
+}
+
 .page-content > div:first-child,
 .page-content > div {
   display: flex;
