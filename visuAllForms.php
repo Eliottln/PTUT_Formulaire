@@ -14,16 +14,16 @@ function displayAllForm($connect): string
 
         $date = $connect->quote(date("Y-m-d"));
         if (!empty($_GET['search'])) {
-            $sql = $connect->query("SELECT * FROM Forms WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%" . strtolower($_GET['search']) . "%'")->fetchAll();
+            $sql = $connect->query("SELECT * FROM Form WHERE (expire >= " . $date . " OR expire = '') AND LOWER(title) LIKE '%" . strtolower($_GET['search']) . "%'")->fetchAll();
         } else {
-            $sql = $connect->query("SELECT * FROM Forms WHERE expire >= " . $date . " OR expire = ''")->fetchAll();
+            $sql = $connect->query("SELECT * FROM Form WHERE expire >= " . $date . " OR expire = ''")->fetchAll();
         }
 
 
 
         foreach ($sql as $value) {
 
-            $forms .=   '<div class="blocArticle">
+            $forms .=   '<div class="blocForm">
                             <div>
                                 <a href="/visuForm.php?identity=' . $value['id'] . '">
                                     <p>ID #' . $value['id'] . '</p>
@@ -32,7 +32,7 @@ function displayAllForm($connect): string
                                     </div>
                                     <p>Titre : ' . $value['title'] . '</p>
                                     <p>' . $value['nb_question'] . ' question' . (($value['nb_question'] > 1) ? "s" : null) . '</p>
-                                    <a href="CreateForm.php?identity='.$value['id'].'">Modifier</a>
+                                    <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
                                 </a>
                             </div>
                         </div>';

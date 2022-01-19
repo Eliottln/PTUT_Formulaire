@@ -7,7 +7,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
 function idFormExist($pdo, $id)
 {
-    $result = $pdo->query('SELECT id FROM Forms WHERE id = ' . $id)->fetchColumn();
+    $result = $pdo->query('SELECT id FROM Form WHERE id = ' . $id)->fetchColumn();
     if ($result == $id) return true;
     return false;
 }
@@ -29,7 +29,7 @@ function getRandomID($pdo)
 function setTitle($pdo) : string
 {
     if (isset($_GET['identity'])) {
-        return $pdo->query('SELECT title FROM Forms WHERE id = ' . $_GET['identity'])->fetchColumn();
+        return $pdo->query('SELECT title FROM Form WHERE id = ' . $_GET['identity'])->fetchColumn();
     }
     return "";
 }
@@ -71,6 +71,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 </li>
                 <li>
                     <div id="ClearForm" class="button" title="Reset / New form">Reset Form</div>
+                </li>
+                <li>
+                    <div id="NewPage" class="button" title="New Page">New Page</div>
                 </li>
                 <hr>
                 <li>
@@ -245,7 +248,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </div>
 
         <form id="export" action="exportBdd.php" method="post">
-            <button class="buttonEXPORT" id="submit" type="submit" title="upload to database" disabled>
+            <button class="buttonEXPORT" id="submit" type="button" title="upload to database" disabled>
                 <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 14.9861C11 15.5384 11.4477 15.9861 12 15.9861C12.5523 15.9861 13 15.5384 13 14.9861V7.82831L16.2428 11.0711L17.657 9.65685L12.0001 4L6.34326 9.65685L7.75748 11.0711L11 7.82854V14.9861Z" fill="currentColor" />
                     <path d="M4 14H6V18H18V14H20V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V14Z" fill="currentColor" />
@@ -253,10 +256,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             </button>
         </form>
 
-        <form id="document" action="https://ressources.site/" method="post">
+        <form id="document" action="#" method="post">
             <div id="document-title">
                 <label for="document-title-input">Titre :</label>
-                <input type="text" name="title" id="document-title-input" value="<?= setTitle($connect)?>">
+                    <input type="text" name="title" id="document-title-input" value="<?= setTitle($connect)?>">
             </div>
             <div id="form-content"></div>
         </form>
@@ -295,9 +298,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script>
         $(function() {
             $("#form-content").sortable();
-            $(".page").sortable();
+            $(".page-content").sortable();
         });
     </script>
+    
+    <script src="/js/newQuestion.js"></script>
     <script src="/js/transformInputToString.js"></script>
     <script src="/js/CreateForm.js"></script>
     <script src="/js/addInputFromObject.js"></script>
@@ -322,9 +327,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     if (isset($_GET['identity'])) {
 
         try {
-            $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Questions 
+            $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Question 
                                             WHERE id_form = " . $_GET['identity'])->fetchAll();
-            $form_choices = $connect->query("SELECT * FROM Choices 
+            $form_choices = $connect->query("SELECT * FROM Choice 
                                             WHERE id_form = " . $_GET['identity'])->fetchAll();
 
             foreach ($form_questions as $value) {
@@ -333,11 +338,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                     case 'checkbox':
                     case 'radio':
                     case 'select':
-                        echo 'newBloc(' . json_encode($value) . ', '. json_encode($form_choices) .')';
+                        echo 'FormCreation.newBloc(' . json_encode($value) . ', '. json_encode($form_choices) .')';
                         break;
 
                     default:
-                        echo 'newBloc(' . json_encode($value) . ')';
+                        echo 'FormCreation.newBloc(' . json_encode($value) . ')';
                         break;
 
                 }
