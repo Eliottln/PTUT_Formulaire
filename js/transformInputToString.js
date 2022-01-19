@@ -16,7 +16,7 @@ document.getElementById('submit').addEventListener('click', addInput)
 function addInput() {
 
     let tabInput = []
-
+    let n = 1
     let allPage = document.querySelectorAll('#form-content .page')
 
     //AJOUTE LES CHOIX AU QUESTION
@@ -56,7 +56,11 @@ function addInput() {
         let newInput = document.createElement('input')
         newInput.type = 'hidden'
 
-        newInput.value = type + '/' + title + addTabChoice(type, question)
+        newInput.value = 'in_page'+n+'/'        
+                        + type                  
+                        + '/' 
+                        + title 
+                        + addTabChoice(type, question)
         newInput.name = name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
 
         console.log(newInput)
@@ -73,14 +77,15 @@ function addInput() {
         }
     }
 
-    let n = 1
+    
     function pageToInput(page){
         let addPage = document.createElement('input')
         addPage.type = 'hidden'
 
-        addPage.value = page.firstChild.lastChild.value + 
+        addPage.value = 'page/' +                           //type
+                        page.firstChild.lastChild.value +   //title
                         '/' + 
-                        page.children[1].children.length
+                        page.children[1].children.length    //nb_question
         addPage.name = 'page'+n;
         console.log('ok')
         tabInput.push(addPage)
