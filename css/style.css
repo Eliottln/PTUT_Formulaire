@@ -27,8 +27,12 @@
   --c_font:#000;
   --c_inputBG: #fff;
 
+  --c_page_crea:rgba(0,0,0,0.8);
+
   /*value JS*/
   --layoutVisuAllForms : 3;
+
+  
 }
 
 @font-face {
@@ -633,11 +637,6 @@ header nav ul li:hover span {
   width: 100%;
 }
 
-/*
-#palette ul li div {
-  min-width: 100px;
-}*/
-
 #addSection {
   width: 100%;
   display: flex;
@@ -677,6 +676,12 @@ header nav ul li:hover span {
 #addSection button svg {
   height: 35px;
   width: 35px;
+}
+
+#ImportForm{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #settings-doc {
@@ -839,9 +844,8 @@ dialog[class="content"] pre {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /*flex-wrap: wrap;*/
-  width: 80%;
-  margin-left: 10%;
+  width: 100%;
+  padding-inline: 10%;
 }
 
 #document label,
@@ -849,8 +853,8 @@ dialog[class="content"] pre {
   font-size: larger;
 }
 
-#form-content > div:first-child,
-#form-content > div {
+.page-content > div:first-child,
+.page-content > div {
   display: flex;
   flex-direction: row;
   background-color: #404040bb;
@@ -862,7 +866,7 @@ dialog[class="content"] pre {
   color: white;
 }
 
-#form-content div div:first-child {
+.page-content div div:first-child {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -880,19 +884,19 @@ dialog[class="content"] pre {
   resize: none;
 }
 
-#form-content div .content div {
+.page-content div .content div {
   display: flex;
   flex-direction: column;
   margin-block-start: 10px;
   width: 94%;
 }
 
-#form-content div .content div :not(p) {
+.page-content div .content div :not(p) {
   margin-inline-start: 20px;
 }
 
-#form-content div .content div input[type="radio"],
-#form-content div .content div input[type="checkbox"] {
+.page-content div .content div input[type="radio"],
+.page-content div .content div input[type="checkbox"] {
   margin-block-end: 10px;
 }
 
@@ -929,13 +933,15 @@ dialog[class="content"] pre {
 #document-title {
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 55vw;
+  justify-content: center;
   margin-block: 10px;
   align-items: center;
 }
 
 #document-title label {
-  width: 5%;
+  text-align: end;
+  padding-right: 6px;
 }
 
 #document-title-input {
@@ -945,7 +951,7 @@ dialog[class="content"] pre {
   font-size: large;
   border-block-end: 2px solid var(--first);
   padding-block: 1px;
-  width: 95%;
+  width: 75%;
 }
 
 
@@ -953,9 +959,81 @@ dialog[class="content"] pre {
 
 #form-content {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   width: 80%;
+}
+
+#form-content .page{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--c_page_crea);
+  width: 80%;
+  min-height:250px;
+  border-radius: 20px;
+  align-items: center;
+  margin-block: 10px;
+  box-shadow: 0.8px 2.3px 1.9px rgba(0, 0, 0, 0.065),
+  1.9px 5.4px 4.3px rgba(0, 0, 0, 0.093),
+  3.5px 9.7px 7.7px rgba(0, 0, 0, 0.115),
+  5.8px 16.1px 12.8px rgba(0, 0, 0, 0.135),
+  9.5px 26.5px 21.2px rgba(0, 0, 0, 0.157),
+  16.6px 46.2px 37px rgba(0, 0, 0, 0.185),
+  36px 100px 80px rgba(0, 0, 0, 0.25);
+}
+
+.page-title{
+  color: var(--second);
+  margin-block: 10px;
+  width: 80%;
+  text-align: center;
+}
+
+.page-title input{
+  background-color: #0000;
+  border: none;
+  border-bottom: 2px solid var(--second);
+  margin-left: 5px;
+  min-width: 200px;
+  width: 50%;
+  color: var(--second);
+  font-size: x-large;
+}
+
+.deletePage{
+  display: block;
+  background-color: var(--second);
+  position: absolute;
+  top: 20px;
+  right: -25px;
+  padding: 7px;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0.8px 2.3px 1.9px rgba(0, 0, 0, 0.065),
+  1.9px 5.4px 4.3px rgba(0, 0, 0, 0.093),
+  3.5px 9.7px 7.7px rgba(0, 0, 0, 0.115),
+  5.8px 16.1px 12.8px rgba(0, 0, 0, 0.135),
+  9.5px 26.5px 21.2px rgba(0, 0, 0, 0.157),
+  16.6px 46.2px 37px rgba(0, 0, 0, 0.185),
+  36px 100px 80px rgba(0, 0, 0, 0.25);
+}
+
+.deletePage img{
+  width:30px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.deletePage:hover{
+  cursor: pointer;
+  background-color: red;
+}
+
+#form-content .selectedElement{
+  border: 3px solid black;
 }
 
 /**Background bubble**/

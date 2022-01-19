@@ -1,21 +1,79 @@
 class FormCreation {
     static buttonOptions = document.querySelectorAll("#addSection > button");
+    static buttonNewPage = document.getElementById("NewPage");
     static CONTENT = document.getElementById('form-content')
     static button = document.getElementById('submit')
     static numQuestion = 0
+    static numPage = 0
     static selectedQuestion = null
+    static selectedPage = null
 
     constructor() {
         FormCreation.buttonOptions.forEach(e => e.addEventListener('click', FormCreation.newBloc))
+        FormCreation.buttonNewPage.addEventListener('click', FormCreation.newPage)
         FormCreation.newPage()
     }
 
     static newPage(){
-        let page=document.createElement("div")
+        FormCreation.numPage++
+        let page= document.createElement("div")
         page.className = 'page'
+        page.innerHTML =    '<div class="page-title">'+
+                                '<label for="page-title-input'+FormCreation.numPage+'">Titre :</label>'+
+                                '<input type="text" name="title" id="document-title-input'+FormCreation.numPage+'" value="">'+ //TODO insert title value if exist
+                            '</div>'+
+                            '<div class="page-content"></div>'
+
+        //double clic to select a page
+        page.addEventListener('dblclick', function(){
+            if (FormCreation.selectedPage != null){
+                FormCreation.selectedPage.classList.remove('selectedElement')
+            }
+            else if(FormCreation.selectedQuestion != null){
+                FormCreation.selectedQuestion.classList.remove('selectedElement')
+                FormCreation.selectedQuestion = null
+            }
+            FormCreation.selectedPage = page
+            FormCreation.selectedPage.classList.add('selectedElement')
+        })
+
+        //delete button
+        let deletedButton = document.createElement("button")
+        deletedButton.className = 'deletePage'
+        deletedButton.innerHTML = '<img src="/img/deletePage.svg" alt="delete page">'
+        page.appendChild(deletedButton)
+
+        //delete Page
+        deletedButton.addEventListener('click', function(){ 
+            if(deletedButton.parentNode.classList.contains('selectedElement')){
+                FormCreation.selectedPage = null
+            }
+            deletedButton.parentNode.remove()
+            FormCreation.numPage--
+            console.log(FormCreation.numPage)
+            if(FormCreation.numPage <= 0){
+                FormCreation.lockExport()
+            }
+        })
+
+        //select this new page
+        if (FormCreation.selectedPage != null){
+            FormCreation.selectedPage.classList.remove('selectedElement')
+        }
+        else if(FormCreation.selectedQuestion != null){
+            FormCreation.selectedQuestion.classList.remove('selectedElement')
+            FormCreation.selectedQuestion = null
+        }
+        FormCreation.selectedPage = page
+        FormCreation.selectedPage.classList.add('selectedElement')
+
         FormCreation.CONTENT.appendChild(page)
     }
 
+    static lockExport(){
+        FormCreation.button.innerHTML = '<img src="/img/lock.svg" alt="lock">';
+        FormCreation.button.setAttribute('disabled',true)
+    }
 
     static newBloc(qValue, choiceArray){ //create a question input
 
@@ -75,19 +133,36 @@ class FormCreation {
                 +'</button>'+
                 '</div>'
 
-            if (FormCreation.selectedQuestion != null && FormCreation.selectedQuestion.className === 'question-bloc')
+            
+            if (FormCreation.selectedQuestion != null && FormCreation.selectedQuestion != undefined){
                 FormCreation.selectedQuestion.insertAdjacentElement("afterend", div)
-            else
-                FormCreation.CONTENT.lastElementChild.insertAdjacentElement("beforeend", div)
-            document.getElementById('up-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
-            document.getElementById('del-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
-            document.getElementById('down-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
+            }
+            else if(FormCreation.selectedPage != null && FormCreation.selectedPage != undefined){
+                FormCreation.selectedPage.children[1].appendChild(div)
+            }
+            else{
+                FormCreation.CONTENT.lastChild.children[1].appendChild(div)
+            }
+                
+            try {
+                document.getElementById('up-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
+                document.getElementById('del-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
+                document.getElementById('down-'+FormCreation.numQuestion+'-'+type).addEventListener('click',FormCreation.moveQuestion)
+            } catch (error) {
+                console.error('tkt y a pas d\'error, mais selectionne un truc quand même')
+                return null
+            }
+            
 
             return div
         }
 
-        let bloc = addDivElement(id).id;
-
+        let bloc = addDivElement(id)
+        if(!bloc){
+            return false
+        }
+        bloc = bloc.id
+        
         document.querySelector('#'+bloc+' .question').value = title
 
 
@@ -138,19 +213,22 @@ class FormCreation {
             default:
                 div.appendChild(FormCreation.createSimpleInput(id.split('-')[1]))
                 break
+            
         }
-
     }
 
 
     static selectQuestion(){
         if (FormCreation.selectedQuestion != null){
-            if (FormCreation.selectedQuestion.style.border !== "none")
-            FormCreation.selectedQuestion.style.border = "none"
+            FormCreation.selectedQuestion.classList.remove('selectedElement')
         }
+        else if(FormCreation.selectedPage != null){
+            FormCreation.selectedPage.classList.remove('selectedElement')
+            FormCreation.selectedPage = null
+        }
+
         FormCreation.selectedQuestion = this
-        FormCreation.selectedQuestion.style.border = "2px solid var(--first)"
-        FormCreation.selectedQuestion.style.boxSizing = "border-box"
+        FormCreation.selectedQuestion.classList.add('selectedElement')
     }
 
 
@@ -217,6 +295,9 @@ class FormCreation {
 
 
         if (id.startsWith('del')){
+            if(current.classList.contains('selectedElement')){
+                FormCreation.selectQuestion = null;
+            }
             current.remove()
             FormCreation.numQuestion--
 
