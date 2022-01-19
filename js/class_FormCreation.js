@@ -8,7 +8,17 @@ class FormCreation {
     constructor() {
         FormCreation.buttonOptions.forEach(e => e.addEventListener('click', FormCreation.newBloc))
         FormCreation.newPage()
+        document.getElementById("ClearForm").addEventListener('click', FormCreation.resetForm)
     }
+
+
+    static resetForm() {
+        FormCreation.CONTENT.innerHTML = ''
+        FormCreation.numQuestion = 0
+        FormCreation.button.setAttribute('disabled', '')
+        FormCreation.newPage()
+    }
+
 
     static newPage(){
         let page=document.createElement("div")
@@ -286,9 +296,9 @@ class FormCreation {
     static createRangeInput(){
         let div = document.createElement("div");
         div.innerHTML =
-            '<input id="choice-'+numQuestion+'1" class="choice-input" type="text" name="choice-'+numQuestion+'1">'+
+            '<input id="choice-'+FormCreation.numQuestion+'1" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+'1">'+
             '<input type="range">'+
-            '<input id="choice-'+numQuestion+'2" class="choice-input" type="text" name="choice-'+numQuestion+'2">'
+            '<input id="choice-'+FormCreation.numQuestion+'2" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+'2">'
 
         return div
     }
@@ -432,7 +442,7 @@ class FormCreation {
 
         this.insertAdjacentHTML("beforebegin", add);
 
-        document.getElementById('trash-'+numQuestion+num).addEventListener('click', FormCreation.delChoice)
+        document.getElementById('trash-'+question+num).addEventListener('click', FormCreation.delChoice)
     }
 
 
@@ -488,13 +498,11 @@ class FormCreation {
 
 
     static createTextarea(div){
-        let divT = document.createElement("div");
-
+        let divT = document.createElement("div")
         divT.innerHTML =
             '<textarea disabled placeholder="Ecrire ici..."></textarea>'
 
         div.appendChild(divT)
-        document.getElementById('select-date-'+numQuestion).addEventListener('change', FormCreation.createDate)
     }
 
 }
