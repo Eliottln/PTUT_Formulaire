@@ -30,6 +30,7 @@
   --c_page_crea: rgba(0, 0, 0, 0.8);
 
   --c_table_odd_visuResult:#EEEEEE;
+  --c_table_hover: #BBBBBB;
 
   /*value JS*/
   --layoutVisuAllForms: 3;
@@ -857,6 +858,7 @@ dialog[class="content"] pre {
   height: 100%;
   width: 70%;
   max-width: 700px;
+  min-height: 150px;
 }
 
 .page-content > div:first-child,
@@ -1316,12 +1318,12 @@ dialog[class="content"] pre {
   flex-direction: row;
   margin-block: 10px;
   border: 2px solid var(--first);
+  background-color: var(--first);
 }
 
 .search input {
   padding: 10px;
   border: none;
-  border-radius: 10px;
   width: 30vw;
 }
 
@@ -1575,6 +1577,8 @@ dialog[class="content"] pre {
   padding:15px 0;
 	background:var(--c_bg);
   text-align: center;
+  font-family: "Rockford";
+  font-size: large;
 }
 
 #table-resultats tr:nth-child(odd) > td {
@@ -1582,7 +1586,7 @@ dialog[class="content"] pre {
 	background:var(--c_table_odd_visuResult);
 }
 
-#table-resultats tr:hover {
+#table-resultats tbody tr:hover td {
   background:var(--c_table_hover);
 }
 
