@@ -70,10 +70,9 @@ function addInput() {
     function questionToInput(questions){
         for (let index = 0; index < questions.length; index++) {
             let _type = questions[index].id.split('-')[2]
-            let _title = questions[index].firstChild.firstChild.lastChild.value
-            let _name = questions[index].firstChild.firstChild.lastChild.name
+            let _title = questions[index].firstElementChild.firstElementChild.lastElementChild.value
+            let _name = questions[index].firstElementChild.firstElementChild.lastElementChild.name
             addTabQuestion(_type, _title, _name, index, questions[index])
-            
         }
     }
 
@@ -83,18 +82,16 @@ function addInput() {
         addPage.type = 'hidden'
 
         addPage.value = 'page/' +                           //type
-                        page.firstChild.lastChild.value +   //title
+                        page.firstChild.lastElementChild.value +   //title
                         '/' + 
                         page.children[1].children.length    //nb_question
         addPage.name = 'page'+n;
-        console.log('ok')
         tabInput.push(addPage)
         questionToInput(page.children[1].children)
         n++
     }
 
 
-    console.log(allPage)
     allPage.forEach(page => pageToInput(page))
 
     //on affiche le nouveau form
@@ -112,6 +109,5 @@ function addInput() {
     title.setAttribute('name', "form-title-ID");
 
     formTemp.appendChild(title)
-    console.log(tabInput)
     tabInput.forEach(input => formTemp.appendChild(input))
 }

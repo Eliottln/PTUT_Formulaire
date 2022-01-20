@@ -257,7 +257,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <form id="document" action="#" method="post">
             <div id="document-title">
-                <label for="document-title-input">Titre :</label>
+                <label for="document-title-input">Nom du formulaire</label>
                     <input type="text" name="title" id="document-title-input" value="<?= setTitle($connect)?>">
             </div>
             <div id="form-content"></div>

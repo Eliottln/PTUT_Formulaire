@@ -13,16 +13,13 @@ class FormCreation {
         if (charged === undefined) {
             FormCreation.newPage()
         }
-        document.getElementById("ClearForm").addEventListener('click', FormCreation.resetForm)
-    }
-
-
-    static resetForm() {
-        FormCreation.CONTENT.innerHTML = ''
-        FormCreation.numQuestion = 0
-        FormCreation.numPage = 0
-        FormCreation.button.setAttribute('disabled', '')
-        FormCreation.newPage()
+        document.getElementById("ClearForm").addEventListener('click', function (){
+                FormCreation.CONTENT.innerHTML = ''
+                FormCreation.numQuestion = 0
+                FormCreation.numPage = 0
+                FormCreation.button.setAttribute('disabled', '')
+                FormCreation.newPage()
+        })
     }
 
 
@@ -179,7 +176,12 @@ class FormCreation {
         switch (id){
 
             case 'new-number':
-                div.appendChild(FormCreation.createRangeInput())
+                let divN = document.createElement("div");
+                divN.innerHTML =
+                    '<label>Min<input id="choice-'+FormCreation.numQuestion+'1" class="choice-input" type="number" name="choice-'+FormCreation.numQuestion+'1"></label>'+
+                    '<label>Max<input id="choice-'+FormCreation.numQuestion+'2" class="choice-input" type="number" name="choice-'+FormCreation.numQuestion+'2"></label>'
+
+                div.appendChild(divN)
                 break
 
             case 'new-range':
@@ -205,17 +207,33 @@ class FormCreation {
                     '<option value="datetime-local">Date-heure</option>'+
                     '<option value="duration">Durée</option>'+
                     '</select>'+
-
                     '<div id="date-'+FormCreation.numQuestion+'">'+
                     '<input type="date" disabled>'+
                     '</div>'
 
                 div.appendChild(divD)
-                document.getElementById('select-date-'+FormCreation.numQuestion).addEventListener('change',FormCreation.createDate)
+                document.getElementById('select-date-'+FormCreation.numQuestion).addEventListener('change',function(){
+                    let question = Number.parseInt(this.id.split("-")[2])
+                    let div = document.getElementById('date-'+question)
+                    let value = this.value
+
+                    if (value === 'duration'){
+                        div.innerHTML = '<label>Du :<input type="datetime-local" disabled></label>'+
+                            '<label>Au :<input type="datetime-local" disabled></label>'
+                    }
+
+                    else{
+                        div.innerHTML = '<input type="'+value+'" disabled>'
+                    }
+                })
                 break
 
             case 'new-textarea':
-                FormCreation.createTextarea(div)
+                let divT = document.createElement("div")
+                divT.innerHTML =
+                    '<textarea disabled placeholder="Ecrire ici..."></textarea>'
+
+                div.appendChild(divT)
                 break
 
             default:
@@ -241,7 +259,7 @@ class FormCreation {
     }
 
 
-    static verification(index = 0){
+    static verification(index = 0){ //refresh numQuestion for all questions
 
         let allQuestions = document.querySelectorAll('#form-content div[id^="form-"]')
         FormCreation.numQuestion = allQuestions.length
@@ -296,6 +314,27 @@ class FormCreation {
     }
 
 
+    static updateNumRC(numBlock,typeBlock,j){
+
+        let update = numBlock+j
+
+        let label = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > label')
+        let input = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice-input')
+        let trash = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > button')
+
+        for (let i = 1; i <= label.length; i++) {
+
+            label[i - 1].setAttribute('for', 'choice-' + update + i)
+
+            input[i - 1].id = 'choice-' + update + i
+            input[i - 1].setAttribute('name', 'choice-' + update + i)
+
+            trash[i - 1].id = 'trash-' + update + i
+            trash[i - 1].addEventListener('click',FormCreation.delChoice)
+        }
+    }
+
+
     static moveQuestion(){
         const id = this.id
         const question = Number.parseInt(id.split('-')[1])
@@ -327,27 +366,6 @@ class FormCreation {
         else if (id.startsWith('down') && question < FormCreation.numQuestion){
             let node = document.querySelector('div[id^="form-'+(question+1)+'"]')
             FormCreation.swapNodes(current, node)
-        }
-    }
-
-
-    static updateNumRC(numBlock,typeBlock,j){
-
-        let update = numBlock+j
-
-        let label = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > label')
-        let input = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice-input')
-        let trash = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > button')
-
-        for (let i = 1; i <= label.length; i++) {
-
-            label[i - 1].setAttribute('for', 'choice-' + update + i)
-
-            input[i - 1].id = 'choice-' + update + i
-            input[i - 1].setAttribute('name', 'choice-' + update + i)
-
-            trash[i - 1].id = 'trash-' + update + i
-            trash[i - 1].addEventListener('click',FormCreation.delChoice)
         }
     }
 
@@ -543,14 +561,12 @@ class FormCreation {
             let input = document.querySelectorAll('#' + rootID + ' .choice-input')
             let trash = document.querySelectorAll('#' + rootID + ' .choice > button')
 
-
             for (let i = 1; i <= input.length; i++) {
 
                 if (rootID.split('-')[2] !== "select") {
                     label[i - 1].innerHTML = 'Option ' + i
                     label[i - 1].setAttribute('for', 'choice-' + question + i)
                 }
-
                 input[i - 1].id = 'choice-' + question + i
                 input[i - 1].setAttribute('name', 'choice-' + question + i)
 
@@ -559,31 +575,6 @@ class FormCreation {
             }
         }
 
-    }
-
-
-    static createDate(){
-        let question = Number.parseInt(this.id.split("-")[2])
-        let div = document.getElementById('date-'+question)
-        let value = this.value
-
-        if (value === 'duration'){
-            div.innerHTML = '<label>Du :<input type="datetime-local" disabled></label>'+
-                '<label>Au :<input type="datetime-local" disabled></label>'
-        }
-
-        else{
-            div.innerHTML = '<input type="'+value+'" disabled>'
-        }
-    }
-
-
-    static createTextarea(div){
-        let divT = document.createElement("div")
-        divT.innerHTML =
-            '<textarea disabled placeholder="Ecrire ici..."></textarea>'
-
-        div.appendChild(divT)
     }
 
 }
