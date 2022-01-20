@@ -56,6 +56,17 @@ function displayUsers($connect){
 
 }
 
+function displayUsersForEdit($connect){
+    $ret = "";
+    $users = $connect->query("SELECT * FROM User ")->fetchAll();
+    foreach ($users as $item) {
+        $ret .= ' <label for="'. $item['id'] .'-edit">'. $item['name'] . ' </label>
+                  <input class="user-checkb" type="checkbox" name="'. $item['id'] .'-edit" id="'. $item['id'] .'-edit" >';
+    }
+
+    return $ret;
+}
+
 
 
 ?>
@@ -87,19 +98,19 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <h2> Consulter vos groupes : </h2> <br>
         <img id="pannel-group-button" style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe">
-        <img id="delete-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/moins.png">
+        <img id="edit-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/moins.png">
         <div id="all-groups">
 
         </div>
     </div>
 
 
-    <dialog style="display: none" id="pannel-group" >
+    <dialog style="display: none; left:-100vw"  id="pannel-group" >
         <h2>Titre</h2>
         <input type="text" id="title-group" name="title-group">
         <h2>Sélectionner Des utilisteurs</h2>
 
-        <label for="all-users">Tout sélectionner</label>
+        <label for="select-all-users">Tout sélectionner</label>
         <input id="select-all-users" type="checkbox" name="select-all-users">
 
         <?= displayUsers($connect) ?>
@@ -111,7 +122,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </dialog>
 
-    <dialog style="display: none" id="pannel-edit" >
+    <dialog style="display: none ; left:-100vw" id="pannel-edit" >
 
         <h2>Sélectionner un groupe</h2>
 
@@ -121,7 +132,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         </select>
 
-        <?= displayUsers($connect) ?>
+        <?= displayUsersForEdit($connect) ?>
 
         <button id="confirm-edit" type="submit">Confirmer</button>
         <button id="cancel-delete" type="reset">Annuler</button>
@@ -150,33 +161,46 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     }
 
     function displayDeleteMenu(){
-        menuDelete.style.display = 'flex';
+        menuEdit.style.display = 'flex';
+        menuEdit.style.left = "25vw";
     }
 
     function exitDeleteMenu(){
-        menuDelete.style.display = 'none';
+        menuEdit.style.display = 'none';
+        menuEdit.style.left = "-100vw";
+        for(let i =0 ; i < checkboxs.length; i++){
+            checkboxs[i].checked = false;
+        }
     }
+
 
     function displayGroupMenu(){
         menuGroup.style.display = 'flex';
+        menuGroup.style.left = "25vw";
     }
 
     function exitGroupMenu(){
         menuGroup.style.display = 'none';
+        menuGroup.style.left = "-100vw";
+        for(let i =0 ; i < checkboxs.length; i++){
+
+            checkboxs[i].checked = false;
+        }
     }
 
     function selectAll(){
 
-        for(let item in checkboxs){
-            console.log(checkboxs[item])
-            checkboxs[item].checked = true;
+        for(let i =0; i < checkboxs.length/2; i++){
+
+            checkboxs[i].checked = true;
         }
+
 
     }
 
     function unselectAll(){
         for(let item in checkboxs){
-            console.log(checkboxs[item])
+
             checkboxs[item].checked = false;
         }
     }
@@ -190,7 +214,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             unselectAll()
         }
 
-        console.log(this.state);
+
 
     }
 
@@ -198,6 +222,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         let ret = "";
 
         for(let i=0; i < tabCheck.length; i++){
+
             if(tabCheck[i].checked === true) {
                 if (i === tabCheck.length - 1)
                     ret += tabCheck[i].id;
@@ -213,15 +238,13 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         return ret;
     }
 
-    //TODO TERMINER ICI
+
     function setEventListnerOnMembers(){
-        console.log("dans la fonction")
+
         let imgOfGroups = document.getElementsByClassName("img-of-group");
 
         for(let i = 0; i< imgOfGroups.length; i++){
 
-            console.log("img-group-"+i)
-            console.log(imgOfGroups[i])
             imgOfGroups[i].addEventListener('click',showMembers)
 
         }
@@ -230,7 +253,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     function showMembers(){
 
         let id = "list-of-" + this.getAttribute("id").split("-")[2];
-        console.log(id);
+
         let list = document.getElementById(id);
 
         if(list.style.display === "flex")
@@ -241,14 +264,17 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     }
 
     function send(todo){
-        console.log("todo :::" + todo);
+
+
         let strSend = tabCheckToString(checkboxs);
         let selectGroup = document.getElementById("group-select");
         let inputTitle = document.getElementById("title-group");
         let titleGroup = inputTitle.value;
-        let groupToDel = selectGroup.value;
+        let groupToEdit = selectGroup.value;
 
-
+        if(groupToEdit === "none" && menuEdit.style.display==="flex"){
+            return;
+        }
 
 
         const xhttp = new XMLHttpRequest();
@@ -265,14 +291,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         xhttp.open("POST", "/asyncGroupe.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage
-                    + '&todo=' + todo + '&deleted-group=' + groupToDel + '&title-group=' + titleGroup);
+                    + '&todo=' + todo + '&edited-group=' + groupToEdit + '&title-group=' + titleGroup);
         if(isArrivedOnPage === 0){
             isArrivedOnPage = 1; //Savoir si on viens d'arriver sur la page ou pas
 
         }
-
-
-
 
 
     }
@@ -280,8 +303,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     checkboxs = document.getElementsByClassName("user-checkb"); //toutes les checkbox
 
     let checkboxAll = document.getElementById("select-all-users");
-    let confirmButton = document.getElementById("confirm");
-    let confirmDeleteButton = document.getElementById("confirm-delete");
+    let confirmButton = document.getElementById("confirm"); //Ajouter
+
 
 
     menuGroup = document.getElementById("pannel-group");
@@ -289,10 +312,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     let exitMenuGroupButton = document.getElementById("cancel");
 
 
-    menuDelete = document.getElementById("pannel-edit");
-    let deleteGroupButton = document.getElementById("delete-group-button");
-    let exitDeleteGroupButton = document.getElementById("cancel-delete")
-
+    menuEdit = document.getElementById("pannel-edit");
+    let editGroupButton = document.getElementById("edit-group-button");
+    let exitEditGroupButton = document.getElementById("cancel-delete")
+    let confirmEditButton = document.getElementById("confirm-edit") // Modifier
+    let confirmDeleteButton = document.getElementById("confirm-delete"); //Supprimer
 
 
 
@@ -304,8 +328,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     confirmButton.addEventListener('click', send.bind(null,"add"));
 
     confirmDeleteButton.addEventListener('click',send.bind(null,"del"));
-    deleteGroupButton.addEventListener('click',displayDeleteMenu)
-    exitDeleteGroupButton.addEventListener('click',exitDeleteMenu)
+    editGroupButton.addEventListener('click',displayDeleteMenu);
+    exitEditGroupButton.addEventListener('click',exitDeleteMenu);
+    confirmEditButton.addEventListener('click',send.bind(null,"modify"));
 
     state=0;
     isArrivedOnPage = 0;

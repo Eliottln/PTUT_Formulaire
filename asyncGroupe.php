@@ -33,14 +33,28 @@ function displaySelectGroups($connect,$user){
     return $retString;
 }
 
-function stringCheckToTab($stringCheckValues){
+function stringCheckToTab($stringCheckValues,$todo = null){
     $tab = array();
-    $parsing = explode("/",$stringCheckValues);
-    foreach ($parsing as $value){
+    if($todo == "edit"){
 
-        array_push($tab,$value);
+        $parsing = explode("-edit/",$stringCheckValues);
 
+        for($i = 0; $i < count($parsing); $i++){
+
+            if($i == count($parsing)-1) //La derniere valeur du tableu nécessite un autre parsing
+                array_push($tab,explode("-edit",$parsing[$i])[0]);
+            else
+                array_push($tab,$parsing[$i]);
+        }
+
+    }else{
+
+        $parsing = explode("/",$stringCheckValues);
+        foreach ($parsing as $value) {
+            array_push($tab, $value);
+        }
     }
+
     return $tab;
 
 }
@@ -107,11 +121,43 @@ function displayGroups($connect,$user){
     return $ret;
 }
 
+function modifyGroup($connect,$stringCheckValues,$idGroup){
+
+
+    $tabUsers = stringCheckToTab($stringCheckValues,"edit");
+
+
+    $connect->beginTransaction();
+    try {
+        $sql = "DELETE FROM IsMember WHERE id_group = ".$idGroup ."";
+        $stmt1 = $connect->prepare($sql);
+        $stmt1->execute();
+
+        foreach ($tabUsers as $idUser){
+            if($idUser != ""){
+
+                $sql = "INSERT INTO IsMember(id_user,id_group)
+                VALUES (".$idUser . ",".$idGroup . ");";
+
+                $stmt2 = $connect->prepare($sql);
+                $stmt2->execute();
+            }
+
+        }
+
+        $connect->commit();
+    }catch(PDOException $e){
+        echo $e->getLine() . " " . $e->getMessage();
+        exit();
+    }
+}
+
 function addGroup($connect, $stringCheckValues,$user,$title){
 
     $tabUsers = stringCheckToTab($stringCheckValues);
 
     $connect->beginTransaction();
+
     try {
 
         $sql = "INSERT INTO 'Group' (id_creator,title)
@@ -148,14 +194,26 @@ $stringCheckValues = $_POST["tabcheck"];
 $state = $_POST['state-page'];
 $todo = $_POST['todo'];
 
-if($todo == "add"){
-    $title = $_POST['title-group'];
-    addGroup($connect,$stringCheckValues,$user,$title);
+switch ($todo){
+    case "add":
+        $title = $_POST['title-group'];
+        addGroup($connect,$stringCheckValues,$user,$title);
+        break;
+    case "del":
+        $groupToDel = $_POST['edited-group'];
+        deleteGroups($connect, $groupToDel);
+        break;
+
+    case "modify":
+        $groupToModify = $_POST['edited-group'];
+        modifyGroup($connect,$stringCheckValues,$groupToModify);
+        break;
+
+    case "start":
+        break;
+
 }
-else if($todo == "del"){
-    $groupToDel = $_POST['deleted-group'];
-    deleteGroups($connect, $groupToDel);
-}
+
 
 
 $finalStringBloc = displayGroups($connect, $user);
