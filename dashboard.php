@@ -83,7 +83,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </div>
 
-    <div>
+    <div id="list-of-groups">
+
         <h2> Consulter vos groupes : </h2> <br>
         <img id="pannel-group-button" style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe">
         <img id="delete-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/moins.png">
@@ -164,17 +165,17 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     function selectAll(){
 
-        for(let item in checkbox){
-            console.log(checkbox[item])
-            checkbox[item].checked = true;
+        for(let item in checkboxs){
+            console.log(checkboxs[item])
+            checkboxs[item].checked = true;
         }
 
     }
 
     function unselectAll(){
-        for(let item in checkbox){
-            console.log(checkbox[item])
-            checkbox[item].checked = false;
+        for(let item in checkboxs){
+            console.log(checkboxs[item])
+            checkboxs[item].checked = false;
         }
     }
 
@@ -213,72 +214,88 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     //TODO TERMINER ICI
     function setEventListnerOnMembers(){
         console.log("dans la fonction")
-        let liste = document.querySelectorAll('[id^="listeof-"]');
-        let listesOfMembers = document.getElementsByClassName("liste-members");
-        console.log(liste);
+        let imgOfGroups = document.getElementsByClassName("img-of-group");
 
+        for(let i = 0; i< imgOfGroups.length; i++){
+
+            console.log("img-group-"+i)
+            console.log(imgOfGroups[i])
+            imgOfGroups[i].addEventListener('click',showMembers)
+
+        }
+    }
+
+    function showMembers(){
+
+        let id = "list-of-" + this.getAttribute("id").split("-")[2];
+        console.log(id);
+        let list = document.getElementById(id);
+
+        if(list.style.display === "flex")
+            list.style.display = "none";
+        else
+            list.style.display = "flex";
 
     }
 
     function send(todo){
         console.log("todo :::" + todo);
-        let strSend = tabCheckToString(checkbox);
+        let strSend = tabCheckToString(checkboxs);
         let selectGroup = document.getElementById("group-select");
         let inputTitle = document.getElementById("title-group");
         let titleGroup = inputTitle.value;
         let groupToDel = selectGroup.value;
 
 
-        document.getElementById('all-groups').innerHTML = "";
-        document.getElementById('group-select').innerHTML = "";
+
 
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
+            document.getElementById('all-groups').innerHTML = "";
+            document.getElementById('group-select').innerHTML = "";
+
             let $returnString = this.responseText.split("///");
 
             document.getElementById('all-groups').innerHTML = $returnString[0];
             document.getElementById('group-select').innerHTML = $returnString[1];
+            setEventListnerOnMembers()
         }
         xhttp.open("POST", "/asyncGroupe.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage
                     + '&todo=' + todo + '&deleted-group=' + groupToDel + '&title-group=' + titleGroup);
         if(isArrivedOnPage === 0){
-            isArrivedOnPage = 1;
+            isArrivedOnPage = 1; //Savoir si on viens d'arriver sur la page ou pas
 
         }
 
-        console.log("iSarrive ::: "  + isArrivedOnPage);
+
+
 
 
     }
 
+    checkboxs = document.getElementsByClassName("user-checkb"); //toutes les checkbox
 
     let checkboxAll = document.getElementById("select-all-users");
     let confirmButton = document.getElementById("confirm");
     let confirmDeleteButton = document.getElementById("confirm-delete");
 
 
-    displayUserButton = document.getElementById("display-members");
-
     menuGroup = document.getElementById("pannel-group");
-    menuGroupButton = document.getElementById("pannel-group-button");
-    exitMenuGroupButton = document.getElementById("cancel");
+    let menuGroupButton = document.getElementById("pannel-group-button");
+    let exitMenuGroupButton = document.getElementById("cancel");
 
 
     menuDelete = document.getElementById("pannel-delete");
-    deleteGroupButton = document.getElementById("delete-group-button");
-    exitDeleteGroupButton = document.getElementById("cancel-delete")
+    let deleteGroupButton = document.getElementById("delete-group-button");
+    let exitDeleteGroupButton = document.getElementById("cancel-delete")
 
 
 
-    checkbox = document.getElementsByClassName("user-checkb");
 
-    state=0;
 
-    isArrivedOnPage = 0;
-
-    checkboxAll.addEventListener('change',selection);
+    checkboxAll.addEventListener('change',selection); //La checkbox pour tout sélectionner
 
     menuGroupButton.addEventListener('click',displayGroupMenu);
     exitMenuGroupButton.addEventListener('click',exitGroupMenu)
@@ -288,9 +305,15 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     deleteGroupButton.addEventListener('click',displayDeleteMenu)
     exitDeleteGroupButton.addEventListener('click',exitDeleteMenu)
 
+    state=0;
+    isArrivedOnPage = 0;
 
     send("start");
-    setEventListnerOnMembers();
+
+
+
+
+
 
 
 

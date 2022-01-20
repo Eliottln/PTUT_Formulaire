@@ -6,8 +6,8 @@ function deleteGroups($connect, $group){
 
     try {
 
-        $stmt = $connect->prepare("DELETE FROM IsMember WHERE id_group = ".$group ." ");
-        $stmt->execute();
+        $stmt1 = $connect->prepare("DELETE FROM IsMember WHERE id_group = ".$group ." ");
+        $stmt1->execute();
 
         $stmt2 = $connect->prepare("DELETE FROM 'Group' WHERE id = ".$group ." ");
         $stmt2->execute();
@@ -23,12 +23,9 @@ function displaySelectGroups($connect,$user){
     try {
         $groups = $connect->query("SELECT * FROM 'Group' where id_creator = ". $user." ")->fetchAll();
         foreach ($groups as $group){
-            $retString .= '<option value="'.$group['id'] . '">'.$group['id'].'</option>';
+            $retString .= '<option value="'.$group['id'] . '">'. $group['title'] . '  #'.$group['id'].'</option>';
         }
 
-        foreach($groups as $group){
-
-        }
     }catch (PDOException $e){
         echo "SQL ERROR : " . $e->getMessage();
     }
@@ -67,7 +64,7 @@ function displayUsers($tabUser,$group){
 
     $stringRet = "";
 
-    $stringRet .= '<ul class="liste-members" id="listeof-'.$group.'" style="display: none; flex-direction: column" >';
+    $stringRet .= '<ul class="list-members" id="list-of-'.$group.'" style="display: none; flex-direction: column" >';
     foreach($tabUser as $userName){
         $stringRet .= "<li> -". $userName ." </li>";
     }
@@ -88,7 +85,7 @@ function displayGroups($connect,$user){
             $ret .= '
                      <div>
                         <div>
-                            <img id="img-group-'. $group['id'].'" style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
+                            <img class="img-of-group" id="img-group-'. $group['id'].'" style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
                             <h2>'.$group['title'] .'</h2>
                         </div>
                         
