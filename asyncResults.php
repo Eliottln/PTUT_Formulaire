@@ -113,5 +113,8 @@ define("_SQL_REQUEST", "SELECT Q.title as 'title', U.name || ' ' || U.lastname A
 
 
 $finalString = displayResults($connect, $sort, _SQL_REQUEST, $asc_desc);
+//TODO send chart data
+$chartCategories = "";
+$chartData = "";
 
-echo $finalString;
+echo $finalString . '||' . $chartCategories . '||' . $chartData;

@@ -1442,6 +1442,7 @@ dialog[class="content"] pre {
 #VisuForm #page form div:not(:last-child) label {
   font-family: "Rockford";
   font-size: large;
+  transition: color 0.3s;
 }
 
 #VisuForm #page h1,
@@ -1463,9 +1464,15 @@ dialog[class="content"] pre {
   background-color: var(--first);
   border: 2px solid var(--c_form);
   color: var(--c_form);
-  padding: 10px;
   font-size: smaller;
   border-radius: 5px;
+  font-family: "Rockford";
+  display: flex;
+}
+
+.buttonVisuForm span{
+  font-family: "Rockford";
+  padding: 10px;
 }
 
 .buttonVisuForm:hover {
@@ -1484,6 +1491,7 @@ dialog[class="content"] pre {
   font-size: medium;
   border-radius: 5px;
   margin-top: 20px;
+  font-family: "Rockford";
 }
 
 .buttonBack:hover {
@@ -1557,6 +1565,7 @@ dialog[class="content"] pre {
     margin: 0 0 20px;
   }
 }
+
 
 /*#################################################*/
 /*VisuResults*/

@@ -26,17 +26,15 @@ function fileSelectQuestion($connect)
     return $stringRet;
 }
 
+
 function notSorted($connect)
 {
-
-    $results = $connect->query("SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
+    return $connect->query("SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
                                 FROM Result 
                                 INNER JOIN User AS U ON U.id = Result.id_user  
                                 INNER JOIN Question AS Q ON Q.id = Result.id_question
                                 WHERE Result.id_form = " . $_GET['identity'] . "
                                 ORDER BY Result.'update'")->fetchAll();
-
-    return $results;
 }
 
 function displayResults($connect)
@@ -79,7 +77,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <main id="visuResults">
 
-        <h1>Les résultats du formulaire <?= $_GET['identity']?></h1>
+        <h1>Les résultats du formulaire #<?= $_GET['identity'] ?></h1>
 
         <label for="filter-question-select">Filtrer</label>
         <select name="filter-question" id="filter-question-select">
@@ -88,6 +86,15 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
         </select>
+
+        <section>
+            <?php
+            /* Petit code en PHP pour formater les informations du CSV */
+            ?>
+            <div id="chart">
+
+            </div>
+        </section>
 
         <table id='table-resultats'>
             <thead>
@@ -105,14 +112,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </main>
 
-    <aside>
-        <?php
-            /* Petit code en PHP pour formater les informations du CSV */
-        ?>
-        <div id="chart">
-
-        </div>
-    </aside>
 
     <?php require 'modules/footer.php'; ?>
 
@@ -120,33 +119,86 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const chart = Highcharts.chart('chart', {
-            chart: {
-                type: 'bar'
-            },
-            title: {
-                text: 'Fruit Consumption'
-            },
-            xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
-            },
-            yAxis: {
-                title: {
-                    text: 'Fruit eaten'
+        <?php
+        $chartCategories = "['";
+        $chartData = "[";
+
+        function getSeparator($_data, $value, $quote=null) {
+
+            for ($i=0; $i < count($_data); $i++) { 
+                if($_data[count($_data)-1] != $value){
+                    return "$quote, $quote";
                 }
-            },
-            series: [{
-                name: 'Jane',
-                data: [1, 0, 4]
-            }, {
-                name: 'John',
-                data: [5, 7, 3]
-            }]
-        });
-    });
+            }
+            return null;
+        }
+
+        $_data = $connect->query("SELECT Q.title, COUNT(R.answer) as nbResponse
+        FROM Question as Q
+        INNER JOIN Result as R
+        ON Q.id = R.id_question
+        WHERE Q.id_form = 178689
+        GROUP by Q.title")->fetchAll();
+
+        foreach ($_data as $value) {
+            $chartCategories .= $value['title'] . getSeparator($_data, $value,"'");
+            $chartData .= $value['nbResponse'] . getSeparator($_data, $value);
+        }
+
+
+        $chartCategories .= "']";
+        $chartData .= "]";
+        ?>
+
+        function getAllSerieContent(...ArraySerie){
+
+            function getNameIfExist(name){
+                if(name != undefined){
+                    return name;
+                }
+                return null
+            }
+
+            let allSerieContent = [];
+
+            for (let index = 0; index < ArraySerie.length; index++) {
+                allSerieContent.push({
+                    name: getNameIfExist(ArraySerie[index][1]),
+                    data: ArraySerie[index][0]
+                });
+                
+            }
+
+            return allSerieContent
+        }
+
+        function createChart(ChartTitle, arrayCategories, yAxisTitles, ...ArraySerie) {
+            const chart = Highcharts.chart('chart', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: ChartTitle
+                },
+                xAxis: {
+                    categories: arrayCategories
+                },
+                yAxis: {
+                    title: {
+                        text: yAxisTitles
+                    }
+                },
+                series: getAllSerieContent(...ArraySerie)
+            });
+            $('.highcharts-credits')[0].remove();
+        }
+        document.addEventListener('DOMContentLoaded', createChart('Nombre de réponses par question',
+            <?=$chartCategories?>,
+            'Nombre de question',
+            [<?=$chartData?>,
+            'Nombre de question']));
     </script>
-    
+
     <script>
         let asc_desc = 'ASC'
         let sortValue = 'none';
@@ -165,15 +217,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         function alreadySelected(input) {
             if ((input.id.split('_')[1] == sortValue) && (sortValue != 'none')) {
-                
+
                 // name change into lastname and vice versa
-                if(sortValue == 'name' && asc_desc == 'DESC'){
+                if (sortValue == 'name' && asc_desc == 'DESC') {
                     console.log(input)
                     sortValue = 'lastname'
                     input.innerHTML = 'Prénom'
                     input.id = 'th_lastname'
-                }
-                else if(sortValue == 'lastname' && asc_desc == 'DESC'){
+                } else if (sortValue == 'lastname' && asc_desc == 'DESC') {
                     sortValue = 'name'
                     input.innerHTML = 'Nom'
                     input.id = 'th_name'
@@ -189,12 +240,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                         input.classList.add('ASC')
                         break;
                 }
-            }
-            else{
+            } else {
                 asc_desc == 'ASC'
                 input.classList.add('ASC')
             }
-            if(sortValue == 'none') {
+            if (sortValue == 'none') {
                 input.classList.add('ASC')
             }
 
@@ -202,7 +252,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         function send() {
 
-            
+
 
             if (isSortButton(this)) {
                 sortButton.forEach(button => button.removeAttribute('class'));
@@ -210,14 +260,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 sortValue = this.id.split('_')[1];
             }
             console.log(sortValue);
-                console.log(asc_desc)
+            console.log(asc_desc)
 
             let filter = filterMenu.value;
             let sort = sortValue;
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
                 document.getElementById('target').innerHTML = "";
-                document.getElementById('target').innerHTML = this.responseText;
+                document.getElementById('target').innerHTML = this.responseText.split('||')[0];
             }
             xhttp.open("POST", "/asyncResults.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
