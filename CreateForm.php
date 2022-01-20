@@ -291,6 +291,64 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
     <script src="/js/class_FormCreation.js"></script>
+
+    <script>
+        <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
+
+        <?php
+        if (isset($_SESSION['exportSucces'])) {
+            unset($_SESSION['exportSucces']);
+            echo 'alert("export réussi")';
+        }
+        else if (isset($_SESSION['exportWrongExpiredDate'])) {
+            unset($_SESSION['exportWrongExpiredDate']);
+            echo 'alert("export echec mauvaise date d\'expiration")';
+        }
+        else if (isset($_SESSION['exportFailed'])) {
+            unset($_SESSION['exportFailed']);
+            echo 'alert("export echec")';
+        }
+
+
+        if (idFormExist($connect, $_GET['identity'])) {
+
+            $form_page = $connect->query("SELECT * FROM Page WHERE id_form = " . $_GET['identity'])->fetchAll();
+            echo "new FormCreation(true)\n";
+
+            foreach ($form_page as $page) {
+                $form_question = $connect->query("SELECT * FROM Question
+                                            WHERE id_form = " . $_GET['identity'] . " AND id_page = " . $page['id'])->fetchAll();
+                $form_choice = $connect->query("SELECT * FROM Choice
+                                            WHERE id_form = " . $_GET['identity'] . " AND id_page = " . $page['id'])->fetchAll();
+
+
+                echo "FormCreation.newPage(" . json_encode($page) . ")\n";
+                foreach ($form_question as $value) {
+
+
+                    switch ($value['type']) {
+                        case 'checkbox':
+                        case 'radio':
+                        case 'select':
+                            echo "FormCreation.newBloc(" . json_encode($value) . ", " . json_encode($form_choice) . ")\n";
+                            break;
+
+                        default:
+                            echo "FormCreation.newBloc(" . json_encode($value) . ")\n";
+                            break;
+
+                    }
+                }
+
+            }
+        }
+        else{
+            echo "new FormCreation()\n";
+        }
+
+        ?>
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script>
@@ -319,59 +377,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="/js/transformInputToString.js"></script>
     <script src="/js/CreateForm.js"></script>
     <script src="/js/addInputFromObject.js"></script>
-    <script>
-    <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
 
-    <?php
-    if (isset($_SESSION['exportSucces'])) {
-        unset($_SESSION['exportSucces']);
-        echo 'alert("export réussi")';
-    }
-    else if (isset($_SESSION['exportWrongExpiredDate'])) {
-        unset($_SESSION['exportWrongExpiredDate']);
-        echo 'alert("export echec mauvaise date d\'expiration")';
-    }
-    else if (isset($_SESSION['exportFailed'])) {
-        unset($_SESSION['exportFailed']);
-        echo 'alert("export echec")';
-    }
-
-
-    if (isset($_GET['identity'])) {
-
-        try {
-            $form_questions = $connect->query("SELECT id,type,title,required, min, max,format FROM Question
-                                            WHERE id_form = " . $_GET['identity'])->fetchAll();
-            $form_choices = $connect->query("SELECT * FROM Choice
-                                            WHERE id_form = " . $_GET['identity'])->fetchAll();
-
-            foreach ($form_questions as $value) {
-
-                switch ($value['type']) {
-                    case 'checkbox':
-                    case 'radio':
-                    case 'select':
-                        echo 'FormCreation.newBloc(' . json_encode($value) . ', '. json_encode($form_choices) .')';
-                        break;
-
-                    default:
-                        echo 'FormCreation.newBloc(' . json_encode($value) . ')';
-                        break;
-
-                }
-
-                echo "\n";
-            }
-        } catch (PDOException $e) {
-            if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 1) {
-                echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
-            } else if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 0) {
-                echo 'Il semblerait que le formulaire ne soit pas accessible';
-            }
-        }
-    }
-    ?>
-    </script>
 
 </body>
 

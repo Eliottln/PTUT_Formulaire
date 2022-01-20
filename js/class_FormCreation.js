@@ -7,10 +7,12 @@ class FormCreation {
     static numPage = 0
     static selectedElement = null
 
-    constructor() {
+    constructor(charged) {
         FormCreation.buttonOptions.forEach(e => e.addEventListener('click', FormCreation.newBloc))
         FormCreation.buttonNewPage.addEventListener('click', FormCreation.newPage)
-        FormCreation.newPage()
+        if (charged === undefined) {
+            FormCreation.newPage()
+        }
         document.getElementById("ClearForm").addEventListener('click', FormCreation.resetForm)
     }
 
@@ -24,13 +26,19 @@ class FormCreation {
     }
 
 
-    static newPage(){
+    static newPage(dataPage){
+        let title=''
+        if (dataPage !== undefined) {
+            if (dataPage["title"] !== undefined) {
+                title = dataPage["title"]
+            }
+        }
         FormCreation.numPage++
         let page= document.createElement("div")
         page.className = 'page'
         page.innerHTML =    '<div class="page-title">'+
                                 '<label for="page-title-input-'+FormCreation.numPage+'">Titre :</label>'+
-                                '<input id="page-title-input-'+FormCreation.numPage+'" type="text" name="page-title-input-'+FormCreation.numPage+'" value="">'+ //TODO insert title value if exist
+                                '<input id="page-title-input-'+FormCreation.numPage+'" type="text" name="page-title-input-'+FormCreation.numPage+'" value="'+title+'">'+
                             '</div>'+
                             '<div class="page-content"></div>'
 
@@ -93,11 +101,9 @@ class FormCreation {
 
         FormCreation.button.removeAttribute('disabled')
 
-        let id, title, required
-        if (typeof(qValue["id"]) == "undefined") {
-            title = ""
+        let id, title = '', required = ''
+        if (qValue["id"] === undefined) {
             id = this.id
-            required = ""
         }
         else {
             id = 'new-' + qValue["type"]
@@ -583,4 +589,4 @@ class FormCreation {
 }
 
 
-let obj=new FormCreation()
+// let obj=new FormCreation()
