@@ -105,12 +105,48 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </main>
 
+    <aside>
+        <?php
+            /* Petit code en PHP pour formater les informations du CSV */
+        ?>
+        <div id="chart">
+
+        </div>
+    </aside>
+
     <?php require 'modules/footer.php'; ?>
 
 
-
-
-
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('chart', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Fruit Consumption'
+            },
+            xAxis: {
+                categories: ['Apples', 'Bananas', 'Oranges']
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+            },
+            series: [{
+                name: 'Jane',
+                data: [1, 0, 4]
+            }, {
+                name: 'John',
+                data: [5, 7, 3]
+            }]
+        });
+    });
+    </script>
+    
     <script>
         let asc_desc = 'ASC'
         let sortValue = 'none';
