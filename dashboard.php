@@ -111,17 +111,19 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </dialog>
 
-    <dialog style="display: none" id="pannel-delete" >
+    <dialog style="display: none" id="pannel-edit" >
 
         <h2>Sélectionner un groupe</h2>
 
+        <button id="confirm-delete" type="submit">Supprimer</button>
         <select name="group-select" id="group-select">
 
 
         </select>
 
+        <?= displayUsers($connect) ?>
 
-        <button id="confirm-delete" type="submit">Confirmer</button>
+        <button id="confirm-edit" type="submit">Confirmer</button>
         <button id="cancel-delete" type="reset">Annuler</button>
 
 
@@ -287,7 +289,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     let exitMenuGroupButton = document.getElementById("cancel");
 
 
-    menuDelete = document.getElementById("pannel-delete");
+    menuDelete = document.getElementById("pannel-edit");
     let deleteGroupButton = document.getElementById("delete-group-button");
     let exitDeleteGroupButton = document.getElementById("cancel-delete")
 
