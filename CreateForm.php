@@ -353,6 +353,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script>
         sort = function() {
+            
             $("#form-content").sortable(
                 {cursor: "move"},
                 {
@@ -372,6 +373,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             )
         }
         $('#NewPage').click(sort())
+        document.getElementById('NewPage').addEventListener( 'click', sort);
         sort()
     </script>
     <script src="/js/transformInputToString.js"></script>

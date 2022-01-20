@@ -14,15 +14,17 @@ function displayAllForm($connect): string
 
         $date = $connect->quote(date("Y-m-d"));
         if (!empty($_GET['search'])) {
-            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,SUM(Page.nb_question)
+            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,Form.expire,SUM(Page.nb_question)
             FROM Form INNER JOIN Page ON Page.id_form = Form.id 
             WHERE (expire >= " . $date . " OR expire = '')  AND LOWER(Form.title) LIKE '%" . strtolower($_GET['search']) . "%'
-            Group BY Form.id")->fetchAll();
+            Group BY Form.id
+            ORDER BY Form.expire NOT LIKE '' DESC, Form.expire")->fetchAll();
         } else {
-            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,SUM(Page.nb_question) 
+            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,Form.expire,SUM(Page.nb_question) 
             FROM Form INNER JOIN Page ON Page.id_form = Form.id 
-            WHERE expire >= " . $date . " OR expire = ''
-            Group BY Form.id")->fetchAll();
+            WHERE expire >= " . $date . " OR expire = '' 
+            Group BY Form.id 
+            ORDER BY Form.expire NOT LIKE '' DESC, Form.expire")->fetchAll();
         }
 
 
@@ -35,8 +37,9 @@ function displayAllForm($connect): string
                                     <div>
                                         <img src="img/formulaire.png" alt="image form">
                                     </div>
-                                    <p>Titre : ' . $value['title'] . '</p>
-                                    <p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
+                                    <p>Titre : ' . $value['title'] . '</p>'.
+                                    (!empty($value['expire'])?'<p>expire le ' . $value['expire']??NULL . '</p>':NULL)
+                                    .'<p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
                                     <p>' . $value['SUM(Page.nb_question)'] . ' question' . (($value['SUM(Page.nb_question)'] > 1) ? "s" : null) . '</p>
                                 </a>
                             </div>

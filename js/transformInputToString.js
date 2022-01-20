@@ -27,7 +27,7 @@ function addInput() {
             case "radio":
             case "checkbox":
             case "select": //FIXME
-                let choicesList = question.firstChild.lastChild.children
+                let choicesList = question.firstElementChild.lastElementChild.children
                 let nb_choices = (choicesList.length - 1)
                 string += '/' + nb_choices
                 for (let index = 0; index < nb_choices; index++) {
@@ -36,14 +36,14 @@ function addInput() {
                 break;
 
             case "number":
-            case "range": //FIXME
-                //let min = allFormQuestion[counter].firstChild.lastChild.children[0].value;  //target min
-                //let max = allFormQuestion[counter].firstChild.lastChild.children[2].value; //target max
-                //string += '/' + min + '/' + max
+            case "range":
+                let min = question.firstElementChild.lastElementChild.children[0].value;  //target min
+                let max = question.firstElementChild.lastElementChild.children[2].value; //target max
+                string += '/' + min + '/' + max
                 break;
 
             case "date":
-                let format = question.firstChild.lastChild.firstChild.value;
+                let format = question.firstElementChild.lastElementChild.firstElementChild.value;
                 string += '/' + format
                 break;
         }
@@ -52,14 +52,16 @@ function addInput() {
     }
 
     //AJOUTE LA QUESTION AU TABLEAU DINPUT
-    function addTabQuestion(type, title, name, counter, question) {
+    function addTabQuestion(type, title, name, required , question) {
         let newInput = document.createElement('input')
         newInput.type = 'hidden'
 
         newInput.value = 'in_page'+n+'/'        
-                        + type                  
+                        + type
                         + '/' 
-                        + title 
+                        + required
+                        + '/'
+                        + title
                         + addTabChoice(type, question)
         newInput.name = name; //On ajoute l'input au tableau d'input qu'on affiche à la fin
 
@@ -70,9 +72,11 @@ function addInput() {
     function questionToInput(questions){
         for (let index = 0; index < questions.length; index++) {
             let _type = questions[index].id.split('-')[2]
+            let _required = questions[index].children[1].firstElementChild.checked
             let _title = questions[index].firstElementChild.firstElementChild.lastElementChild.value
             let _name = questions[index].firstElementChild.firstElementChild.lastElementChild.name
-            addTabQuestion(_type, _title, _name, index, questions[index])
+            addTabQuestion(_type, _title, _name, _required , questions[index])
+            
         }
     }
 

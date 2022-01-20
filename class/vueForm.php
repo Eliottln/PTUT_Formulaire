@@ -4,7 +4,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/getChoicesArray.php"
 
 class VueForm
 {
-
     private $pdo;
 
     private $id;
@@ -44,7 +43,8 @@ class VueForm
                                         INNER JOIN User as u ON f.id_owner = u.id 
                                         INNER JOIN Page as p ON f.id = p.id_form 
                                         WHERE f.id = " . $this->id . " 
-                                        AND (expire >= " . $date . " OR expire = '')")->fetch() ?? NULL;
+                                        AND (expire >= " . $date . " OR expire = '')
+                                        AND p.id = " . $this->page)->fetch() ?? NULL;
         
         if ($_data) {
             $this->title = $_data['title'];
