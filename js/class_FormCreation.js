@@ -256,50 +256,76 @@ class FormCreation {
 
                 case 'new-select':
                     let divS = document.createElement("div");
+                    let i=1
+
+                    function add(divS,index,value){
+                        divS.insertAdjacentHTML("beforeend",
+                            '<div class="choice">' +
+                            '<input id="choice-'+FormCreation.numQuestion+index+'" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+index+'" value="'+value+'">' +
+                            '<button id="trash-'+FormCreation.numQuestion+index+'" type="button">Supprimer</button>' +
+                            '</div>')
+                    }
 
                     if (typeof(choiceArray) == "object") {
                         divS.insertAdjacentHTML("beforeend", '<select><option>Options...</option></select>')
-                        let i=1
+
                         choiceArray.forEach(c => {
                             if (c["id_question"] === FormCreation.numQuestion) {
-                                let tmp =
-                                    '<div class="choice">' +
-                                    '<input id="choice-' + FormCreation.numQuestion + i + '" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + i + '" value="' + c["description"] + '">' +
-                                    '<button id="trash-' + FormCreation.numQuestion + i + '" type="button">Supprimer</button>' +
-                                    '</div>'
-
-                                divS.insertAdjacentHTML("beforeend", tmp);
+                                // let tmp =
+                                //     '<div class="choice">' +
+                                //     '<input id="choice-' + FormCreation.numQuestion + i + '" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + i + '" value="' + c["description"] + '">' +
+                                //     '<button id="trash-' + FormCreation.numQuestion + i + '" type="button">Supprimer</button>' +
+                                //     '</div>'
+                                //
+                                // divS.insertAdjacentHTML("beforeend", tmp);
+                                add(divS,i,c["description"])
                                 i++
                             }
                         })
 
                         divS.insertAdjacentHTML("beforeend", '<button class="add-select" type="button">Ajouter</button>')
-                        div.appendChild(divS)
-                        for (let j=1;j<i;j++) {
-                            document.getElementById('trash-' + FormCreation.numQuestion + j).addEventListener('click', FormCreation.delChoice)
-                        }
+                        // for (let j=1;j<i;j++) {
+                        //     document.getElementById('trash-' + FormCreation.numQuestion + j).addEventListener('click', FormCreation.delChoice)
+                        //     document.getElementById('choice-' + FormCreation.numQuestion + j).addEventListener('blur', function (){
+                        //         divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
+                        //     })
+                        // }
                     }
                     else {
-                        divS.innerHTML =
-                            '<select><option>Choisir...</option></select>' +
+                        divS.insertAdjacentHTML("beforeend",'<select><option>Choisir...</option></select>')
 
-                            '<div class="choice">' +
-                            '<input id="choice-' + FormCreation.numQuestion + '1" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '1">' +
-                            '<button id="trash-' + FormCreation.numQuestion + '1" type="button">Supprimer</button>' +
-                            '</div>' +
-                            '<div class="choice">' +
-                            '<input id="choice-' + FormCreation.numQuestion + '2" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '2">' +
-                            '<button id="trash-' + FormCreation.numQuestion + '2" type="button">Supprimer</button>' +
-                            '</div>' +
+                            // '<div class="choice">' +
+                            // '<input id="choice-' + FormCreation.numQuestion + '1" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '1">' +
+                            // '<button id="trash-' + FormCreation.numQuestion + '1" type="button">Supprimer</button>' +
+                            // '</div>' +
+                            // '<div class="choice">' +
+                            // '<input id="choice-' + FormCreation.numQuestion + '2" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '2">' +
+                            // '<button id="trash-' + FormCreation.numQuestion + '2" type="button">Supprimer</button>' +
+                            // '</div>' +
+                        add(divS,1,'')
+                        add(divS,2,'')
 
-                            '<button class="add-select" type="button">Ajouter</button>'
+                        divS.insertAdjacentHTML("beforeend",'<button class="add-select" type="button">Ajouter</button>')
 
-                        div.appendChild(divS)
 
-                        document.getElementById('trash-' + FormCreation.numQuestion + '1').addEventListener('click', FormCreation.delChoice)
-                        document.getElementById('trash-' + FormCreation.numQuestion + '2').addEventListener('click', FormCreation.delChoice)
+                        // document.getElementById('trash-' + FormCreation.numQuestion + '1').addEventListener('click', FormCreation.delChoice)
+                        // document.getElementById('trash-' + FormCreation.numQuestion + '2').addEventListener('click', FormCreation.delChoice)
+                        // document.getElementById('choice-' + FormCreation.numQuestion + 1).addEventListener('blur', function (){
+                        //     divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
+                        // })
+                        // document.getElementById('choice-' + FormCreation.numQuestion + 2).addEventListener('blur', function (){
+                        //     divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
+                        // })
                     }
 
+                    div.appendChild(divS)
+
+                    for (let j=1;j<=i;j++){
+                        document.getElementById('trash-' + FormCreation.numQuestion + j).addEventListener('click', FormCreation.delChoice)
+                        document.getElementById('choice-' + FormCreation.numQuestion + j).addEventListener('blur', function (){
+                            divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
+                        })
+                    }
                     document.querySelector('#'+div.parentElement.id+' .add-select').addEventListener('click', FormCreation.newChoice)
                     break
 
@@ -529,7 +555,7 @@ class FormCreation {
         let rootID = this.closest('.content').parentElement.id
         let question = rootID.split('-')[1]
 
-        if (this.parentElement.parentElement.childElementCount>2) {
+        if (this.parentElement.parentElement.childElementCount>2 && rootID.split('-')[2] !== "select" || this.parentElement.parentElement.childElementCount>3) {
 
             this.parentElement.remove()
 
