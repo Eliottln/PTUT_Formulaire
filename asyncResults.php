@@ -3,23 +3,28 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
-function selectTypeOfSort($sort, $connect, $_SQL_REQUEST,$asc_desc){
+function selectTypeOfSort($sort, $connect, $_SQL_REQUEST, $asc_desc)
+{
 
-    switch ($sort){
+    switch ($sort) {
         case 'name':
-            $results = sortByName($connect, $_SQL_REQUEST,$asc_desc);
+            $results = sortByName($connect, $_SQL_REQUEST, $asc_desc);
             break;
 
         case 'date':
-                $results = sortByDate($connect, $_SQL_REQUEST,$asc_desc);
-                break;
+            $results = sortByDate($connect, $_SQL_REQUEST, $asc_desc);
+            break;
+
+        case 'response':
+            $results = sortByResponse($connect, $_SQL_REQUEST, $asc_desc);
+            break;
 
         case 'question':
-            $results = sortByQuestion($connect, $_SQL_REQUEST,$asc_desc);
+            $results = sortByQuestion($connect, $_SQL_REQUEST, $asc_desc);
             break;
 
         case 'lastname':
-            $results = sortByLastName($connect, $_SQL_REQUEST,$asc_desc);
+            $results = sortByLastName($connect, $_SQL_REQUEST, $asc_desc);
             break;
 
         case 'none':
@@ -31,51 +36,60 @@ function selectTypeOfSort($sort, $connect, $_SQL_REQUEST,$asc_desc){
     return $results;
 }
 
-function notSorted($connect,$_SQL_REQUEST){
+function notSorted($connect, $_SQL_REQUEST)
+{
 
     return $connect->query($_SQL_REQUEST)->fetchAll();
 }
 
-function sortByName($connect,$_SQL_REQUEST,$asc_desc){
+function sortByLastName($connect, $_SQL_REQUEST, $asc_desc)
+{
 
-    return $connect->query($_SQL_REQUEST." ORDER BY UPPER(U.name) ".$asc_desc)->fetchAll();
+    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(U.name) " . $asc_desc)->fetchAll();
 }
 
-function sortByDate($connect,$_SQL_REQUEST,$asc_desc){
+function sortByDate($connect, $_SQL_REQUEST, $asc_desc)
+{
 
-    return $connect->query($_SQL_REQUEST." ORDER BY UPPER(Result.'update') ".$asc_desc)->fetchAll();
+    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(Result.'update') " . $asc_desc)->fetchAll();
 }
 
-function sortByQuestion($connect,$_SQL_REQUEST,$asc_desc){
-    
-    return $connect->query($_SQL_REQUEST."ORDER BY UPPER(Result.id_question) ".$asc_desc)->fetchAll();
+function sortByResponse($connect, $_SQL_REQUEST, $asc_desc)
+{
 
+    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(Result.answer) " . $asc_desc)->fetchAll();
 }
 
-function sortByLastName($connect,$_SQL_REQUEST,$asc_desc){
-    
-    return $connect->query($_SQL_REQUEST."ORDER BY UPPER(U.lastname) ".$asc_desc)->fetchAll();
+function sortByQuestion($connect, $_SQL_REQUEST, $asc_desc)
+{
+
+    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(Result.id_question) " . $asc_desc)->fetchAll();
+}
+
+function sortByName($connect, $_SQL_REQUEST, $asc_desc)
+{
+
+    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(U.lastname) " . $asc_desc)->fetchAll();
 }
 
 
-function displayResults($connect, $sort, $_SQL_REQUEST,$asc_desc){
+function displayResults($connect, $sort, $_SQL_REQUEST, $asc_desc)
+{
     $resultString = "";
 
     try {
 
-        $results = selectTypeOfSort($sort, $connect, $_SQL_REQUEST,$asc_desc);
+        $results = selectTypeOfSort($sort, $connect, $_SQL_REQUEST, $asc_desc);
 
-        foreach($results as $value){
+        foreach ($results as $value) {
 
             $resultString .= "<tr> 
-                                  <td> ".$value['title'] ." </td> 
-                                  <td> ".$value['name'] . "</td>
-                                  <td>".$value['answer'] ."</td>
-                                  <td> ".$value['date'] ."</td>
+                                  <td> " . $value['title'] . " </td> 
+                                  <td> " . $value['name'] . "</td>
+                                  <td>" . $value['answer'] . "</td>
+                                  <td> " . $value['date'] . "</td>
                               </tr>";
-
         }
-
     } catch (PDOException $e) {
         echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
     }
@@ -95,9 +109,9 @@ define("_SQL_REQUEST", "SELECT Q.title as 'title', U.name || ' ' || U.lastname A
                         FROM Result 
                         INNER JOIN User AS U ON U.id = Result.id_user  
                         INNER JOIN Question AS Q ON Q.id = Result.id_question
-                        WHERE Result.id_form = ".$idForm." ". (($filter!='none') ? "AND Result.id_question=".$filter : NULL));
+                        WHERE Result.id_form = " . $idForm . " " . (($filter != 'none') ? "AND Result.id_question=" . $filter : NULL));
 
 
-$finalString = displayResults($connect,$sort,_SQL_REQUEST,$asc_desc);
+$finalString = displayResults($connect, $sort, _SQL_REQUEST, $asc_desc);
 
 echo $finalString;

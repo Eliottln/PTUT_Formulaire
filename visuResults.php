@@ -77,18 +77,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <?php require 'modules/header.php'; ?>
 
-    <main>
+    <main id="visuResults">
 
-        <h2>Les résultats de ce formulaires sont:</h2> <br>
+        <h1>Les résultats du formulaire <?= $_GET['identity']?></h1>
 
-        <select name="sort" id="sort-select">
-            <option value="none">--Selectionner un tri--</option>
-            <option value="name">Trier par prénom</option>
-            <option value="question">Trier par question</option>
-            <option value="lastname">Trier par nom de famille</option>
-
-        </select>
-        <br>
+        <label for="filter-question-select">Filtrer</label>
         <select name="filter-question" id="filter-question-select">
             <option value="none">--Pas de filtre--</option>
             <?= fileSelectQuestion($connect) ?>
@@ -136,37 +129,58 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         function alreadySelected(input) {
             if ((input.id.split('_')[1] == sortValue) && (sortValue != 'none')) {
+                
+                // name change into lastname and vice versa
+                if(sortValue == 'name' && asc_desc == 'DESC'){
+                    console.log(input)
+                    sortValue = 'lastname'
+                    input.innerHTML = 'Prénom'
+                    input.id = 'th_lastname'
+                }
+                else if(sortValue == 'lastname' && asc_desc == 'DESC'){
+                    sortValue = 'name'
+                    input.innerHTML = 'Nom'
+                    input.id = 'th_name'
+                }
+
                 switch (asc_desc) {
                     case 'ASC':
                         asc_desc = 'DESC'
-                        input.classList.remove('ASC')
                         input.classList.add('DESC')
                         break;
                     case 'DESC':
                         asc_desc = 'ASC'
-                        sortValue = 'none'
-                        input.classList.remove('DESC')
+                        input.classList.add('ASC')
                         break;
                 }
-            } else {
+            }
+            else{
+                asc_desc == 'ASC'
                 input.classList.add('ASC')
             }
+            if(sortValue == 'none') {
+                input.classList.add('ASC')
+            }
+
         }
 
         function send() {
 
-            document.getElementById('target').innerHTML = "";
+            
 
             if (isSortButton(this)) {
                 sortButton.forEach(button => button.removeAttribute('class'));
                 alreadySelected(this)
                 sortValue = this.id.split('_')[1];
             }
+            console.log(sortValue);
+                console.log(asc_desc)
 
             let filter = filterMenu.value;
             let sort = sortValue;
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
+                document.getElementById('target').innerHTML = "";
                 document.getElementById('target').innerHTML = this.responseText;
             }
             xhttp.open("POST", "/asyncResults.php");
