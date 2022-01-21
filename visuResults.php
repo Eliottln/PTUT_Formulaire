@@ -217,7 +217,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         let sortValue = 'none';
 
         let sortButton = document.querySelectorAll('[id^="th_"]');
-
         let filtersCheckBoxs = document.querySelectorAll('[class="checks-filters"]');
 
         function isSortButton(input) {
