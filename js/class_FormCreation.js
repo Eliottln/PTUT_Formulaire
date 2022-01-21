@@ -183,7 +183,6 @@ class FormCreation {
         if (id !== undefined && div !== undefined) {
             let type = id.split('-')[1]
             switch (id) {
-
                 case 'new-number':
                     let divN = document.createElement("div");
                     divN.innerHTML =
@@ -214,9 +213,9 @@ class FormCreation {
                                 let tmp =
                                     '<div class="choice">' +
                                     '<input type="' + type + '" disabled>' +
-                                    '<label for="choice-' + FormCreation.numQuestion + i + '">Option ' + i + '</label>' +
-                                    '<input id="choice-' + FormCreation.numQuestion + i + '" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + i + '" value="' + c["description"] + '">' +
-                                    '<button id="trash-' + FormCreation.numQuestion + i + '" type="button">Supprimer</button>' +
+                                    '<label for="choice-' + FormCreation.numQuestion +'-'+ i + '">Option ' + i + '</label>' +
+                                    '<input id="choice-' + FormCreation.numQuestion +'-'+ i + '" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion +'-'+ i + '" value="' + c["description"] + '">' +
+                                    '<button id="trash-' + FormCreation.numQuestion +'-'+ i + '" type="button">Supprimer</button>' +
                                     '</div>'
 
                                 divRC.insertAdjacentHTML("beforeend", tmp);
@@ -261,70 +260,38 @@ class FormCreation {
                     function add(divS,index,value){
                         divS.insertAdjacentHTML("beforeend",
                             '<div class="choice">' +
-                            '<input id="choice-'+FormCreation.numQuestion+index+'" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+index+'" value="'+value+'">' +
-                            '<button id="trash-'+FormCreation.numQuestion+index+'" type="button">Supprimer</button>' +
+                            '<input id="choice-'+FormCreation.numQuestion+'-'+index+'" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+'-'+index+'" value="'+value+'">' +
+                            '<button id="trash-'+FormCreation.numQuestion+'-'+index+'" type="button">Supprimer</button>' +
                             '</div>')
                     }
 
-                    if (typeof(choiceArray) == "object") {
+                    if (choiceArray !== undefined) {
                         divS.insertAdjacentHTML("beforeend", '<select><option>Options...</option></select>')
 
                         choiceArray.forEach(c => {
                             if (c["id_question"] === FormCreation.numQuestion) {
-                                // let tmp =
-                                //     '<div class="choice">' +
-                                //     '<input id="choice-' + FormCreation.numQuestion + i + '" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + i + '" value="' + c["description"] + '">' +
-                                //     '<button id="trash-' + FormCreation.numQuestion + i + '" type="button">Supprimer</button>' +
-                                //     '</div>'
-                                //
-                                // divS.insertAdjacentHTML("beforeend", tmp);
                                 add(divS,i,c["description"])
                                 i++
                             }
                         })
 
                         divS.insertAdjacentHTML("beforeend", '<button class="add-select" type="button">Ajouter</button>')
-                        // for (let j=1;j<i;j++) {
-                        //     document.getElementById('trash-' + FormCreation.numQuestion + j).addEventListener('click', FormCreation.delChoice)
-                        //     document.getElementById('choice-' + FormCreation.numQuestion + j).addEventListener('blur', function (){
-                        //         divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
-                        //     })
-                        // }
                     }
                     else {
                         divS.insertAdjacentHTML("beforeend",'<select><option>Choisir...</option></select>')
 
-                            // '<div class="choice">' +
-                            // '<input id="choice-' + FormCreation.numQuestion + '1" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '1">' +
-                            // '<button id="trash-' + FormCreation.numQuestion + '1" type="button">Supprimer</button>' +
-                            // '</div>' +
-                            // '<div class="choice">' +
-                            // '<input id="choice-' + FormCreation.numQuestion + '2" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '2">' +
-                            // '<button id="trash-' + FormCreation.numQuestion + '2" type="button">Supprimer</button>' +
-                            // '</div>' +
                         add(divS,1,'')
                         add(divS,2,'')
 
                         divS.insertAdjacentHTML("beforeend",'<button class="add-select" type="button">Ajouter</button>')
-
-
-                        // document.getElementById('trash-' + FormCreation.numQuestion + '1').addEventListener('click', FormCreation.delChoice)
-                        // document.getElementById('trash-' + FormCreation.numQuestion + '2').addEventListener('click', FormCreation.delChoice)
-                        // document.getElementById('choice-' + FormCreation.numQuestion + 1).addEventListener('blur', function (){
-                        //     divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
-                        // })
-                        // document.getElementById('choice-' + FormCreation.numQuestion + 2).addEventListener('blur', function (){
-                        //     divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
-                        // })
+                        i++
                     }
 
                     div.appendChild(divS)
 
                     for (let j=1;j<=i;j++){
-                        document.getElementById('trash-' + FormCreation.numQuestion + j).addEventListener('click', FormCreation.delChoice)
-                        document.getElementById('choice-' + FormCreation.numQuestion + j).addEventListener('blur', function (){
-                            divS.firstElementChild.insertAdjacentHTML("beforeend", '<option>'+this.value+'</option>')
-                        })
+                        document.getElementById('trash-' + FormCreation.numQuestion +'-'+ j).addEventListener('click', FormCreation.delChoice)
+                        FormCreation.listenerSelect(FormCreation.numQuestion,j)
                     }
                     document.querySelector('#'+div.parentElement.id+' .add-select').addEventListener('click', FormCreation.newChoice)
                     break
@@ -458,13 +425,18 @@ class FormCreation {
 
         for (let i = 1; i <= label.length; i++) {
 
-            label[i - 1].setAttribute('for', 'choice-' + update + i)
+            label[i - 1].setAttribute('for', 'choice-' + update +'-'+ i)
 
-            input[i - 1].id = 'choice-' + update + i
-            input[i - 1].setAttribute('name', 'choice-' + update + i)
+            console.log("yes")
+            input[i - 1].id = 'choice-' + update +'-'+ i
+            input[i - 1].setAttribute('name', 'choice-' + update +'-'+ i)
 
-            trash[i - 1].id = 'trash-' + update + i
+            trash[i - 1].id = 'trash-' + update +'-'+ i
             trash[i - 1].addEventListener('click',FormCreation.delChoice)
+
+            if (typeBlock === "select"){
+                FormCreation.listenerSelect(update,i)
+            }
         }
     }
 
@@ -528,8 +500,8 @@ class FormCreation {
             num = this.parentElement.childElementCount - 1
 
             add='<div class="choice">'+
-                '<input id="choice-'+question+num+'" class="choice-input" type="text" name="choice-'+question+num+'">'+
-                '<button id="trash-'+question+num+'" type="button">Supprimer</button>'+
+                '<input id="choice-'+question+'-'+num+'" class="choice-input" type="text" name="choice-'+question+'-'+num+'">'+
+                '<button id="trash-'+question+'-'+num+'" type="button">Supprimer</button>'+
                 '</div>'
         }
 
@@ -538,15 +510,18 @@ class FormCreation {
 
             add = '<div class="choice">' +
                 '<input type="' + type + '" disabled>' +
-                '<label for="choice-' + question + num + '">Option ' + num + '</label>' +
-                '<input id="choice-' + question + num + '" class="choice-input" type="text" name="choice-' + question + num + '">' +
-                '<button id="trash-' + question + num + '" type="button">Supprimer</button>' +
+                '<label for="choice-' + question +'-'+ num + '">Option ' + num + '</label>' +
+                '<input id="choice-' + question +'-'+ num + '" class="choice-input" type="text" name="choice-' + question +'-'+ num + '">' +
+                '<button id="trash-' + question +'-'+ num + '" type="button">Supprimer</button>' +
                 '</div>'
         }
 
         this.insertAdjacentHTML("beforebegin", add);
 
-        document.getElementById('trash-'+question+num).addEventListener('click', FormCreation.delChoice)
+        document.getElementById('trash-'+question+'-'+num).addEventListener('click', FormCreation.delChoice)
+        if (type === 'select') {
+            FormCreation.listenerSelect(question,num)
+        }
     }
 
 
@@ -560,9 +535,14 @@ class FormCreation {
             this.parentElement.remove()
 
             let label
+            let sel = document.querySelector('#'+rootID+' select')
             if (rootID.split('-')[2] !== "select") {
                 label = document.querySelectorAll('#' + rootID + ' .choice > label')
             }
+            else{
+                sel.innerHTML = '<option>Choisir...</option>'
+            }
+
             let input = document.querySelectorAll('#' + rootID + ' .choice-input')
             let trash = document.querySelectorAll('#' + rootID + ' .choice > button')
 
@@ -570,15 +550,39 @@ class FormCreation {
 
                 if (rootID.split('-')[2] !== "select") {
                     label[i - 1].innerHTML = 'Option ' + i
-                    label[i - 1].setAttribute('for', 'choice-' + question + i)
+                    label[i - 1].setAttribute('for', 'choice-' + question +'-'+ i)
                 }
-                input[i - 1].id = 'choice-' + question + i
-                input[i - 1].setAttribute('name', 'choice-' + question + i)
+                input[i - 1].id = 'choice-' + question +'-'+ i
+                input[i - 1].setAttribute('name', 'choice-' + question +'-'+ i)
+                if (rootID.split('-')[2] === "select"){
+                    FormCreation.listenerSelect(question,i)
 
-                trash[i - 1].id = 'trash-'+question+i
+                    if (input[i - 1].value !== '') {
+                        sel.insertAdjacentHTML("beforeend", '<option>' + input[i - 1].value + '</option>')
+                    }
+
+                }
+
+                trash[i - 1].id = 'trash-'+question+'-'+i
                 trash[i - 1].addEventListener('click',FormCreation.delChoice)
             }
         }
+
+    }
+
+
+    static listenerSelect(question,num){
+
+        document.getElementById('choice-' + question +'-'+ num).addEventListener('blur', function () {
+            let question = this.name.split('-')[1]
+            this.parentElement.parentElement.firstElementChild.innerHTML = '<option>Choisir...</option>'
+            let input = document.querySelectorAll('#form-' + question + '-select .choice-input')
+            input.forEach(e => {
+                if (e.value !== '') {
+                    this.parentElement.parentElement.firstElementChild.insertAdjacentHTML("beforeend", '<option>' + e.value + '</option>')
+                }
+            })
+        })
 
     }
 
