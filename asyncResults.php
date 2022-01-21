@@ -82,7 +82,6 @@ function filtersStringToSql($filters){
     }
 
     $sqlRequest .= ")";
-    var_dump($sqlRequest);
     return $sqlRequest;
 }
 
