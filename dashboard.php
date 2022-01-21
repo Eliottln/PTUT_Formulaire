@@ -98,14 +98,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <h2> Consulter vos groupes : </h2> <br>
         <img id="pannel-group-button" style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe">
-        <img id="edit-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/moins.png">
+        <img id="edit-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/edit.svg">
         <div id="all-groups">
 
         </div>
     </div>
 
 
-    <dialog style="display: none; left:-100vw"  id="pannel-group" >
+    <dialog style="display: none"  id="pannel-group" >
         <h2>Titre</h2>
         <input type="text" id="title-group" name="title-group">
         <h2>Sélectionner Des utilisteurs</h2>
@@ -122,7 +122,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </dialog>
 
-    <dialog style="display: none ; left:-100vw" id="pannel-edit" >
+    <dialog style="display: none " id="pannel-edit" >
 
         <h2>Sélectionner un groupe</h2>
 
@@ -162,12 +162,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     function displayDeleteMenu(){
         menuEdit.style.display = 'flex';
-        menuEdit.style.left = "25vw";
+
     }
 
     function exitDeleteMenu(){
         menuEdit.style.display = 'none';
-        menuEdit.style.left = "-100vw";
+
         for(let i =0 ; i < checkboxs.length; i++){
             checkboxs[i].checked = false;
         }
@@ -176,12 +176,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     function displayGroupMenu(){
         menuGroup.style.display = 'flex';
-        menuGroup.style.left = "25vw";
+
     }
 
     function exitGroupMenu(){
         menuGroup.style.display = 'none';
-        menuGroup.style.left = "-100vw";
+
         for(let i =0 ; i < checkboxs.length; i++){
 
             checkboxs[i].checked = false;
@@ -267,10 +267,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
         let strSend = tabCheckToString(checkboxs);
-        let selectGroup = document.getElementById("group-select");
+        let groupToEdit = document.getElementById("group-select").value;
         let inputTitle = document.getElementById("title-group");
         let titleGroup = inputTitle.value;
-        let groupToEdit = selectGroup.value;
+        
 
         if(groupToEdit === "none" && menuEdit.style.display==="flex"){
             return;
