@@ -159,9 +159,9 @@ function addGroup($connect, $stringCheckValues,$user,$title){
     $connect->beginTransaction();
 
     try {
-
-        $sql = "INSERT INTO 'Group' (id_creator,title)
-                VALUES (" .$user. ",".$connect->quote($title) .");";
+        $date = $connect->quote(date("Y-m-d H:i:s"));
+        $sql = "INSERT INTO 'Group' (id_creator,title,'update')
+                VALUES (" .$user. ",".$connect->quote($title) .", ".$date.");";
 
 
         $statement = $connect->prepare($sql);
