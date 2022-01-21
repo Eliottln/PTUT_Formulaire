@@ -109,7 +109,7 @@ define("_SQL_REQUEST", "SELECT Q.title as 'title', U.name || ' ' || U.lastname A
                         FROM Result 
                         INNER JOIN User AS U ON U.id = Result.id_user  
                         INNER JOIN Question AS Q ON Q.id = Result.id_question
-                        WHERE Result.id_form = " . $idForm . " " . (($filter != 'none') ? "AND Result.id_question=" . $filter : NULL));
+                        WHERE Result.id_form = " . $idForm . " AND Q.id_form = ". $idForm ." " . (($filter != 'none') ? "AND Result.id_question=" . $filter : NULL));
 
 
 $finalString = displayResults($connect, $sort, _SQL_REQUEST, $asc_desc);

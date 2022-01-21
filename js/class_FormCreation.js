@@ -419,15 +419,17 @@ class FormCreation {
 
         let update = numBlock+j
 
-        let label = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > label')
+        let label
+        if (typeBlock !== "select")
+            label = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > label')
         let input = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice-input')
         let trash = document.querySelectorAll('#form-' + update + '-' + typeBlock + ' .choice > button')
 
-        for (let i = 1; i <= label.length; i++) {
+        for (let i = 1; i <= input.length; i++) {
 
-            label[i - 1].setAttribute('for', 'choice-' + update +'-'+ i)
+            if (typeBlock !== "select")
+                label[i - 1].setAttribute('for', 'choice-' + update +'-'+ i)
 
-            console.log("yes")
             input[i - 1].id = 'choice-' + update +'-'+ i
             input[i - 1].setAttribute('name', 'choice-' + update +'-'+ i)
 
