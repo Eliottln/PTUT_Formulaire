@@ -45,6 +45,7 @@ function sendMyResponse($pdo, $data,$notLastPage){
 
         if(!$notLastPage){
             unset($_SESSION['nb_question']);
+            unset($_SESSION['page']);
         }
         
     } catch (\Throwable $th) {

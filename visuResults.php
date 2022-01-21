@@ -15,8 +15,7 @@ function fileSelectQuestion($connect)
 {
     $ret = $connect->query("SELECT id,title
                             FROM Question
-                            WHERE id_form = " . $_GET['identity'] . "
-                            GROUP BY title")->fetchAll();
+                            WHERE id_form = " . $_GET['identity'])->fetchAll();
 
     $stringRet = "";
     foreach ($ret as $value) {

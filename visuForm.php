@@ -11,6 +11,15 @@ if (empty($_GET['identity'])) {
     $_GET['page'] = 1;
 }
 
+//Protect if come back on this page
+if(!empty($_SESSION['page']) && $_SESSION['page'] > $_GET['page']) {
+    $_SESSION['nb_question'] = $connect->query("SELECT count(*)
+                            FROM Question as Q
+                            WHERE Q.id_page < ".$_SESSION['page'])->fetchColumn();
+}
+
+$_SESSION['page'] = $_GET['page'];
+
 $form = new VueForm($connect, $_GET['identity'], $_GET['page']);
 
 if (!empty($_POST)) {
