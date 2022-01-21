@@ -4,7 +4,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/getChoicesArray.php"
 
 class VueForm
 {
-
     private $pdo;
 
     private $id;

@@ -6,8 +6,8 @@ function deleteGroups($connect, $group){
 
     try {
 
-        $stmt = $connect->prepare("DELETE FROM IsMember WHERE id_group = ".$group ." ");
-        $stmt->execute();
+        $stmt1 = $connect->prepare("DELETE FROM IsMember WHERE id_group = ".$group ." ");
+        $stmt1->execute();
 
         $stmt2 = $connect->prepare("DELETE FROM 'Group' WHERE id = ".$group ." ");
         $stmt2->execute();
@@ -23,12 +23,9 @@ function displaySelectGroups($connect,$user){
     try {
         $groups = $connect->query("SELECT * FROM 'Group' where id_creator = ". $user." ")->fetchAll();
         foreach ($groups as $group){
-            $retString .= '<option value="'.$group['id'] . '">'.$group['id'].'</option>';
+            $retString .= '<option value="'.$group['id'] . '">'. $group['title'] . '  #'.$group['id'].'</option>';
         }
 
-        foreach($groups as $group){
-
-        }
     }catch (PDOException $e){
         echo "SQL ERROR : " . $e->getMessage();
     }
@@ -36,14 +33,28 @@ function displaySelectGroups($connect,$user){
     return $retString;
 }
 
-function stringCheckToTab($stringCheckValues){
+function stringCheckToTab($stringCheckValues,$todo = null){
     $tab = array();
-    $parsing = explode("/",$stringCheckValues);
-    foreach ($parsing as $value){
+    if($todo == "edit"){
 
-        array_push($tab,$value);
+        $parsing = explode("-edit/",$stringCheckValues);
 
+        for($i = 0; $i < count($parsing); $i++){
+
+            if($i == count($parsing)-1) //La derniere valeur du tableu nécessite un autre parsing
+                array_push($tab,explode("-edit",$parsing[$i])[0]);
+            else
+                array_push($tab,$parsing[$i]);
+        }
+
+    }else{
+
+        $parsing = explode("/",$stringCheckValues);
+        foreach ($parsing as $value) {
+            array_push($tab, $value);
+        }
     }
+
     return $tab;
 
 }
@@ -63,11 +74,11 @@ function usersToTab($connect, $idGroup){
     return $tabUsers;
 }
 
-function displayUsers($tabUser){
+function displayUsers($tabUser,$group){
 
     $stringRet = "";
 
-    $stringRet .= "<ul style='display: flex; flex-direction: column' >";
+    $stringRet .= '<ul class="list-members" id="list-of-'.$group.'" style="display: none; flex-direction: column" >';
     foreach($tabUser as $userName){
         $stringRet .= "<li> -". $userName ." </li>";
     }
@@ -85,19 +96,23 @@ function displayGroups($connect,$user){
 
         foreach ($groups as $group){
             $tabUsers = usersToTab($connect, $group['id']);
-            $ret .= '<div  class="bloc-groups">
-                        <p>ID : '. $group['id'].' </p>
-                        <p>ID Creator : '. $group['id_creator'].' </p>
+            $ret .= '
+                     <div>
                         <div>
-                            <img style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
+                            <img class="img-of-group" id="img-group-'. $group['id'].'" style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
+                            <h2>'.$group['title'] .'</h2>
                         </div>
-                            <img id="display-members-'.$group['id'] .'" style = "height: 20px; width: 20px" src="img/plusvert.png" alt="afficher les membres">
-                            <img id="hide-members-'.$group['id'] .'" style = "height: 20px; width: 20px" src="img/moinsrouge.png" alt="masquer les membres">
-                             '. displayUsers($tabUsers) . '
-                            <p id="modify-group">Modifier:</p>
+                        
+                        <div>
+                            
+                             '. displayUsers($tabUsers,$group['id']) . '
+                            
                         </div>
-                    </div>';
+                     </div>   
+                    ';
         }
+
+
 
     }catch (PDOException $e){
         echo "Sql ERROR : " . $e;
@@ -106,14 +121,48 @@ function displayGroups($connect,$user){
     return $ret;
 }
 
-function addGroup($connect, $stringCheckValues,$user){
+function modifyGroup($connect,$stringCheckValues,$idGroup){
+
+
+    $tabUsers = stringCheckToTab($stringCheckValues,"edit");
+
+
+    $connect->beginTransaction();
+    try {
+        $sql = "DELETE FROM IsMember WHERE id_group = ".$idGroup ."";
+        $stmt1 = $connect->prepare($sql);
+        $stmt1->execute();
+
+        foreach ($tabUsers as $idUser){
+            if($idUser != ""){
+
+                $sql = "INSERT INTO IsMember(id_user,id_group)
+                VALUES (".$idUser . ",".$idGroup . ");";
+
+                $stmt2 = $connect->prepare($sql);
+                $stmt2->execute();
+            }
+
+        }
+
+        $connect->commit();
+    }catch(PDOException $e){
+        echo $e->getLine() . " " . $e->getMessage();
+        exit();
+    }
+}
+
+function addGroup($connect, $stringCheckValues,$user,$title){
 
     $tabUsers = stringCheckToTab($stringCheckValues);
 
     $connect->beginTransaction();
+
     try {
-        $sql = "INSERT INTO 'Group' (id_creator)
-                VALUES (" .$user. ")";
+        $date = $connect->quote(date("Y-m-d H:i:s"));
+        $sql = "INSERT INTO 'Group' (id_creator,title,'update')
+                VALUES (" .$user. ",".$connect->quote($title) .", ".$date.");";
+
 
         $statement = $connect->prepare($sql);
         $statement->execute();
@@ -145,16 +194,29 @@ $stringCheckValues = $_POST["tabcheck"];
 $state = $_POST['state-page'];
 $todo = $_POST['todo'];
 
-if($todo == "add"){
-    addGroup($connect,$stringCheckValues,$user);
+switch ($todo){
+    case "add":
+        $title = $_POST['title-group'];
+        addGroup($connect,$stringCheckValues,$user,$title);
+        break;
+    case "del":
+        $groupToDel = $_POST['edited-group'];
+        deleteGroups($connect, $groupToDel);
+        break;
+
+    case "modify":
+        $groupToModify = $_POST['edited-group'];
+        modifyGroup($connect,$stringCheckValues,$groupToModify);
+        break;
+
+    case "start":
+        break;
+
 }
-else if($todo == "del"){
-    $groupToDel = $_POST['deleted-group'];
-    deleteGroups($connect, $groupToDel);
-}
+
 
 
 $finalStringBloc = displayGroups($connect, $user);
 $finalStringSelect = displaySelectGroups($connect, $user);
 
-echo $finalStringBloc . "///" . $finalStringSelect ;
+echo $finalStringBloc. "///" . $finalStringSelect ;

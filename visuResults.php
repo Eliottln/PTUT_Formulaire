@@ -32,7 +32,7 @@ function notSorted($connect)
                                 FROM Result 
                                 INNER JOIN User AS U ON U.id = Result.id_user  
                                 INNER JOIN Question AS Q ON Q.id = Result.id_question
-                                WHERE Result.id_form = " . $_GET['identity'] . "
+                                WHERE Result.id_form = " . $_GET['identity'] . " AND Q.id_form = ".$_GET['identity']."
                                 ORDER BY Result.'update'")->fetchAll();
 }
 
@@ -136,7 +136,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         FROM Question as Q
         INNER JOIN Result as R
         ON Q.id = R.id_question
-        WHERE Q.id_form = 178689
+        WHERE R.id_form = ".$_GET['identity']." AND Q.id_form = ".$_GET['identity']."
         GROUP by Q.title")->fetchAll();
 
         foreach ($_data as $value) {
