@@ -218,6 +218,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         let sortButton = document.querySelectorAll('[id^="th_"]');
 
+        let filtersCheckBoxs = document.querySelectorAll('[class="checks-filters"]');
+
         function isSortButton(input) {
             for (let index = 0; index < sortButton.length; index++) {
                 if (sortButton[index] == input) {
@@ -312,8 +314,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
 
         //sortMenu.addEventListener('change', send);
-
+        filtersCheckBoxs.forEach(box => box.addEventListener('change',send))
         sortButton.forEach(button => button.addEventListener('click', send));
+
 
 
 
