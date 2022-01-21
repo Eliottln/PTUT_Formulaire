@@ -194,9 +194,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
         document.addEventListener('DOMContentLoaded', createChart('Nombre de réponses par question',
             <?=$chartCategories?>,
-            'Nombre de question',
+            '',
             [<?=$chartData?>,
-            'Nombre de question']));
+            'Nombre de réponses']));
     </script>
 
     <script>
