@@ -23,7 +23,7 @@ function displayAllForm($connect){
                                 <img style="width: 50px; height: 50px" src="img/formulaire.png" alt="Prévisualisation">
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
-                            
+                            <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
                         </div>';
         }
 
