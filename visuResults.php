@@ -139,9 +139,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send('sort=' + sort + '&filter=' + filter + '&identity=' + <?=$_GET['identity'] ?>);
 
-
-
-
     }
 
     sortMenu.addEventListener('change', send);
