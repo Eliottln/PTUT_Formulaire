@@ -264,24 +264,31 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         function filtersCheckToString(){
             let tab = document.getElementsByClassName("checks-filters");
+
+
             let tabToString = "";
             for(let i =0; i < tab.length; i++){
+                let id = tab[i].getAttribute("id").split("-")[2]
+
                 if(tab[i].checked === true){
-                    tabToString += tab[i].
-                    console.log(tab[i]);
+                    tabToString += id + "/";
+
                 }
             }
 
+            tabToString = tabToString.substring(0,tabToString.length -1);
+
+            console.log(tabToString);
+
+            return tabToString;
+
 
         }
 
-        function setFilter(){
-            filtersCheckToString();
-        }
 
         function send() {
 
-            setFilter();
+            let filtersSelected = filtersCheckToString();
 
             if (isSortButton(this)) {
                 sortButton.forEach(button => button.removeAttribute('class'));
@@ -300,7 +307,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             }
             xhttp.open("POST", "/asyncResults.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('sort=' + sort + '&filter=' + "" + '&asc_desc=' + asc_desc + '&identity=' + <?= $_GET['identity'] ?>);
+            xhttp.send('sort=' + sort + '&filter=' + filtersSelected + '&asc_desc=' + asc_desc + '&identity=' + <?= $_GET['identity'] ?>);
 
         }
 
