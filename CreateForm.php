@@ -262,6 +262,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             </div>
             <div id="form-content"></div>
         </form>
+
+        <aside id="setting-box">
+
+        </aside>
     </main>
 
     <?php require 'modules/footer.php'; ?>

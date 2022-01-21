@@ -360,6 +360,11 @@ class FormCreation {
     }
 
 
+    static fillSetting(){
+
+    }
+
+
     static verification(index = 0){ //refresh numQuestion for all questions
 
         let allQuestions = document.querySelectorAll('#form-content div[id^="form-"]')
