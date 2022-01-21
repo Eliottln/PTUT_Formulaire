@@ -290,18 +290,34 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     </div>
 
 
-    <script src="/js/newQuestion.js"></script>
     <script src="/js/class_FormCreation.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script>
-        $(function() {
-            $("#form-content").sortable();
-            $(".page-content").sortable();
-        });
+        sort = function() {
+            
+            $("#form-content").sortable(
+                {cursor: "move"},
+                {
+                    update: function( event, ui ) {
+                        FormCreation.verification()
+                    }
+                }
+            )
+            $(".page-content").sortable(
+                {cursor: "move"},
+                {connectWith: ".page-content"},
+                {
+                    update: function( event, ui ) {
+                        FormCreation.verification()
+                    }
+                }
+            )
+        }
+        $('#NewPage').click(sort())
+        document.getElementById('NewPage').addEventListener( 'click', sort);
+        sort()
     </script>
-    
-    <script src="/js/newQuestion.js"></script>
     <script src="/js/transformInputToString.js"></script>
     <script src="/js/CreateForm.js"></script>
     <script src="/js/addInputFromObject.js"></script>

@@ -44,7 +44,8 @@ class VueForm
                                         INNER JOIN User as u ON f.id_owner = u.id 
                                         INNER JOIN Page as p ON f.id = p.id_form 
                                         WHERE f.id = " . $this->id . " 
-                                        AND (expire >= " . $date . " OR expire = '')")->fetch() ?? NULL;
+                                        AND (expire >= " . $date . " OR expire = '')
+                                        AND p.id = " . $this->page)->fetch() ?? NULL;
         
         if ($_data) {
             $this->title = $_data['title'];
@@ -74,11 +75,11 @@ class VueForm
 
                 switch ($value['type']) {
                     case 'radio':
-                        array_push($this->questions, $this->addRadio($i, $value['title'], getChoicesArray($value['id'], $_choices)));
+                        array_push($this->questions, $this->addRadio($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'checkbox':
                         
-                        array_push($this->questions, $this->addCheckbox($i, $value['title'], getChoicesArray($value['id'], $_choices)));
+                        array_push($this->questions, $this->addCheckbox($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'select':
                         //TODO
@@ -86,15 +87,15 @@ class VueForm
 
                     case 'range':
                     case 'number':
-                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['min'], $value['max']));
+                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['min'], $value['max']));
                         break;
 
                     case 'date':
-                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['format']));
+                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['format']));
                         break;
 
                     default:
-                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type']));
+                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required']));
                         break;
                 }
                 $i++;
@@ -108,15 +109,22 @@ class VueForm
         }
     }
 
+    public function getRequirement($boolean){
+        if($boolean){
+            return 'required';
+        }
+        return null;
+    }
+
     public function getError()
     {
         return $this->error;
     }
 
-    private function addCheckbox($_id, $_title, array $_RadioChoices):string{
+    private function addCheckbox($_id, $_title, $_require, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div >';
+                            <div class="checkbox-group '.$this->getRequirement($_require).'">';
     
         foreach ($_RadioChoices as $choice) {
             $resultat .= '<div class="checkboxVisuForm"> 
@@ -131,10 +139,10 @@ class VueForm
         return $resultat;
     }
 
-    private function addRadio($_id, $_title, array $_RadioChoices):string{
+    private function addRadio($_id, $_title, $_require, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div>';
+                            <div class="radio-group '.$this->getRequirement($_require).'>';
     
         foreach ($_RadioChoices as $choice) {
             $resultat .= '<div> 
@@ -149,19 +157,19 @@ class VueForm
         return $resultat;
     }
 
-    private function addQuestion($_id, $_title, $_type, $option1 = null, $option2 = null):string{
+    private function addQuestion($_id, $_title, $_type, $_require, $option1 = null, $option2 = null):string{
 
         switch ($_type) {
         case 'range':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" required>
+                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" '.$this->getRequirement($_require).'>
                         <span id="question-' . $_id  . '-counter">' . $option1 . '</span>
                     </div>';
         case 'number':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" required>
+                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" '.$this->getRequirement($_require).'>
                     </div>';
 
         case 'date':
@@ -169,20 +177,20 @@ class VueForm
                 return '<div id="question-' . $_id . '-' . $_type . '">
                             <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
                             <p>Du </p>
-                            <input id="question-' . $_id  . '-1" type="datetime-local" name="question-' . $_id . '" required>
+                            <input id="question-' . $_id  . '-1" type="datetime-local" name="question-' . $_id . '" '.$this->getRequirement($_require).'>
                             <p>Du </p>
-                            <input id="question-' . $_id  . '-2" type="datetime-local" name="question-' . $_id . '" required>
+                            <input id="question-' . $_id  . '-2" type="datetime-local" name="question-' . $_id . '" '.$this->getRequirement($_require).'>
                         </div>';
             }
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $option1 . '" name="question-' . $_id . '" required>
+                        <input id="question-' . $_id  . '" type="' . $option1 . '" name="question-' . $_id . '" '.$this->getRequirement($_require).'>
                     </div>';
 
         default:
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" required>
+                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" '.$this->getRequirement($_require).'>
                     </div>';
         }
     }
@@ -215,8 +223,9 @@ class VueForm
         }
 
         $string .= '<div>
-                        <button id="S" class="buttonVisuForm" type="submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Save and next').'</button>
-                        <button id="R" class="buttonVisuForm" type="reset">Effacer</button>
+                        <button id="S" class="buttonVisuForm" type="submit">
+                            <span id="span-submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
+                        </button>
                     </div>
                 </form>';
         return $string;

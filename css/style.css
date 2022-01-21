@@ -22,17 +22,18 @@
   --bubble2: #111111;
   --bubble3: #757575;
 
-  --c_page: #E7E7E7;
+  --c_page: #e7e7e7;
   --c_form: #fff;
-  --c_font:#000;
+  --c_font: #000;
   --c_inputBG: #fff;
 
-  --c_page_crea:rgba(0,0,0,0.8);
+  --c_page_crea: rgba(0, 0, 0, 0.8);
+
+  --c_table_odd_visuResult:#EEEEEE;
+  --c_table_hover: #BBBBBB;
 
   /*value JS*/
-  --layoutVisuAllForms : 3;
-
-  
+  --layoutVisuAllForms: 3;
 }
 
 @font-face {
@@ -678,7 +679,7 @@ header nav ul li:hover span {
   width: 35px;
 }
 
-#ImportForm{
+#ImportForm {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -853,6 +854,13 @@ dialog[class="content"] pre {
   font-size: larger;
 }
 
+.page-content {
+  height: 100%;
+  width: 70%;
+  max-width: 700px;
+  min-height: 150px;
+}
+
 .page-content > div:first-child,
 .page-content > div {
   display: flex;
@@ -957,7 +965,6 @@ dialog[class="content"] pre {
   width: 75%;
 }
 
-
 /* form-content */
 
 #form-content {
@@ -967,33 +974,32 @@ dialog[class="content"] pre {
   width: 80%;
 }
 
-#form-content .page{
+#form-content .page {
   display: flex;
   flex-direction: column;
   position: relative;
   background-color: var(--c_page_crea);
   width: 80%;
-  min-height:250px;
+  min-height: 250px;
   border-radius: 20px;
   align-items: center;
   margin-block: 10px;
   box-shadow: 0.8px 2.3px 1.9px rgba(0, 0, 0, 0.065),
-  1.9px 5.4px 4.3px rgba(0, 0, 0, 0.093),
-  3.5px 9.7px 7.7px rgba(0, 0, 0, 0.115),
-  5.8px 16.1px 12.8px rgba(0, 0, 0, 0.135),
-  9.5px 26.5px 21.2px rgba(0, 0, 0, 0.157),
-  16.6px 46.2px 37px rgba(0, 0, 0, 0.185),
-  36px 100px 80px rgba(0, 0, 0, 0.25);
+    1.9px 5.4px 4.3px rgba(0, 0, 0, 0.093),
+    3.5px 9.7px 7.7px rgba(0, 0, 0, 0.115),
+    5.8px 16.1px 12.8px rgba(0, 0, 0, 0.135),
+    9.5px 26.5px 21.2px rgba(0, 0, 0, 0.157),
+    16.6px 46.2px 37px rgba(0, 0, 0, 0.185), 36px 100px 80px rgba(0, 0, 0, 0.25);
 }
 
-.page-title{
+.page-title {
   color: var(--second);
   margin-block: 10px;
   width: 80%;
   text-align: center;
 }
 
-.page-title input{
+.page-title input {
   background-color: #0000;
   border: none;
   border-bottom: 2px solid var(--second);
@@ -1004,7 +1010,7 @@ dialog[class="content"] pre {
   font-size: x-large;
 }
 
-.deletePage{
+.deletePage {
   display: block;
   background-color: var(--second);
   position: absolute;
@@ -1016,26 +1022,25 @@ dialog[class="content"] pre {
   width: 50px;
   height: 50px;
   box-shadow: 0.8px 2.3px 1.9px rgba(0, 0, 0, 0.065),
-  1.9px 5.4px 4.3px rgba(0, 0, 0, 0.093),
-  3.5px 9.7px 7.7px rgba(0, 0, 0, 0.115),
-  5.8px 16.1px 12.8px rgba(0, 0, 0, 0.135),
-  9.5px 26.5px 21.2px rgba(0, 0, 0, 0.157),
-  16.6px 46.2px 37px rgba(0, 0, 0, 0.185),
-  36px 100px 80px rgba(0, 0, 0, 0.25);
+    1.9px 5.4px 4.3px rgba(0, 0, 0, 0.093),
+    3.5px 9.7px 7.7px rgba(0, 0, 0, 0.115),
+    5.8px 16.1px 12.8px rgba(0, 0, 0, 0.135),
+    9.5px 26.5px 21.2px rgba(0, 0, 0, 0.157),
+    16.6px 46.2px 37px rgba(0, 0, 0, 0.185), 36px 100px 80px rgba(0, 0, 0, 0.25);
 }
 
-.deletePage img{
-  width:30px;
+.deletePage img {
+  width: 30px;
   object-fit: cover;
   object-position: center;
 }
 
-.deletePage:hover{
+.deletePage:hover {
   cursor: pointer;
   background-color: red;
 }
 
-#form-content .selectedElement{
+#form-content .selectedElement {
   border: 3px solid black;
 }
 
@@ -1254,29 +1259,28 @@ dialog[class="content"] pre {
 /*VisuAllForms*/
 /*#################################################*/
 
-#visuAll{
+#visuAll {
   width: 100vw;
   align-items: center;
 }
 
 /*SEARCH*/
-#visuAll > div:first-child{
+#visuAll > div:first-child {
   display: flex;
 }
 
-
 /*List forms*/
-#visuAll > div:last-child{
+#visuAll > div:last-child {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
 }
 
-.blocForm{
+.blocForm {
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: calc(100% / var(--layoutVisuAllForms,3));
+  width: calc(100% / var(--layoutVisuAllForms, 3));
 }
 
 .blocForm > div {
@@ -1287,23 +1291,23 @@ dialog[class="content"] pre {
   overflow: hidden;
 }
 
-.blocForm > div > a{
+.blocForm > div > a {
   text-decoration: none;
   color: var(--second);
 }
 
-.blocForm > div p{
+.blocForm > div p {
   background-color: var(--first);
   text-align: center;
   padding: 5px;
   width: 200px;
 }
 
-.blocForm > div div{
+.blocForm > div div {
   background-color: var(--second);
 }
 
-.blocForm > div img{
+.blocForm > div img {
   object-fit: cover;
   object-position: center;
   width: 200px;
@@ -1314,12 +1318,12 @@ dialog[class="content"] pre {
   flex-direction: row;
   margin-block: 10px;
   border: 2px solid var(--first);
+  background-color: var(--first);
 }
 
 .search input {
   padding: 10px;
   border: none;
-  border-radius: 10px;
   width: 30vw;
 }
 
@@ -1370,86 +1374,81 @@ dialog[class="content"] pre {
 /*VisuForm*/
 /*#################################################*/
 
-
-#VisuForm{
+#VisuForm {
   font-family: LemonMilk, sans-serif;
   align-items: center;
   height: calc(100vh - 84px);
   background-color: var(--c_page);
 }
 
-#VisuForm #page{
+#VisuForm #page {
   margin-block: 20px;
   width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow:
-  0.9px 1.5px 1.5px rgba(0, 0, 0, 0.04),
-  2px 3.3px 3.4px rgba(0, 0, 0, 0.059),
-  3.3px 5.6px 5.8px rgba(0, 0, 0, 0.073),
-  5.1px 8.6px 8.9px rgba(0, 0, 0, 0.084),
-  7.6px 12.8px 13.2px rgba(0, 0, 0, 0.096),
-  11.2px 18.8px 19.4px rgba(0, 0, 0, 0.107),
-  16.7px 28.1px 29.1px rgba(0, 0, 0, 0.121),
-  26.7px 44.8px 46.4px rgba(0, 0, 0, 0.14),
-  50px 84px 87px rgba(0, 0, 0, 0.18)
-;
-background-color: var(--c_form);
-border-radius: 15px;
-padding: 10px;
-font-family: "Bebas-Regular";
-
+  box-shadow: 0.9px 1.5px 1.5px rgba(0, 0, 0, 0.04),
+    2px 3.3px 3.4px rgba(0, 0, 0, 0.059), 3.3px 5.6px 5.8px rgba(0, 0, 0, 0.073),
+    5.1px 8.6px 8.9px rgba(0, 0, 0, 0.084),
+    7.6px 12.8px 13.2px rgba(0, 0, 0, 0.096),
+    11.2px 18.8px 19.4px rgba(0, 0, 0, 0.107),
+    16.7px 28.1px 29.1px rgba(0, 0, 0, 0.121),
+    26.7px 44.8px 46.4px rgba(0, 0, 0, 0.14), 50px 84px 87px rgba(0, 0, 0, 0.18);
+  background-color: var(--c_form);
+  border-radius: 15px;
+  padding: 10px;
+  font-family: "Bebas-Regular";
 }
 
-@media(max-width:850px){
-  #VisuForm #page{
+@media (max-width: 850px) {
+  #VisuForm #page {
     width: 96%;
   }
 }
 
-#VisuForm #page > *{
+#VisuForm #page > * {
   max-width: 100%;
 }
 
-#VisuForm #page h1{
+#VisuForm #page h1 {
   font-size: x-large;
-  font-family: 'LemonMilk';
+  font-family: "LemonMilk";
 }
 
-#VisuForm #page h2{
+#VisuForm #page h2 {
   font-size: xx-large;
-  font-family: 'LemonMilk';
+  font-family: "LemonMilk";
 }
 
-#VisuForm #page h3{
+#VisuForm #page h3 {
   font-size: large;
-  font-family: 'LemonMilk';
+  font-family: "LemonMilk";
 }
 
-#VisuForm #page h4{
+#VisuForm #page h4 {
   text-align: center;
   font-size: x-large;
   margin-top: 10px;
-  font-family: 'LemonMilk';;
+  font-family: "LemonMilk";
 }
 
-#VisuForm #page form > div:not(:last-child){
+#VisuForm #page form > div:not(:last-child) {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
 }
 
-#VisuForm #page form div:not(:last-child) label{
+#VisuForm #page form div:not(:last-child) label {
   font-family: "Rockford";
   font-size: large;
+  transition: color 0.3s;
 }
 
 #VisuForm #page h1,
 #VisuForm #page h2,
 #VisuForm #page h3,
-#VisuForm #page form div:not(:last-child) label{
+#VisuForm #page form div:not(:last-child) label {
   text-overflow: clip;
   text-align: center;
 }
@@ -1465,9 +1464,15 @@ font-family: "Bebas-Regular";
   background-color: var(--first);
   border: 2px solid var(--c_form);
   color: var(--c_form);
-  padding: 10px;
   font-size: smaller;
   border-radius: 5px;
+  font-family: "Rockford";
+  display: flex;
+}
+
+.buttonVisuForm span{
+  font-family: "Rockford";
+  padding: 10px;
 }
 
 .buttonVisuForm:hover {
@@ -1486,6 +1491,7 @@ font-family: "Bebas-Regular";
   font-size: medium;
   border-radius: 5px;
   margin-top: 20px;
+  font-family: "Rockford";
 }
 
 .buttonBack:hover {
@@ -1495,21 +1501,21 @@ font-family: "Bebas-Regular";
   cursor: pointer;
 }
 
-.questionTitle{
+.questionTitle {
   font-weight: bold;
 }
 
-.checkboxVisuForm{
+.checkboxVisuForm {
   display: flex;
   height: 35px;
 }
-.checkboxVisuForm input[type=checkbox]{
+.checkboxVisuForm input[type="checkbox"] {
   margin: 0;
   visibility: hidden;
   left: 1px;
   top: 1px;
 }
-.checkboxVisuForm label{
+.checkboxVisuForm label {
   font-size: 20px;
   line-height: 26px;
   padding-left: 35px;
@@ -1520,7 +1526,7 @@ font-family: "Bebas-Regular";
   transition: all 0.3s ease 0s;
 }
 .checkboxVisuForm label:before,
-.checkboxVisuForm label:after{
+.checkboxVisuForm label:after {
   content: "";
   width: 20px;
   height: 20px;
@@ -1531,7 +1537,7 @@ font-family: "Bebas-Regular";
   left: 3px;
   transition: all 0.25s;
 }
-.checkboxVisuForm label:after{
+.checkboxVisuForm label:after {
   height: 10px;
   width: 16px;
   border-radius: 0 0 0 4px;
@@ -1543,15 +1549,74 @@ font-family: "Bebas-Regular";
   top: 15px;
   left: 6px;
 }
-.checkboxVisuForm input[type=checkbox]:checked+label{ font-weight: 600; }
-.checkboxVisuForm input[type=checkbox]:checked+label:before{
+.checkboxVisuForm input[type="checkbox"]:checked + label {
+  font-weight: 600;
+}
+.checkboxVisuForm input[type="checkbox"]:checked + label:before {
   opacity: 0;
   top: -10px;
 }
-.checkboxVisuForm input[type=checkbox]:checked+label:after{
+.checkboxVisuForm input[type="checkbox"]:checked + label:after {
   opacity: 1;
   top: 6px;
 }
-@media only screen and (max-width:767px){
-  .checkboxVisuForm{ margin: 0 0 20px; }
+@media only screen and (max-width: 767px) {
+  .checkboxVisuForm {
+    margin: 0 0 20px;
+  }
+}
+
+
+/*#################################################*/
+/*VisuResults*/
+/*#################################################*/
+
+#visuResults h1 {
+  margin-left: 10px;
+  margin-block: 20px;
+  font-family: 'LemonMilk';
+}
+
+#table-resultats {
+  margin-block: 15px;
+  margin-inline: 10px;
+}
+
+#table-resultats tr > td {
+  padding:15px 0;
+	background:var(--c_bg);
+  text-align: center;
+  font-family: "Rockford";
+  font-size: large;
+}
+
+#table-resultats tr:nth-child(odd) > td {
+  padding:15px 0;
+	background:var(--c_table_odd_visuResult);
+}
+
+#table-resultats tbody tr:hover td {
+  background:var(--c_table_hover);
+}
+
+#table-resultats thead th {
+	width:25%;
+	padding:15px 0;
+  background-color:var(--first);
+  color: var(--second);
+  overflow: hidden;
+}
+
+#table-resultats thead th::after {
+  content: "-";
+  position: relative;
+  left: 20px;
+}
+
+#table-resultats thead .ASC::after {
+  content: "▲";
+}
+
+#table-resultats thead .DESC::after {
+  content: "▼";
 }

@@ -10,13 +10,17 @@ function sendMyResponse($pdo, $data,$notLastPage){
         $page = $_GET['page']-1;
         $formID = $data['formID'];
         $ownerID = $data['ownerID'];
+
         if(!isset($_SESSION['nb_question'])){
             $_SESSION['nb_question'] = 0;
         }
+
         $id_question = $_SESSION['nb_question'];
         $data = array_slice($data, 2);
 
-        foreach ($data as $key => $value){
+        $date = date('Y-m-d H:i:s');
+
+        foreach ($data as $value){
             $id_question++;
             if(is_array($value)){
                 $s = "";
@@ -25,7 +29,7 @@ function sendMyResponse($pdo, $data,$notLastPage){
                 }
                 $value = $s;
             }
-            $sql = 'INSERT OR REPLACE INTO Result VALUES ('.$yourID.', '.$page.', '.$id_question.', '.$formID .', '.$ownerID.', "'.$value.'");';
+            $sql = 'INSERT OR REPLACE INTO Result VALUES ('.$yourID.', '.$page.', '.$id_question.', '.$formID .', '.$ownerID.', "'.$value.'", "'.$date.'");';
             array_push($all_result, $sql);
         }
         
