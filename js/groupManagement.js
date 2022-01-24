@@ -12,11 +12,13 @@ function hideMembersOfGroup(group){
 
 function displayEditMenu(){
     menuEdit.style.display = 'flex';
+    document.getElementById('bgGrey').style.display = "flex"
 
 }
 
 function exitEditMenu(){
     menuEdit.style.display = 'none';
+    document.getElementById('bgGrey').style.display = "none"
 
     for(let i =0 ; i < checkboxs.length; i++){
         checkboxs[i].checked = false;
@@ -26,11 +28,13 @@ function exitEditMenu(){
 
 function displayGroupMenu(){
     menuGroup.style.display = 'flex';
+    document.getElementById('bgGrey').style.display = "flex"
 
 }
 
 function exitGroupMenu(){
     menuGroup.style.display = 'none';
+    document.getElementById('bgGrey').style.display = "none"
 
     for(let i =0 ; i < checkboxs.length; i++){
 
@@ -44,7 +48,6 @@ function selectAll(){
 
         checkboxs[i].checked = true;
     }
-
 
 }
 
@@ -118,7 +121,6 @@ checkboxs = document.getElementsByClassName("user-checkb"); //toutes les checkbo
 
 let checkboxAll = document.getElementById("select-all-users");
 let confirmButton = document.getElementById("confirm"); //Ajouter
-
 
 
 menuGroup = document.getElementById("pannel-group");
