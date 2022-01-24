@@ -24,6 +24,7 @@ function displayAllForm($connect){
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
                             <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
+                            <button id="rights-"'.$value['id'] .' class="buttonRights" type="button">Gérer les droits</button>
                         </div>';
         }
 
@@ -104,41 +105,60 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </div>
     </div>
 
+    <div id="bgGrey">
+        <dialog style="display: none"  id="pannel-group" >
+            <h2>Titre</h2>
+            <input type="text" id="title-group" name="title-group">
+            <h2>Sélectionner Des utilisteurs</h2>
 
-    <dialog style="display: none"  id="pannel-group" >
-        <h2>Titre</h2>
-        <input type="text" id="title-group" name="title-group">
-        <h2>Sélectionner Des utilisteurs</h2>
+            <label for="select-all-users">Tout sélectionner</label>
+            <input id="select-all-users" type="checkbox" name="select-all-users">
 
-        <label for="select-all-users">Tout sélectionner</label>
-        <input id="select-all-users" type="checkbox" name="select-all-users">
-
-        <?= displayUsers($connect) ?>
-
-
-        <button id="confirm" type="submit">Confirmer</button>
-        <button id="cancel" type="reset">Annuler</button>
+            <?= displayUsers($connect) ?>
 
 
-    </dialog>
-
-    <dialog style="display: none " id="pannel-edit" >
-
-        <h2>Sélectionner un groupe</h2>
-
-        <button id="confirm-delete" type="submit">Supprimer</button>
-        <select name="group-select" id="group-select">
+            <button id="confirm" type="submit">Confirmer</button>
+            <button id="cancel" type="reset">Annuler</button>
 
 
-        </select>
+        </dialog>
 
-        <?= displayUsersForEdit($connect) ?>
+        <dialog style="display: none " id="pannel-edit" >
 
-        <button id="confirm-edit" type="submit">Confirmer</button>
-        <button id="cancel-delete" type="reset">Annuler</button>
+            <h2>Sélectionner un groupe</h2>
+
+            <button id="confirm-delete" type="submit">Supprimer</button>
+            <select name="group-select" id="group-select">
 
 
-    </dialog>
+            </select>
+
+            <?= displayUsersForEdit($connect) ?>
+
+            <button id="confirm-edit" type="submit">Confirmer</button>
+            <button id="cancel-delete" type="reset">Annuler</button>
+
+
+        </dialog>
+
+        <dialog>
+
+            <h2>Sélectionner un groupe</h2>
+
+            <select name="rights-select" id="rights-select">
+                <option value="none">--Selectionner--</option>
+                <option value="groups">Groupes</option>
+                <option value="users">Utilisateurs</option>
+
+            </select>
+
+
+            <button id="confirm-rights" type="submit">Confirmer</button>
+            <button id="cancel-rights" type="reset">Annuler</button>
+
+
+        </dialog>
+    </div>
 
 
 
@@ -190,6 +210,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 </script> 
 
 <script src="js/groupManagement.js"></script>
+<script scr="js/rightsManagement.js"></script>
 
 
 </body>
