@@ -6,6 +6,12 @@ if (!empty($_POST) && isset($_POST)) {
     $date = date('Y/m/d H:i:s');
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
+    $alreadyExist = $connect->query("SELECT * FROM User WHERE email = " . $connect->quote($_POST['email']))->fetch();
+    if($alreadyExist){
+        header('Location: /index.php');
+        exit();
+    }
+
     $connect->beginTransaction();
     try {
         $sql = 'INSERT INTO User (email,name,lastname,password,active,admin,\'update\')
