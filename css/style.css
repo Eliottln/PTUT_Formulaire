@@ -1620,3 +1620,98 @@ dialog[class="content"] pre {
 #table-resultats thead .DESC::after {
   content: "▼";
 }
+
+#list-filters{
+  width: 100%;
+  margin-inline: 20px;
+  display: flex;
+  position: relative;
+}
+
+#list-filters-button{
+  background-color: var(--first);
+  color: var(--second);
+  font-size: large;
+  width: calc(100% - 40px);
+  border: 1px solid var(--first);
+  padding-block: 5px;
+  font-family: 'LemonMilk';
+}
+
+#list-filters-button:hover{
+  background-color: var(--second);
+  color: var(--first);
+  cursor: pointer;
+}
+
+#list-filters > div{
+  display: flex;
+  position: absolute;
+  top: 33px;
+  flex-direction: column;
+  border: 2px solid var(--first);
+  transition: height 0.5s;
+  z-index: 1;
+  background-color: var(--second);
+  width: calc(100% - 40px);
+}
+
+#list-filters > div[style="height: 0px;"] > div{
+  display: none;
+}
+
+#list-filters > div > div {
+  display: flex;
+  height: 35px;
+}
+#list-filters > div > div input[type="checkbox"] {
+  margin: 0;
+  visibility: hidden;
+  left: 1px;
+  top: 1px;
+}
+#list-filters > div > div label {
+  font-size: 20px;
+  line-height: 26px;
+  padding-left: 35px;
+  margin: 0;
+  display: block;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease 0s;
+}
+#list-filters > div > div label:before,
+#list-filters > div > div label:after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.25s;
+}
+#list-filters > div > div label:after {
+  height: 10px;
+  width: 16px;
+  border-radius: 0 0 0 4px;
+  border: 5px solid var(--c_font);
+  border-top: none;
+  border-right: none;
+  opacity: 0;
+  transform: rotate(-45deg);
+  top: 15px;
+  left: 6px;
+}
+#list-filters > div > div input[type="checkbox"]:checked + label {
+  font-weight: 600;
+}
+#list-filters > div > div input[type="checkbox"]:checked + label:before {
+  opacity: 0;
+  top: -10px;
+}
+#list-filters > div > div input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  top: 6px;
+}

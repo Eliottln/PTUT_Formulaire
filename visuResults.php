@@ -24,8 +24,8 @@ function displayCheckboxsQuestions($connect)
         foreach ($questions as $question) {
 
             $ret .= '<div id="div-check-' . $question['id'] . '">
-                        <label for="check-filter-' . $question['id'] . '"> ' . $question['title'] . '</label>
-                        <input class="checks-filters" type="checkbox" id="check-filter-' . $question['id'] . '" name="check-filter-' . $question['id'] . '"> 
+                        <input class="checks-filters" type="checkbox" id="check-filter-' . $question['id'] . '" name="check-filter-' . $question['id'] . '">
+                        <label for="check-filter-' . $question['id'] . '"> ' . $question['title'] . '</label> 
                     </div>';
         }
     } catch (PDOException $e) {
@@ -89,11 +89,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <h1>Les résultats du formulaire #<?= $_GET['identity'] ?></h1>
 
-        <label for="filter-question-select">Filtrer</label>
+        <div id="list-filters">
+            <button id="list-filters-button">Filtrer</button>
 
-        <div id="list-filters" style="display: flex; flex-direction: column">
-            <?= displayCheckboxsQuestions($connect) ?>
+            <div>
+                <?= displayCheckboxsQuestions($connect) ?>
+            </div>
         </div>
+        
 
 
 
@@ -314,6 +317,20 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         //sortMenu.addEventListener('change', send);
         filtersCheckBoxs.forEach(box => box.addEventListener('change', send))
         sortButton.forEach(button => button.addEventListener('click', send));
+
+        let filterDiv = document.querySelector('#list-filters > div')
+        function toogleFilter(){
+            console.log(filterDiv.style.height == '0px')
+            if(filterDiv.style.height == '0px'){
+                filterDiv.removeAttribute('style');
+            }
+            else{
+                filterDiv.style.height = '0px'
+            }
+        }
+
+        filterDiv.style.height = '0px'
+        document.getElementById('list-filters-button').addEventListener('click',toogleFilter)
     </script>
 
 </body>
