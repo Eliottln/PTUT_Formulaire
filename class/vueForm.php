@@ -159,6 +159,11 @@ class VueForm
     private function addQuestion($_id, $_title, $_type, $_require, $option1 = null, $option2 = null):string{
 
         switch ($_type) {
+        case 'textarea':
+            return '<div id="question-' . $_id . '-' . $_type . '">
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
+                        <textarea id="question-' . $_id  . '" name="question-' . $_id . '"  '.$this->getRequirement($_require).'></textarea>
+                    </div>';
         case 'range':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
