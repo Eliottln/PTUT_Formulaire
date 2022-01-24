@@ -72,6 +72,19 @@ function sortByName($connect, $_SQL_REQUEST, $asc_desc)
     return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(U.lastname) " . $asc_desc)->fetchAll();
 }
 
+function filtersStringToSql($filters){
+    $tabFilters =  Array();
+    $parsing = explode("/",$filters);
+    $sqlRequest = "AND (Result.id_question=" . $parsing[0] . " ";
+
+    for($i=1; $i < count($parsing); $i++){
+        $sqlRequest .= "OR Result.id_question=" . $parsing[$i] . " " ;
+    }
+
+    $sqlRequest .= ")";
+    return $sqlRequest;
+}
+
 
 function displayResults($connect, $sort, $_SQL_REQUEST, $asc_desc)
 {
@@ -102,14 +115,17 @@ function displayResults($connect, $sort, $_SQL_REQUEST, $asc_desc)
 
 $sort = $_POST["sort"];
 $idForm = $_POST["identity"];
-$filter = $_POST["filter"];
+$filters = ($_POST["filter"]=='')?'none':$_POST["filter"];
 $asc_desc = $_POST["asc_desc"];
+
+$sqlRequestFilters = filtersStringToSql($filters);
+
 
 define("_SQL_REQUEST", "SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
                         FROM Result 
                         INNER JOIN User AS U ON U.id = Result.id_user  
                         INNER JOIN Question AS Q ON Q.id = Result.id_question
-                        WHERE Result.id_form = " . $idForm . " AND Q.id_form = ". $idForm ." " . (($filter != 'none') ? "AND Result.id_question=" . $filter : NULL));
+                        WHERE Result.id_form = " . $idForm . " AND Q.id_form = ". $idForm ." " . (($filters != 'none') ? $sqlRequestFilters : NULL));
 
 
 $finalString = displayResults($connect, $sort, _SQL_REQUEST, $asc_desc);
@@ -118,3 +134,4 @@ $chartCategories = "";
 $chartData = "";
 
 echo $finalString . '||' . $chartCategories . '||' . $chartData;
+

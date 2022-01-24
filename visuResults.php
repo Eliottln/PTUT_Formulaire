@@ -11,18 +11,21 @@ if (empty($_GET['identity'])) {
     exit();
 }
 
-function fileSelectQuestion($connect)
-{
-    $ret = $connect->query("SELECT id,title
+
+function displayCheckboxsQuestions($connect){
+
+    try {
+        $ret = "";
+        $questions = $connect->query("SELECT id,title
                             FROM Question
                             WHERE id_form = " . $_GET['identity'])->fetchAll();
 
-    $stringRet = "";
-    foreach ($ret as $value) {
-        $stringRet .= "<option value=" . $value['id'] . "> " . $value['title'] . "</option>";
+    }catch(PDOException $e){
+        $e->getMessage();
+        exit;
     }
 
-    return $stringRet;
+    return $ret;
 }
 
 
@@ -79,12 +82,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <h1>Les résultats du formulaire #<?= $_GET['identity'] ?></h1>
 
         <label for="filter-question-select">Filtrer</label>
-        <select name="filter-question" id="filter-question-select">
-            <option value="none">--Pas de filtre--</option>
-            <?= fileSelectQuestion($connect) ?>
+
+        <div id="list-filters" style="display: flex; flex-direction: column">
+            <?=displayCheckboxsQuestions($connect)?>
+        </div>
 
 
-        </select>
 
         <section>
             <?php
@@ -202,8 +205,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         let asc_desc = 'ASC'
         let sortValue = 'none';
 
-        let filterMenu = document.getElementById('filter-question-select')
         let sortButton = document.querySelectorAll('[id^="th_"]');
+        let filtersCheckBoxs = document.querySelectorAll('[class="checks-filters"]');
 
         function isSortButton(input) {
             for (let index = 0; index < sortButton.length; index++) {
@@ -249,9 +252,33 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         }
 
+        function filtersCheckToString(){
+            let tab = document.getElementsByClassName("checks-filters");
+
+
+            let tabToString = "";
+            for(let i =0; i < tab.length; i++){
+                let id = tab[i].getAttribute("id").split("-")[2]
+
+                if(tab[i].checked === true){
+                    tabToString += id + "/";
+
+                }
+            }
+
+            tabToString = tabToString.substring(0,tabToString.length -1);
+
+            console.log(tabToString);
+
+            return tabToString;
+
+
+        }
+
+
         function send() {
 
-
+            let filtersSelected = filtersCheckToString();
 
             if (isSortButton(this)) {
                 sortButton.forEach(button => button.removeAttribute('class'));
@@ -261,7 +288,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             console.log(sortValue);
             console.log(asc_desc)
 
-            let filter = filterMenu.value;
+            //let filter = filterMenu.value;
             let sort = sortValue;
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
@@ -270,13 +297,17 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             }
             xhttp.open("POST", "/asyncResults.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('sort=' + sort + '&filter=' + filter + '&asc_desc=' + asc_desc + '&identity=' + <?= $_GET['identity'] ?>);
+            xhttp.send('sort=' + sort + '&filter=' + filtersSelected + '&asc_desc=' + asc_desc + '&identity=' + <?= $_GET['identity'] ?>);
 
         }
 
         //sortMenu.addEventListener('change', send);
-        filterMenu.addEventListener('change', send);
+        filtersCheckBoxs.forEach(box => box.addEventListener('change',send))
         sortButton.forEach(button => button.addEventListener('click', send));
+
+
+
+
     </script>
 
 </body>
