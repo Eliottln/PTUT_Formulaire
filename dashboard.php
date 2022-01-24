@@ -141,7 +141,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         </dialog>
 
-        <dialog>
+        <dialog style="display: none " id="pannel-rights">
 
             <h2>Sélectionner un groupe</h2>
 
@@ -151,6 +151,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 <option value="users">Utilisateurs</option>
 
             </select>
+
+            <div id="checkboxs-rights">
+            </div>
 
 
             <button id="confirm-rights" type="submit">Confirmer</button>
@@ -170,7 +173,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 <script>
 
 
-    function send(todo){
+    function sendForGroups(todo){
 
 
         let strSend = tabCheckToString(checkboxs);
@@ -207,10 +210,24 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     }
 
+    function sendForRights(){
+
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            //Faire le remplissage ici
+
+        }
+        xhttp.open("POST", "/asyncRights.php");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send();//Envoyer les données ici
+
+    }
+
 </script> 
 
 <script src="js/groupManagement.js"></script>
-<script scr="js/rightsManagement.js"></script>
+<script src="js/rightsManagement.js"></script>
 
 
 </body>

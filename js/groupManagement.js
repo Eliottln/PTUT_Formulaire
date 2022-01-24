@@ -141,18 +141,18 @@ checkboxAll.addEventListener('change',selection); //La checkbox pour tout sélec
 
 menuGroupButton.addEventListener('click',displayGroupMenu);
 exitMenuGroupButton.addEventListener('click',exitGroupMenu)
-confirmButton.addEventListener('click', send.bind(null,"add"));
+confirmButton.addEventListener('click', sendForGroups.bind(null,"add"));
 confirmButton.addEventListener('click',exitGroupMenu)
 
 editGroupButton.addEventListener('click',displayEditMenu);
 exitEditGroupButton.addEventListener('click',exitEditMenu);
-confirmDeleteButton.addEventListener('click',send.bind(null,"del"));
+confirmDeleteButton.addEventListener('click',sendForGroups.bind(null,"del"));
 confirmDeleteButton.addEventListener('click',exitEditMenu)
-confirmEditButton.addEventListener('click',send.bind(null,"modify"));
+confirmEditButton.addEventListener('click',sendForGroups.bind(null,"modify"));
 confirmEditButton.addEventListener('click',exitEditMenu);
 
 
 state=0;
 isArrivedOnPage = 0;
 
-send("start");
+sendForGroups("start");
