@@ -24,7 +24,7 @@ function displayAllForm($connect){
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
                             <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
-                            <button id="rights-"'.$value['id'] .' class="buttonRights" type="button">Gérer les droits</button>
+                            <button id="rights-'.$value['id'] .'" class="buttonRights" type="button">Gérer les droits</button>
                         </div>';
         }
 
@@ -45,7 +45,7 @@ function displayProfil(){
 }
 
 
-function displayUsers($connect){
+function displayUsersForAdd($connect){
     $ret = "";
     $users = $connect->query("SELECT * FROM User ")->fetchAll();
     foreach ($users as $item) {
@@ -114,7 +114,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             <label for="select-all-users">Tout sélectionner</label>
             <input id="select-all-users" type="checkbox" name="select-all-users">
 
-            <?= displayUsers($connect) ?>
+            <?= displayUsersForAdd($connect) ?>
 
 
             <button id="confirm" type="submit">Confirmer</button>
@@ -150,7 +150,21 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 <option value="groups">Groupes</option>
                 <option value="users">Utilisateurs</option>
 
+
             </select>
+
+
+
+            <button type="button" id="show-users-rights">Utilisateurs</button>
+            <button type="button" id="show-groups-rights">Groupes</button>
+
+            <div id="groups-rights" style="display: none">
+
+            </div>
+
+            <div id="users-rights" style="display: none">
+
+            </div>
 
             <div id="checkboxs-rights">
             </div>
@@ -192,10 +206,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             document.getElementById('all-groups').innerHTML = "";
             document.getElementById('group-select').innerHTML = "";
 
-            let $returnString = this.responseText.split("///");
+            let returnString = this.responseText.split("///");
 
-            document.getElementById('all-groups').innerHTML = $returnString[0];
-            document.getElementById('group-select').innerHTML = $returnString[1];
+            document.getElementById('all-groups').innerHTML = returnString[0];
+            document.getElementById('group-select').innerHTML = returnString[1];
             setEventListnerOnMembers()
         }
         xhttp.open("POST", "/asyncGroupe.php");
@@ -213,14 +227,21 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     function sendForRights(){
 
 
+        //let idForm = document.getElementById()
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
             //Faire le remplissage ici
+            let returnString = this.responseText.split("///");
+            console.log(returnString);
+            document.getElementById("users-rights").innerHTML = "";
+            document.getElementById("groups-rights").innerHTML = "";
+
+
 
         }
         xhttp.open("POST", "/asyncRights.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send();//Envoyer les données ici
+        xhttp.send("id-form=" + idCurrentForm);//Envoyer les données ici
 
     }
 
