@@ -67,17 +67,16 @@ class VueForm
 
             $_choices = $this->pdo->query("SELECT c.* 
                                         FROM Choice as c INNER JOIN 'Page' as p ON c.id_page = p.id
-                                        WHERE c.id_form = " . $this->id ." AND p.id = " . $this->page ." GROUP BY c.id")->fetchAll();
-
+                                        WHERE c.id_form = " . $this->id ." AND p.id = " . $this->page ." Group by c.id, c.id_question")->fetchAll();
+            
             $i = 1;
             foreach ($_questions as $value) {
-
+                
                 switch ($value['type']) {
                     case 'radio':
                         array_push($this->questions, $this->addRadio($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'checkbox':
-                        
                         array_push($this->questions, $this->addCheckbox($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'select':
@@ -139,8 +138,8 @@ class VueForm
     private function addCheckbox($_id, $_title, $_require, array $_CheckChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div class="checkbox-group '.$this->getRequirement($_require).'">';
-    
+                            <div class="checkbox-group" '.$this->getRequirement($_require).'">';
+        
         foreach ($_CheckChoices as $choice) {
             $resultat .= '<div class="checkboxVisuForm"> 
                                 <input name="question-'. $_id .'[]" value="'. strtolower($choice['description']) .'" type="checkbox" id="question-'. $_id .'-'. $choice['id'].'" >
@@ -157,7 +156,7 @@ class VueForm
     private function addRadio($_id, $_title, $_require, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div class="radio-group '.$this->getRequirement($_require).'>';
+                            <div class="radio-group" '.$this->getRequirement($_require).'>';
     
         foreach ($_RadioChoices as $choice) {
             $resultat .= '<div> 
@@ -166,7 +165,7 @@ class VueForm
                           </div>   ';
         }
     
-        $resultat .= '    </select>
+        $resultat .= '    </div>
                     </div>';
     
         return $resultat;

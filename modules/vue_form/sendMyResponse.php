@@ -2,7 +2,7 @@
 
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/export_function/insert_arrayRequest.php");
 
-function sendMyResponse($pdo, $data,$notLastPage){
+function sendMyResponse($pdo, $data, $notLastPage){
     $pdo->beginTransaction();
     try {
         $all_result = array();
@@ -25,7 +25,10 @@ function sendMyResponse($pdo, $data,$notLastPage){
             if(is_array($value)){
                 $s = "";
                 foreach ($value as $response){
-                    $s .= $response . ', ';
+                    $s .= $response;
+                    if($response != $value[count($value)-1]){
+                        $s .= ', ';
+                    }
                 }
                 $value = $s;
             }
