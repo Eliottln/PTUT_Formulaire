@@ -84,8 +84,14 @@ try {
                     }
                     break;
 
-                case "number":
+                
                 case "range":
+                    $num_question++;
+                    $format = $parties[4].'/'.$parties[5];
+                    array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, $isRequired, null, null, $format));
+                    break;
+
+                case "number":
                     $num_question++;
                     $min = $parties[4];
                     $max = $parties[5];
@@ -112,6 +118,7 @@ try {
 
         if (!empty($all_questions)) {
             insert_arrayRequest($connect, $all_questions);
+
 
             if (!empty($all_choices)) {
                 insert_arrayRequest($connect, $all_choices);

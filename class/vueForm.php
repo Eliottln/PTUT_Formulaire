@@ -67,21 +67,20 @@ class VueForm
 
             $_choices = $this->pdo->query("SELECT c.* 
                                         FROM Choice as c INNER JOIN 'Page' as p ON c.id_page = p.id
-                                        WHERE c.id_form = " . $this->id ." AND p.id = " . $this->page ." GROUP BY c.id")->fetchAll();
-
+                                        WHERE c.id_form = " . $this->id ." AND p.id = " . $this->page ." Group by c.id, c.id_question")->fetchAll();
+            
             $i = 1;
             foreach ($_questions as $value) {
-
+                
                 switch ($value['type']) {
                     case 'radio':
                         array_push($this->questions, $this->addRadio($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'checkbox':
-                        
                         array_push($this->questions, $this->addCheckbox($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
                     case 'select':
-                        //TODO
+                        array_push($this->questions, $this->addSelect($i, $value['title'], $value['required'], getChoicesArray($value['id'], $_choices)));
                         break;
 
                     case 'range':
@@ -120,12 +119,28 @@ class VueForm
         return $this->error;
     }
 
-    private function addCheckbox($_id, $_title, $_require, array $_RadioChoices):string{
+    private function addSelect($_id, $_title, $_require, array $_SelectChoices):string{
+        $resultat =  '<div id="question-'. $_id .'-select">
+                            <label class="questionTitle">' . $_title . '</label>
+                            <select name="question-'. $_id .'" '.$this->getRequirement($_require).'">
+                                <option value="" selected>---</option>';
+    
+        foreach ($_SelectChoices as $choice) {
+            $resultat .= '<option value="'. strtolower($choice['description']) .'" >'. $choice['description'] .'</option>';
+        }
+    
+        $resultat .= '    </select>
+                    </div>';
+    
+        return $resultat;
+    }
+
+    private function addCheckbox($_id, $_title, $_require, array $_CheckChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div class="checkbox-group '.$this->getRequirement($_require).'">';
-    
-        foreach ($_RadioChoices as $choice) {
+                            <div class="checkbox-group" '.$this->getRequirement($_require).'">';
+        
+        foreach ($_CheckChoices as $choice) {
             $resultat .= '<div class="checkboxVisuForm"> 
                                 <input name="question-'. $_id .'[]" value="'. strtolower($choice['description']) .'" type="checkbox" id="question-'. $_id .'-'. $choice['id'].'" >
                                 <label for="question-'. $_id .'-'. $choice['id'].'"> '. $choice['description'] .'</label>
@@ -141,7 +156,7 @@ class VueForm
     private function addRadio($_id, $_title, $_require, array $_RadioChoices):string{
         $resultat =  '<div id="question-'. $_id .'-radio">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div class="radio-group '.$this->getRequirement($_require).'>';
+                            <div class="radio-group" '.$this->getRequirement($_require).'>';
     
         foreach ($_RadioChoices as $choice) {
             $resultat .= '<div> 
@@ -159,6 +174,11 @@ class VueForm
     private function addQuestion($_id, $_title, $_type, $_require, $option1 = null, $option2 = null):string{
 
         switch ($_type) {
+        case 'textarea':
+            return '<div id="question-' . $_id . '-' . $_type . '">
+                        <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
+                        <textarea id="question-' . $_id  . '" name="question-' . $_id . '"  '.$this->getRequirement($_require).'></textarea>
+                    </div>';
         case 'range':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>

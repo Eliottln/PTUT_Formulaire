@@ -6,11 +6,12 @@ function questionToSQLRequest($pdo, $id, $id_page, $id_form, $id_owner, $type, $
     $title = $pdo->quote($title);
     $format = $pdo->quote($format);
     switch ($type){
-        case '\'range\'':
+        
         case '\'number\'': 
             return "INSERT OR REPLACE INTO Question(id, id_page, id_form, id_owner, type, title, required, min, max) 
                     VALUES ($id, $id_page, $id_form, $id_owner, $type, $title, $required, $min, $max);";
-        
+
+        case '\'range\'':
         case '\'date\'':
             return "INSERT OR REPLACE INTO Question(id, id_page, id_form, id_owner, type, title, required, format) 
                     VALUES ($id, $id_page, $id_form, $id_owner, $type, $title, $required, $format);";

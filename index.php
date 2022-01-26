@@ -117,9 +117,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     let inputs = document.querySelectorAll('#LogInSignUp main form > div input');
 
-    function inputNotEmpty() {
-        let label = this.parentNode.childNodes[3];
-        if (this.value != "") {
+    function inputNotEmpty(input) {
+        
+        let label = input.parentNode.lastElementChild;
+        if (input.value != "") {
             label.classList.add('notEmpty');
         } else {
             label.classList.remove('notEmpty');
@@ -127,10 +128,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     }
 
     for (let index = 0; index < inputs.length; index++) {
-        inputs[index].addEventListener('keyup', inputNotEmpty);
+        inputs[index].addEventListener('keyup', inputNotEmpty.bind(null,inputs[index]));
+        inputNotEmpty(inputs[index])
     }
-
-
 
     let main = document.querySelector('#LogInSignUp main');
     let menu = document.getElementById('menu');
@@ -165,39 +165,45 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     window.addEventListener('resize', windowResize);
 
     let SignisOpen = false;
+    let inputsSign = document.querySelectorAll('#SignInForm form > div input');
 
     function openSign() {
         if (SignisOpen) {
             sign.firstChild.setAttribute('style', 'display : none;');
             SignisOpen = false;
+            for (let index = 0; index < inputsSign.length; index++) {
+                inputsSign[index].removeEventListener('keyup', inputNotEmpty.bind(null,inputsSign[index]));
+            }
         } else {
             sign.firstChild.removeAttribute('style');
             SignisOpen = true;
             if (LogisOpen) {
                 openLog()
             }
-            let inputsSign = document.querySelectorAll('#SignInForm form > div input');
             for (let index = 0; index < inputsSign.length; index++) {
-                inputsSign[index].addEventListener('keyup', inputNotEmpty);
+                inputsSign[index].addEventListener('keyup', inputNotEmpty.bind(null,inputsSign[index]));
             }
         }
     }
 
     let LogisOpen = false;
+    let inputsLog = document.querySelectorAll('#LogInForm form > div input');
 
     function openLog() {
         if (LogisOpen) {
             log.firstChild.setAttribute('style', 'display : none;');
             LogisOpen = false;
+            for (let index = 0; index < inputsLog.length; index++) {
+                inputsLog[index].removeEventListener('keyup', inputNotEmpty.bind(null,inputsLog[index]));
+            }
         } else {
             log.firstChild.removeAttribute('style');
             LogisOpen = true;
             if (SignisOpen) {
                 openSign()
             }
-            let inputsLog = document.querySelectorAll('#LogInForm form > div input');
             for (let index = 0; index < inputsLog.length; index++) {
-                inputsLog[index].addEventListener('keyup', inputNotEmpty);
+                inputsLog[index].addEventListener('keyup', inputNotEmpty.bind(null,inputsLog[index]));
             }
         }
     }
