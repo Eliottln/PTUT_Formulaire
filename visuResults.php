@@ -19,7 +19,8 @@ function displayCheckboxsQuestions($connect)
         $ret = "";
         $questions = $connect->query("SELECT id,title
                             FROM Question
-                            WHERE id_form = " . $_GET['identity'])->fetchAll();
+                            WHERE id_form = " . $_GET['identity'] ."
+                            ORDER BY id_page,id")->fetchAll();
 
         foreach ($questions as $question) {
 
