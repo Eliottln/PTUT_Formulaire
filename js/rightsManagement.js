@@ -28,15 +28,38 @@ function setFormOnClick(){
 
 }
 
+function displayGroups(){
+    listOfUsers.style.display = "none";
+    listOfGroups.style.display = "flex";
+}
+
+function displayUsers(){
+    listOfGroups.style.display = "none";
+    listOfUsers.style.display = "flex";
+}
+
+
+
+
+
 idCurrentForm = 0;
 
 menuRights = document.getElementById("pannel-rights");
+listOfGroups = document.getElementById("groups-rights");
+listOfUsers = document.getElementById("users-rights");
 
+let showGroupsButton = document.getElementById("show-groups-rights");
+let showUsersButton = document.getElementById("show-users-rights");
 let exitRightsButton = document.getElementById("cancel-rights");
 let confirmRightsButton = document.getElementById("confirm-rights");
 
 exitRightsButton.addEventListener("click",exitRightsMenu);
 confirmRightsButton.addEventListener("click",sendForRights);
+
+showUsersButton.addEventListener("click",displayUsers);
+showGroupsButton.addEventListener("click",displayGroups);
+
+
 
 setListenerOnRightsBut();
 

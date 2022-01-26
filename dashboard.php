@@ -69,6 +69,49 @@ function displayUsersForEdit($connect){
 }
 
 
+function displayUsersForRights($connect){
+
+
+    $ret = "";
+    $users = $connect->query("SELECT * FROM `User` ")->fetchAll();
+    foreach ($users as $user) {
+        $ret .= '<div style="display: flex; flex-direction: column; margin-right: 10px">
+                    <label> '. $user['name'] . '</label>
+                    
+                    <label for="check-right-file-'.$user['id'].'"> Remplir</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-file-'.$user['id'].'" name="check-right-file-'.$user['id'].'">
+                    
+                    <label for="check-right-modify-'.$user['id'].'"> Modifier</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-modify-'.$user['id'].'" name="check-right-modify-'.$user['id'].'">
+                    
+                    <label for="check-right-delete-'.$user['id'].'"> Supprimer</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-delete-'.$user['id'].'" name="check-right-delete-'.$user['id'].'">
+                    
+                </div>';
+
+    }
+
+    return $ret;
+}
+
+
+function displayGroupsForRights($connect, $user){
+    $ret = "";
+    $groups = $connect->query("SELECT * FROM `Group` WHERE id_creator = ".$user ."")->fetchAll();
+    foreach ($groups as $group){
+
+        //$ret .= "<div>
+
+        //         </div>";
+
+        $ret .= "Group : " . $group['title'] . " id = " . $group['id'] . "<br>";
+    }
+
+    return $ret;
+}
+
+
+
 
 ?>
 
@@ -145,25 +188,17 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
             <h2>Sélectionner un groupe</h2>
 
-            <select name="rights-select" id="rights-select">
-                <option value="none">--Selectionner--</option>
-                <option value="groups">Groupes</option>
-                <option value="users">Utilisateurs</option>
 
-
-            </select>
-
-
-
-            <button type="button" id="show-users-rights">Utilisateurs</button>
-            <button type="button" id="show-groups-rights">Groupes</button>
+            <a style="border: 2px solid white"  id="show-users-rights">Utilisateurs</a>
+            <a style="border: 2px solid white"  id="show-groups-rights">Groupes</a>
 
             <div id="groups-rights" style="display: none">
-
+                <?= displayGroupsForRights($connect,$_SESSION['user']['id'])?>
             </div>
 
             <div id="users-rights" style="display: none">
 
+                <?= displayUsersForRights($connect)?>
             </div>
 
             <div id="checkboxs-rights">
@@ -235,6 +270,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             console.log(returnString);
             document.getElementById("users-rights").innerHTML = "";
             document.getElementById("groups-rights").innerHTML = "";
+
+            document.getElementById("users-rights").innerHTML = returnString;
+            document.getElementById("groups-rights").innerHTML = returnString;
+
+
 
 
 
