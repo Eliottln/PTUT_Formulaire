@@ -24,7 +24,7 @@ function displayAllForm($connect){
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
                             <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
-                            <button id="rights-'.$value['id'] .'" class="buttonRights" type="button">Gérer les droits</button>
+                            <a style="border:3px solid black" id="rights-'.$value['id'] .'" class="buttonRights" >Gérer les droits</a>
                         </div>';
         }
 
@@ -78,14 +78,14 @@ function displayUsersForRights($connect){
         $ret .= '<div style="display: flex; flex-direction: column; margin-right: 10px">
                     <label> '. $user['name'] . '</label>
                     
-                    <label for="check-right-file-'.$user['id'].'"> Remplir</label>
-                    <input class="right-checkbox" type="checkbox" id="check-right-file-'.$user['id'].'" name="check-right-file-'.$user['id'].'">
+                    <label for="check-right-u-file-'.$user['id'].'"> Remplir</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-u-file-'.$user['id'].'" name="check-right-u-file-'.$user['id'].'">
                     
-                    <label for="check-right-modify-'.$user['id'].'"> Modifier</label>
-                    <input class="right-checkbox" type="checkbox" id="check-right-modify-'.$user['id'].'" name="check-right-modify-'.$user['id'].'">
+                    <label for="check-right-u-modify-'.$user['id'].'"> Modifier</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-u-modify-'.$user['id'].'" name="check-right-u-modify-'.$user['id'].'">
                     
-                    <label for="check-right-delete-'.$user['id'].'"> Supprimer</label>
-                    <input class="right-checkbox" type="checkbox" id="check-right-delete-'.$user['id'].'" name="check-right-delete-'.$user['id'].'">
+                    <label for="check-right-u-delete-'.$user['id'].'"> Supprimer</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-u-delete-'.$user['id'].'" name="check-right-u-delete-'.$user['id'].'">
                     
                 </div>';
 
@@ -100,11 +100,20 @@ function displayGroupsForRights($connect, $user){
     $groups = $connect->query("SELECT * FROM `Group` WHERE id_creator = ".$user ."")->fetchAll();
     foreach ($groups as $group){
 
-        //$ret .= "<div>
+        $ret .= '<div style="display: flex; flex-direction: column; margin-right: 10px">
+                    <label>id: '.$group['id'] .'</label>
+                    
+                    <label for="check-right-g-file-'.$group['id'] .'">Remplir</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-g-file-'.$group['id'] .'" name="check-right-g-file-'.$group['id'] .'">
+                    
+                    <label for="check-right-g-modify-'.$group['id'] .'">Modifier</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-g-modify-'.$group['id'] .'" name="check-right-g-modify-'.$group['id'] .'">
+                    
+                    <label for="check-right-g-delete-'.$group['id'] .'">Supprimer</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-g-delete-'.$group['id'] .'" name="check-right-g-delete-'.$group['id'] .'">
+                 </div>';
 
-        //         </div>";
 
-        $ret .= "Group : " . $group['title'] . " id = " . $group['id'] . "<br>";
     }
 
     return $ret;
@@ -240,11 +249,13 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         xhttp.onload = function () {
             document.getElementById('all-groups').innerHTML = "";
             document.getElementById('group-select').innerHTML = "";
+            document.getElementById('groups-rights').innerHTML = "";
 
             let returnString = this.responseText.split("///");
 
             document.getElementById('all-groups').innerHTML = returnString[0];
             document.getElementById('group-select').innerHTML = returnString[1];
+            document.getElementById('groups-rights').innerHTML = returnString[2];
             setEventListnerOnMembers()
         }
         xhttp.open("POST", "/asyncGroupe.php");
@@ -261,27 +272,19 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     function sendForRights(){
 
+        let stringCheck = getCheckedBox();
 
-        //let idForm = document.getElementById()
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
-            //Faire le remplissage ici
+
             let returnString = this.responseText.split("///");
             console.log(returnString);
-            document.getElementById("users-rights").innerHTML = "";
-            document.getElementById("groups-rights").innerHTML = "";
-
-            document.getElementById("users-rights").innerHTML = returnString;
-            document.getElementById("groups-rights").innerHTML = returnString;
-
-
-
 
 
         }
         xhttp.open("POST", "/asyncRights.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("id-form=" + idCurrentForm);//Envoyer les données ici
+        xhttp.send("id-form=" + idCurrentForm + "&checked-rights="+stringCheck);
 
     }
 

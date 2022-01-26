@@ -189,6 +189,30 @@ function addGroup($connect, $stringCheckValues,$user,$title){
     }
 }
 
+function displayGroupsOnRightsMenu($connect, $user){
+    $ret = "";
+    $groups = $connect->query("SELECT * FROM `Group` WHERE id_creator = ".$user ."")->fetchAll();
+    foreach ($groups as $group){
+
+        $ret .= '<div style="display: flex; flex-direction: column; margin-right: 10px">
+                    <label>id: '.$group['id'] .'</label>
+                    
+                    <label for="check-right-g-file-'.$group['id'] .'">Remplir</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-g-file-'.$group['id'] .'" name="check-right-g-file-'.$group['id'] .'">
+                    
+                    <label for="check-right-g-modify-'.$group['id'] .'">Modifier</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-g-modify-'.$group['id'] .'" name="check-right-g-modify-'.$group['id'] .'">
+                    
+                    <label for="check-right-g-delete-'.$group['id'] .'">Supprimer</label>
+                    <input class="right-checkbox" type="checkbox" id="check-right-g-delete-'.$group['id'] .'" name="check-right-g-delete-'.$group['id'] .'">
+                 </div>';
+
+
+    }
+
+    return $ret;
+}
+
 $user = $_POST["id-user"];
 $stringCheckValues = $_POST["tabcheck"];
 $state = $_POST['state-page'];
@@ -218,5 +242,6 @@ switch ($todo){
 
 $finalStringBloc = displayGroups($connect, $user);
 $finalStringSelect = displaySelectGroups($connect, $user);
+$finalStringRights = displayGroupsOnRightsMenu($connect, $user);
 
-echo $finalStringBloc. "///" . $finalStringSelect ;
+echo $finalStringBloc. "///" . $finalStringSelect . "///" . $finalStringRights ;

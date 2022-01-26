@@ -39,6 +39,25 @@ function displayUsers(){
 }
 
 
+function getCheckedBox(){
+    let ret = "";
+    let cpt = 0;
+    for(let i =0; i<checkboxRights.length;i++){
+        if(checkboxRights[i].checked === true){
+            if(cpt === 0){
+                ret += checkboxRights[i].id;
+            }else{
+                ret += "/"+ checkboxRights[i].id;
+            }
+            cpt++
+
+        }
+
+    }
+
+    return ret;
+}
+
 
 
 
@@ -47,6 +66,7 @@ idCurrentForm = 0;
 menuRights = document.getElementById("pannel-rights");
 listOfGroups = document.getElementById("groups-rights");
 listOfUsers = document.getElementById("users-rights");
+checkboxRights = document.getElementsByClassName("right-checkbox");
 
 let showGroupsButton = document.getElementById("show-groups-rights");
 let showUsersButton = document.getElementById("show-users-rights");
@@ -55,9 +75,11 @@ let confirmRightsButton = document.getElementById("confirm-rights");
 
 exitRightsButton.addEventListener("click",exitRightsMenu);
 confirmRightsButton.addEventListener("click",sendForRights);
+confirmRightsButton.addEventListener("click",exitRightsMenu);
 
 showUsersButton.addEventListener("click",displayUsers);
 showGroupsButton.addEventListener("click",displayGroups);
+
 
 
 
