@@ -35,7 +35,7 @@ class FormCreation {
         page.className = 'page'
         page.innerHTML =    '<div class="page-title">'+
                                 '<label for="page-title-input-'+FormCreation.numPage+'">Titre :</label>'+
-                                '<input id="page-title-input-'+FormCreation.numPage+'" type="text" name="page-title-input-'+FormCreation.numPage+'" value="'+title+'">'+
+                                '<input id="page-title-input-'+FormCreation.numPage+'" class="page-title-input" type="text" name="page-title-input-'+FormCreation.numPage+'" value="'+title+'">'+
                             '</div>'+
                             '<div class="page-content"></div>'
 
@@ -368,6 +368,15 @@ class FormCreation {
 
 
     static verification(index = 0){ //refresh numQuestion for all questions
+
+        let j=1
+        document.querySelectorAll('.page-title').forEach(p => {
+            p.firstElementChild.setAttribute("for",'page-title-input-'+j)
+            p.lastElementChild.id = 'page-title-input-'+j
+            p.lastElementChild.setAttribute("name",'page-title-input-'+j)
+            j++
+        })
+        FormCreation.numPage = j-1
 
         let allQuestions = document.querySelectorAll('#form-content div[id^="form-"]')
         FormCreation.numQuestion = allQuestions.length

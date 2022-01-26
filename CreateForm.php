@@ -264,8 +264,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </form>
 
         <aside id="setting-box">
-
+            <a id="preview-link" href="#preview-mode">Aperçu</a>
         </aside>
+
+        <div id="preview-mode"></div>
     </main>
 
     <?php require 'modules/footer.php'; ?>
@@ -295,7 +297,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
     <script src="/js/class_FormCreation.js"></script>
-
     <script>
         <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
 
@@ -380,6 +381,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         document.getElementById('NewPage').addEventListener( 'click', sort);
         sort()
     </script>
+    <script src="js/previewForm.js"></script>
     <script src="/js/transformInputToString.js"></script>
     <script src="/js/CreateForm.js"></script>
     <script src="/js/addInputFromObject.js"></script>
