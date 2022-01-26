@@ -124,7 +124,7 @@ class FormCreation {
 
             div.innerHTML = '<div class="content">'+
                 '<label>Question ('+type+')'+
-                '<textarea class="question" name="q'+FormCreation.numQuestion+'" placeholder="Question" required></textarea>'+
+                '<input class="question" type="text" name="q'+FormCreation.numQuestion+'" placeholder="Question" required>'+
                 '</label>'+
                 '</div>'+
 
@@ -204,12 +204,14 @@ class FormCreation {
 
                 case 'new-radio':
                 case 'new-checkbox':
+
                     let divRC = document.createElement("div")
 
-                    if (typeof(choiceArray) == "object") {
+                    if (choiceArray !== undefined) {
                         let i=1
                         choiceArray.forEach(c => {
-                            if (c["id_question"] === FormCreation.numQuestion) {
+
+                            if (c["id_question"] == FormCreation.numQuestion) {
                                 let tmp =
                                     '<div class="choice">' +
                                     '<input type="' + type + '" disabled>' +
@@ -226,7 +228,7 @@ class FormCreation {
                         divRC.insertAdjacentHTML("beforeend", '<button class="add-' + type + '" type="button">Ajouter</button>')
                         div.appendChild(divRC)
                         for (let j=1;j<i;j++) {
-                            document.getElementById('trash-' + FormCreation.numQuestion + j).addEventListener('click', FormCreation.delChoice)
+                            document.getElementById('trash-' + FormCreation.numQuestion +'-'+ j).addEventListener('click', FormCreation.delChoice)
                         }
                     }
                     else{
@@ -357,6 +359,11 @@ class FormCreation {
             FormCreation.selectedElement = FormCreation.CONTENT.lastElementChild
         }
         FormCreation.selectedElement.classList.add('selectedElement')
+    }
+
+
+    static fillSetting(){
+
     }
 
 
