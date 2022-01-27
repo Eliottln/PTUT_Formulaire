@@ -1815,4 +1815,61 @@ dialog[class="content"] pre {
   width: 50px;
   object-fit: cover;
   object-position: center;
+  margin: 0.2rem 0.5rem; 
+}
+
+#list-of-groups > hr {
+  margin: 1rem 3rem;
+  border: 0.2rem solid var(--first);
+}
+
+.blocGroup {
+  background-color: var(--first);
+  border: 0.2rem solid var(--first);
+  margin: 0.5rem;
+  border-radius: 10px;
+}
+
+.blocGroup div:first-child {
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  padding: 5px;
+}
+
+.blocGroup div:first-child img{
+  background-color: var(--second);
+  width: 70px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 0.1rem solid var(--second);
+}
+
+.blocGroup div:first-child h2{
+  color: var(--second);
+  font-size: medium;
+  font-family: 'LemonMilk';
+  margin-inline-start: 1rem;
+}
+
+.blocGroup div:last-child {
+  display: flex;
+  flex-direction:column;
+  background-color:var(--second);
+  border: 0.1rem solid var(--first);
+  border-end-start-radius: 7px;
+  border-end-end-radius: 7px;
+}
+
+.blocGroup div:last-child ul{
+  list-style: none;
+  padding:1rem;
+}
+
+.blocGroup div:last-child ul li {
+  color: var(--first);
+  font-size: small;
+  font-family: 'LemonMilk';
+  margin-inline-start: 1rem;
 }

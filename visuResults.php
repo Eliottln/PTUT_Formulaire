@@ -236,7 +236,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
                 // name change into lastname and vice versa
                 if (sortValue == 'name' && asc_desc == 'DESC') {
-                    console.log(input)
+                    
                     sortValue = 'lastname'
                     input.innerHTML = 'Prénom'
                     input.id = 'th_lastname'
@@ -282,7 +282,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
             tabToString = tabToString.substring(0, tabToString.length - 1);
 
-            console.log(tabToString);
+            
 
             return tabToString;
 
@@ -299,8 +299,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 alreadySelected(this)
                 sortValue = this.id.split('_')[1];
             }
-            console.log(sortValue);
-            console.log(asc_desc)
+            
 
             //let filter = filterMenu.value;
             let sort = sortValue;
@@ -320,8 +319,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         sortButton.forEach(button => button.addEventListener('click', send));
 
         let filterDiv = document.querySelector('#list-filters > div')
-        function toogleFilter(){
-            console.log(filterDiv.style.height == '0px')
+        function toggleFilter(){
+            
             if(filterDiv.style.height == '0px'){
                 filterDiv.removeAttribute('style');
             }
@@ -331,7 +330,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
 
         filterDiv.style.height = '0px'
-        document.getElementById('list-filters-button').addEventListener('click',toogleFilter)
+        document.getElementById('list-filters-button').addEventListener('click',toggleFilter)
     </script>
 
 </body>

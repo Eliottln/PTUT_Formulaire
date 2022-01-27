@@ -107,6 +107,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 <h2> Consulter vos groupes : </h2> 
                 <img id="pannel-group-button" src="img/plus.png" alt="ajouter un groupe">
                 <img id="edit-group-button" alt="supprimer un groupe" src="img/edit.svg">
+                <hr>
                 <div id="all-groups">
 
                 </div>
