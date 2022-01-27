@@ -36,14 +36,15 @@ function sendMyResponse($pdo, $data, $notLastPage){
             array_push($all_result, $sql);
         }
         
-
+        
+        
 
         if(!empty($all_result)){
             insert_arrayRequest($pdo, $all_result);
         }
 
         $pdo->commit();
-
+        
         $_SESSION['nb_question'] = $id_question;
 
         if(!$notLastPage){

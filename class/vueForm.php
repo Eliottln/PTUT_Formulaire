@@ -122,7 +122,7 @@ class VueForm
     private function addSelect($_id, $_title, $_require, array $_SelectChoices):string{
         $resultat =  '<div id="question-'. $_id .'-select">
                             <label class="questionTitle">' . $_title . '</label>
-                            <select name="question-'. $_id .'" '.$this->getRequirement($_require).'">
+                            <select name="question-'. $_id .'" '.$this->getRequirement($_require).'>
                                 <option value="" selected>---</option>';
     
         foreach ($_SelectChoices as $choice) {
@@ -136,9 +136,9 @@ class VueForm
     }
 
     private function addCheckbox($_id, $_title, $_require, array $_CheckChoices):string{
-        $resultat =  '<div id="question-'. $_id .'-radio">
+        $resultat =  '<div id="question-'. $_id .'-checkbox">
                             <label class="questionTitle">' . $_title . '</label>
-                            <div class="checkbox-group" '.$this->getRequirement($_require).'">';
+                            <div class="checkbox-group" '.$this->getRequirement($_require).'>';
         
         foreach ($_CheckChoices as $choice) {
             $resultat .= '<div class="checkboxVisuForm"> 
@@ -242,7 +242,7 @@ class VueForm
         }
 
         $string .= '<div>
-                        <button id="S" class="buttonVisuForm" type="submit">
+                        <button id="SubmitButton" class="buttonVisuForm" type="submit">
                             <span id="span-submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
                         </button>
                     </div>

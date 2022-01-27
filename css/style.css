@@ -1715,3 +1715,103 @@ dialog[class="content"] pre {
   opacity: 1;
   top: 6px;
 }
+
+/*#################################################*/
+/*DashBoard*/
+/*#################################################*/
+
+#DashBoard {
+  display: flex;
+  flex-direction: column;
+}
+
+#DashBoard > div:first-child {
+  margin-block: 2rem;
+  text-align: center;
+}
+
+#DashBoard > div:first-child > h2 {
+  font-size: x-large;
+  font-family: 'LemonMilk';
+}
+
+#DashBoard > div:first-child > p {
+  font-size: large;
+  font-family: "Bebas-Regular";
+}
+
+#dash_board_data {
+  display: flex;
+  flex-direction: row;
+}
+
+#dash_board_data > div {
+  width: 50%;
+}
+
+.dash_board_part {
+  border: 0.2rem solid var(--first);
+}
+
+.dash_board_part > h2 {
+  background-color: var(--first);
+  color: var(--second);
+  font-size: large;
+  font-family: 'LemonMilk';
+  padding: 8px 3px;
+}
+
+.blocFormDashBoard {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5rem;
+  background-color: var(--first);
+  border: 0.2rem solid var(--first);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.blocFormDashBoard > div:first-child a{
+  padding: 5px;
+}
+
+.blocFormDashBoard > div:first-child img{
+  width: 70px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.blocFormDashBoard > div:last-child{
+  display: flex;
+  flex-direction: column;
+  padding: 7px;
+  background-color: var(--second);
+  width: 100%;
+}
+
+.blocFormDashBoard > div:last-child > p{
+  font-size: medium;
+  font-family: 'LemonMilk';
+}
+
+.blocFormDashBoard > div:last-child > div {
+  display: flex;
+  flex-direction:row;
+}
+
+.blocFormDashBoard > div:last-child > div > a {
+  padding: 3px;
+  text-decoration: none;
+  background-color: var(--first);
+  color: var(--second);
+  border-radius: 5px;
+  font-family: 'LemonMilk';
+  font-size: small;
+  margin-inline: 0.5rem;
+}
+
+#list-of-groups > img {
+  width: 50px;
+  object-fit: cover;
+  object-position: center;
+}
