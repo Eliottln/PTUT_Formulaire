@@ -230,6 +230,12 @@ class VueForm
         return $this->nb_page;
     }
 
+    public function getPrecedentButton(){
+        return '<a id="PrecedentButton" class="buttonVisuForm" href="/visuForm.php?identity='.$this->id.'&page='.($this->page-1).'">
+                    <span id="span-submit">&laquo; Précédent</span>
+                </a>';
+    }
+
     public function toString() {
         $string = "";
         $string .= '<form action="/visuForm.php?identity='.$this->id.'&page='.($this->page+1).'" method="post" enctype="multipart/form-data">
@@ -242,6 +248,7 @@ class VueForm
         }
 
         $string .= '<div>
+                        '.($this-> page == 1 ? NULL : $this->getPrecedentButton()).'
                         <button id="SubmitButton" class="buttonVisuForm" type="submit">
                             <span id="span-submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
                         </button>

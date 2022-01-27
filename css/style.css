@@ -1468,6 +1468,7 @@ dialog[class="content"] pre {
   border-radius: 5px;
   font-family: "Rockford";
   display: flex;
+  text-decoration: none;
 }
 
 .buttonVisuForm span{
