@@ -41,11 +41,11 @@ function displayCheckboxsQuestions($connect)
 function notSorted($connect)
 {
     return $connect->query("SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
-                                FROM Result 
-                                INNER JOIN User AS U ON U.id = Result.id_user  
-                                INNER JOIN Question AS Q ON Q.id = Result.id_question
-                                WHERE Result.id_form = " . $_GET['identity'] . " AND Q.id_form = " . $_GET['identity'] . "
-                                ORDER BY Result.'update'")->fetchAll();
+                            FROM Result 
+                            INNER JOIN User AS U ON U.id = Result.id_user
+                            INNER JOIN Question AS Q ON Q.id_form = Result.id_form
+                            WHERE Result.id_form = " . $_GET['identity'] . " AND Result.id_question = Q.id
+                            ORDER BY Result.'update'")->fetchAll();
 }
 
 function displayResults($connect)
@@ -148,12 +148,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             return null;
         }
 
-        $_data = $connect->query("SELECT Q.title, COUNT(R.answer) as nbResponse
-        FROM Question as Q
-        INNER JOIN Result as R
-        ON Q.id = R.id_question
-        WHERE R.id_form = " . $_GET['identity'] . " AND Q.id_form = " . $_GET['identity'] . "
-        GROUP by Q.title")->fetchAll();
+        $_data = $connect->query("SELECT Q.title, COUNT(R.answer) as nbResponse, R.answer
+                                    FROM Form as F
+                                    INNER JOIN Question AS Q ON F.id = Q.id_form
+                                    INNER JOIN Result as R ON Q.id = R.id_question
+                                    WHERE F.id = " . $_GET['identity'] . " AND R.id_form = F.id AND R.answer NOT LIKE ''
+                                    Group by Q.id")->fetchAll();
 
         foreach ($_data as $value) {
             $chartCategories .= $value['title'] . getSeparator($_data, $value, "'");
@@ -236,7 +236,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
                 // name change into lastname and vice versa
                 if (sortValue == 'name' && asc_desc == 'DESC') {
-                    console.log(input)
+                    
                     sortValue = 'lastname'
                     input.innerHTML = 'Prénom'
                     input.id = 'th_lastname'
@@ -282,7 +282,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
             tabToString = tabToString.substring(0, tabToString.length - 1);
 
-            console.log(tabToString);
+            
 
             return tabToString;
 
@@ -299,8 +299,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 alreadySelected(this)
                 sortValue = this.id.split('_')[1];
             }
-            console.log(sortValue);
-            console.log(asc_desc)
+            
 
             //let filter = filterMenu.value;
             let sort = sortValue;
@@ -320,8 +319,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         sortButton.forEach(button => button.addEventListener('click', send));
 
         let filterDiv = document.querySelector('#list-filters > div')
-        function toogleFilter(){
-            console.log(filterDiv.style.height == '0px')
+        function toggleFilter(){
+            
             if(filterDiv.style.height == '0px'){
                 filterDiv.removeAttribute('style');
             }
@@ -331,7 +330,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
 
         filterDiv.style.height = '0px'
-        document.getElementById('list-filters-button').addEventListener('click',toogleFilter)
+        document.getElementById('list-filters-button').addEventListener('click',toggleFilter)
     </script>
 
 </body>

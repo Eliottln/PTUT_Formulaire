@@ -96,91 +96,84 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             null, range.id))
     );
 
+    let tabNotComplete = []
+
     function checkIfIsComplete() {
-
-        let checkboxList = $('div.checkbox-group.required')
-        let RadioList = $('div.radio-group.required')
-        let inputRequiredList = $('div[id^="question-"] input[required]')
-
+        tabNotComplete = []
+        let checkboxList = document.querySelectorAll('div.checkbox-group[required]')
+        let RadioList = document.querySelectorAll('div.radio-group[required]')
+        let inputRequiredList = document.querySelectorAll('div[id^="question-"] input[required]')
         let n = 0
+        
+        //checkbox required
+        for (let index = 0; index < checkboxList.length; index++) {
+            let ChecklistLength = checkboxList[index].children.length
 
-        checkboxList.each(function() {
-            if ($(this).find(':checkbox:checked').length > 0) {
-                n++
-            }
-        })
-
-        if (checkboxList.length > n) {
-            $('#S').attr('disabled', true);
-            return false
-        }
-        n = 0
-
-        RadioList.each(function() {
-            if ($(this).find(':radio:checked').length > 0) {
-                n++
-            }
-        })
-
-        if (RadioList.length > n) {
-            $('#S').attr('disabled', true);
-            return false
-        }
-        n = 0
-
-        inputRequiredList.each(function() {
-            if (this.getAttribute('type') == 'file') {
-                let filename = this.value.split('\\');
-                if (filename[filename.length-1].length > 0) {
+            for (let i = 0; i < ChecklistLength; i++) {
+                
+                if(checkboxList[index].children[i].firstElementChild.checked){
                     n++
                 }
-            } else {
-                if (this.value.length > 0) {
+                
+            }
+            
+            if (n < 1) {
+                tabNotComplete.push(checkboxList[index].parentElement)
+                return false;
+            }
+            n = 0
+        }
+        
+        
+        //radio required
+        for (let index = 0; index < RadioList.length; index++) {
+            let RadiolistLength = RadioList[index].children.length
+
+            for (let i = 0; i < RadiolistLength; i++) {
+                if(RadioList[index].children[i].firstElementChild.checked){
                     n++
                 }
+                
             }
-        })
-
-        if (inputRequiredList.length > n) {
-            $('#S').attr('disabled', true);
-            return false
+            if (n < 1) {
+                tabNotComplete.push(RadioList[index].parentElement)
+                return false;
+            }
+            n = 0
         }
 
-        $('#S').removeAttr('disabled');
+        //input required
+        for (let index = 0; index < inputRequiredList.length; index++) {
+
+            if(inputRequiredList[index].value == ''){
+
+                tabNotComplete.push(inputRequiredList[index].parentElement)
+                return false;
+            }
+        }
+
         return true
     }
 
     function alertUser() {
-        $('div.checkbox-group.required').each(function() {
-            if ($(this).find(':checkbox:checked').length <= 0) {
-                $(this).parent().first().css({
-                    color: "red"
-                })
-            }
-        })
-        $('div.radio-group.required').each(function() {
-            if ($(this).find(':checkbox:checked').length <= 0) {
-                $(this).parent().first().css({
-                    color: "red"
-                })
-            }
-        })
-        let requiredList = document.querySelectorAll('input[required]')
-        for (let index = 0; index < requiredList.length; index++) {
-            if (requiredList[index].value == '' || requiredList[index].value == undefined) {
-                requiredList[index].parentNode.firstElementChild.style.color = "red"
-            }
+        for (let index = 0; index < tabNotComplete.length; index++) {
+            tabNotComplete[index].firstElementChild.setAttribute('style',
+                    "color: red"
+                )
+            
         }
     }
 
-    let inputList = document.querySelectorAll('div[id^="question-"] input');
 
-    inputList.forEach(input => input.addEventListener('change', checkIfIsComplete))
     document.getElementById('span-submit').addEventListener('click', function() {
-        if (this.parentElement.disabled) {
+        if(checkIfIsComplete()){
+            document.getElementById('SubmitButton').removeAttribute('disabled')
+        }
+        else{
+            document.getElementById('SubmitButton').setAttribute('disabled',true)
             alertUser()
         }
-
+        
     })
     checkIfIsComplete()
 </script>

@@ -11,17 +11,16 @@ function sendMyResponse($pdo, $data, $notLastPage){
         $formID = $data['formID'];
         $ownerID = $data['ownerID'];
 
-        if(!isset($_SESSION['nb_question'])){
-            $_SESSION['nb_question'] = 0;
-        }
 
-        $id_question = $_SESSION['nb_question'];
+        $id_question = $pdo->query("SELECT min(id)
+                                    FROM Question
+                                    WHERE id_page = ".$page." AND id_form = ".$formID)->fetchColumn();
         $data = array_slice($data, 2);
 
         $date = date('Y-m-d H:i:s');
 
         foreach ($data as $value){
-            $id_question++;
+            
             if(is_array($value)){
                 $s = "";
                 foreach ($value as $response){
@@ -34,16 +33,18 @@ function sendMyResponse($pdo, $data, $notLastPage){
             }
             $sql = 'INSERT OR REPLACE INTO Result VALUES ('.$yourID.', '.$page.', '.$id_question.', '.$formID .', '.$ownerID.', "'.$value.'", "'.$date.'");';
             array_push($all_result, $sql);
+            $id_question++;
         }
         
-
+        
+        
 
         if(!empty($all_result)){
             insert_arrayRequest($pdo, $all_result);
         }
 
         $pdo->commit();
-
+        
         $_SESSION['nb_question'] = $id_question;
 
         if(!$notLastPage){

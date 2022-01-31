@@ -63,7 +63,7 @@ function sortByResponse($connect, $_SQL_REQUEST, $asc_desc)
 function sortByQuestion($connect, $_SQL_REQUEST, $asc_desc)
 {
 
-    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(Result.id_question) " . $asc_desc)->fetchAll();
+    return $connect->query($_SQL_REQUEST . " ORDER BY UPPER(Q.title) " . $asc_desc)->fetchAll();
 }
 
 function sortByName($connect, $_SQL_REQUEST, $asc_desc)
@@ -123,9 +123,9 @@ $sqlRequestFilters = filtersStringToSql($filters);
 
 define("_SQL_REQUEST", "SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
                         FROM Result 
-                        INNER JOIN User AS U ON U.id = Result.id_user  
-                        INNER JOIN Question AS Q ON Q.id = Result.id_question
-                        WHERE Result.id_form = " . $idForm . " AND Q.id_form = ". $idForm ." " . (($filters != 'none') ? $sqlRequestFilters : NULL));
+                        INNER JOIN User AS U ON U.id = Result.id_user
+                        INNER JOIN Question AS Q ON Q.id_form = Result.id_form
+                        WHERE Result.id_form = " . $idForm . " AND Result.id_question = Q.id " . (($filters != 'none') ? $sqlRequestFilters : NULL));
 
 
 $finalString = displayResults($connect, $sort, _SQL_REQUEST, $asc_desc);
