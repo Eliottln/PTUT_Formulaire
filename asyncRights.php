@@ -14,38 +14,66 @@ function displayUsersForRights($connect){
 
 }
 
+function createTabUsers($tabRights){
+    $tabUsers = Array();
+    foreach ($tabRights as $right){
 
-function stringRightsToTab($stringRights){
-    $tab = Array();
-    $parsing0 = explode("/",$stringRights); //p4 = user, p3 = droit
-    //classer les droits en fonctions des utilisateurs
-    foreach ($parsing0 as $right){
-        $parsing1 = explode("-",$parsing0);
-        $user = $parsing0[4];
+        $user = explode("-",$right)[4];
+        if(!(in_array($user, $tabUsers))){
+            array_push($tabUsers,$user);
+        }
+        echo $user;
+
     }
 
-    /*EXEMPLE CREATION DUNE TABLE DE DROIT
-    $list = array();
-    $user = array('modify' => 0, 'read' => 0, 'delete' => 0);
-    array_push($list, $user);
-    var_dump($list);
+    return $tabUsers;
+}
 
-    */
-    
-    //foreach ($parsing0 as $right){
-      //  $parsing1 = explode("-", $right);
-        //$tab[$parsing1[4]] = $parsing1[3];
 
-    //}
+function stringRightsToTab($stringRights){
+    $finalTabRights = Array();
+    $tabStringRights = explode("/",$stringRights);
+    $tabUsers = createTabUsers($tabStringRights);
 
-    $tabKey = array_keys($tab);
 
-    return $tab;
-    /*foreach($tabKey as $key){
-        echo  "Droit : " . $tab[$key] . "  Utilisateur : " . $key . "  " ;
-    }*/
+    foreach($tabUsers as $user){
+        $finalTabRights[$user] = Array("modify" => 0, "file" => 0, "delete" => 0);
+    }
+
+    //  format de variable $parsing plus bas => "check-right-u-file-3"
+    foreach($tabStringRights as $stringRight){
+        $parsing = explode("-",$stringRight);
+        $finalTabRights[$parsing[4]][$parsing[3]] = 1;
+
+    }
+
+    var_dump($finalTabRights);
+    return $finalTabRights;
 
 }
+
+function setStatus($connect,$status, $form){
+    $connect->beginTransaction();
+    try {
+        //modifier le status
+        $sql = "UPDATE Form
+                SET status = ".$status ."
+                WHERE condition";
+
+        $stmt = $connect->prepare($sql);
+
+        $stmt->execute();
+
+        $connect->commit();
+    }catch(PDOException $e){
+        "ERROR SQL : " . $e->getLine() . "   ". $e->getMessage();
+        $connect->rollback();
+        exit;
+    }
+}
+
+
+
 
 function prepareInsertionSql($tabRights,$user,$idForm){
     $tabSql = Array();
@@ -57,8 +85,22 @@ function prepareInsertionSql($tabRights,$user,$idForm){
     //}
 }
 
-function verifyStatus($idForm){
+function verifyStatus($connect,$idForm){
 
+
+
+    try {
+        $status = $connect->query("SELECT status FROM Form WHERE id=".$idForm." ")->fetch();
+
+
+
+
+    }catch (PDOException $e){
+        echo "SQL ERROR : " . $e->getMessage();
+        exit;
+    }
+
+    return "Le formulaire : " . $idForm . " Le status actuel : ".$status['status'] . "   ";
 }
 
 function setRights($connect,$stringRights){
@@ -82,8 +124,21 @@ function setRights($connect,$stringRights){
 
 $idForm = $_POST['id-form'];
 $stringCheckedRights = $_POST['checked-rights'];
-$status = verifyStatus($idForm); //Verifier si le formulaire est publique ou pas
+$todo = $_POST['todo'];
+$statusToSet = $_POST['todo'];
+
+
+
+if($todo === "rights"){
+    $status = verifyStatus($connect,$idForm); //Verifier si le formulaire est publique ou pas
+    stringRightsToTab($stringCheckedRights);
+}else if($todo === "status"){
+    echo verifyStatus($connect,$idForm);
+
+}
+
+
 
 $finalString = "";
-stringRightsToTab($stringCheckedRights);
-echo $finalString ;
+
+echo "" ;

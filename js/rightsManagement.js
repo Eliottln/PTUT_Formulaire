@@ -11,6 +11,26 @@ function setListenerOnRightsBut(){
     }
 }
 
+function setListenerOnStatusBut(){
+    //button-public
+    let buttonPublics = document.getElementsByClassName("button-public");
+    let buttonPrivates = document.getElementsByClassName("button-private");
+
+    for(let i =0; i < buttonPublics.length; i++){
+        let idPublicBut = buttonPublics[i].id;
+        let idPrivateBut = buttonPrivates[i].id;
+
+        buttonPublics[i].addEventListener("click",setFormOnClick);
+        buttonPrivates[i].addEventListener("click",setFormOnClick);
+
+        buttonPublics[i].addEventListener("click",sendForRights.bind(null,"status","public"));
+        buttonPrivates[i].addEventListener("click",sendForRights.bind(null,"status","private"));
+    }
+
+
+}
+
+
 function displayRightsMenu(){
     menuRights.style.display = "flex";
     document.getElementById('bgGrey').style.display = "flex";
@@ -73,8 +93,9 @@ let showUsersButton = document.getElementById("show-users-rights");
 let exitRightsButton = document.getElementById("cancel-rights");
 let confirmRightsButton = document.getElementById("confirm-rights");
 
+
 exitRightsButton.addEventListener("click",exitRightsMenu);
-confirmRightsButton.addEventListener("click",sendForRights);
+confirmRightsButton.addEventListener("click",sendForRights.bind(null,"rights",null));
 confirmRightsButton.addEventListener("click",exitRightsMenu);
 
 showUsersButton.addEventListener("click",displayUsers);
@@ -84,6 +105,7 @@ showGroupsButton.addEventListener("click",displayGroups);
 
 
 setListenerOnRightsBut();
+setListenerOnStatusBut();
 
 
 

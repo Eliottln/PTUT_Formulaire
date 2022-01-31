@@ -11,11 +11,15 @@ function insert_form($pdo, $id, $id_owner, $nb_page = null, $title = null, $expi
                                                         ', ' . $pdo->quote($id_owner) . 
                                                         ', ' . $pdo->quote($nb_page) . 
                                                         ', ' . $pdo->quote($title) .
-                                                        ', ' . $pdo->quote($expire) . 
+                                                        ', ' . $pdo->quote($expire) .
+                                                        ', ' . $pdo->quote("not referenced") .
                                                         ', ' . $pdo->quote($date) . ');';
             $sth = $pdo->prepare($sql);
 
             $sth->execute();
+
+            //---------INSERTIONS DES DROITS-----------------//
+
 
             $pdo->commit();
         } catch (\PDOException $e) {
