@@ -330,7 +330,7 @@ class FormCreation {
                 case 'new-textarea':
                     let divT = document.createElement("div")
                     divT.innerHTML =
-                        '<textarea disabled placeholder="Ecrire ici..."></textarea>'
+                        '<textarea disabled placeholder="Écrire ici..."></textarea>'
 
                     div.appendChild(divT)
                     break
@@ -338,7 +338,7 @@ class FormCreation {
                 default:
                     let defaultDiv = document.createElement("div");
                     defaultDiv.innerHTML =
-                        '<input type="'+type+'" placeholder="Ecrire ici..." disabled>'+
+                        '<input type="'+type+'" placeholder="Écrire ici..." disabled>'+
                         '</label>'
 
                     div.appendChild(defaultDiv)
@@ -359,11 +359,6 @@ class FormCreation {
             FormCreation.selectedElement = FormCreation.CONTENT.lastElementChild
         }
         FormCreation.selectedElement.classList.add('selectedElement')
-    }
-
-
-    static fillSetting(){
-
     }
 
 

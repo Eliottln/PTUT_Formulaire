@@ -69,6 +69,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                     <div id="AdvancedSettings" class="button" title="Advanced settings">Advanced settings</div>
                 </li>
                 <li>
+                    <div id="preview-link" class="button" title="Aperçu">Aperçu</div>
+                </li>
+                <li>
                     <div id="ClearForm" class="button" title="Reset / New form">Reset Form</div>
                 </li>
                 <li>
@@ -262,10 +265,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             </div>
             <div id="form-content"></div>
         </form>
-
-        <aside id="setting-box">
-            <a id="preview-link" href="#preview-mode">Aperçu</a>
-        </aside>
 
         <div id="preview-mode"></div>
     </main>
