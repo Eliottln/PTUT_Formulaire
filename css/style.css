@@ -1044,6 +1044,13 @@ dialog[class="content"] pre {
   border: 3px solid black;
 }
 
+#preview-mode{
+  display: none;
+  position: fixed;
+  z-index: 3;
+  width: 100vw;
+}
+
 /**Background bubble**/
 @keyframes move {
   100% {
@@ -1374,14 +1381,14 @@ dialog[class="content"] pre {
 /*VisuForm*/
 /*#################################################*/
 
-#VisuForm {
+#VisuForm, #preview-mode {
   font-family: LemonMilk, sans-serif;
   align-items: center;
   height: calc(100vh - 84px);
   background-color: var(--c_page);
 }
 
-#VisuForm #page {
+#VisuForm #page , #preview-mode #page {
   margin-block: 20px;
   width: 800px;
   display: flex;
