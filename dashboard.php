@@ -17,16 +17,22 @@ function displayAllForm($connect){
 
         foreach ($sql as $value){
 
-            $forms .=   '<div class="blocArticle">   
-                            <p> IdDoc = '. $value['id'].'</p>
-                            <a href="visuResults.php?identity='.$value['id'].'">
-                                <img style="width: 50px; height: 50px" src="img/formulaire.png" alt="Prévisualisation">
-                            </a> 
-                            <p> Titre : '. $value['title'] .'</p>
-                            <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
-                            <a style="border:3px solid black" id="rights-'.$value['id'] .'" class="button-rights" >Gérer les droits</a>
-                            <a class="button-public" id="public-'. $value['id'].'" style="border: 3px solid red"> Publique </a>
-                            <a class="button-private" id="private-'. $value['id'].'" style="border: 3px solid blue"> Private </a>
+            $forms .=   '<div class="blocFormDashBoard">
+                            <div>
+                                <a href="visuResults.php?identity=' . $value['id'] . '">
+                                    <img src="img/formulaire.png" alt="Prévisualisation">
+                                </a> 
+                            </div>
+                            <div>
+                                <p>#' . $value['id'] . '</p>
+                                <p> Titre : ' . $value['title'] . '</p>
+                                <div>
+                                    <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
+                                    <button id="rights-' . $value['id'] . '" class="button-rights" type="button">Gérer les droits</button>
+                                      <a class="button-public" id="public-'. $value['id'].'" style="border: 3px solid red"> Publique </a>
+                                      <a class="button-private" id="private-'. $value['id'].'" style="border: 3px solid blue"> Private </a>
+                                </div>
+                            </div>
                         </div>';
         }
 
@@ -51,20 +57,25 @@ function displayUsersForAdd($connect){
     $ret = "";
     $users = $connect->query("SELECT * FROM User ")->fetchAll();
     foreach ($users as $item) {
-        $ret .= ' <label for="'. $item['id'] .'">'. $item['name'] . ' </label>
-                  <input class="user-checkb" type="checkbox" name="'. $item['id'] .'" id="'. $item['id'] .'" >';
+        $ret .= '   <div class="checkboxDialog">
+                        <input class="user-checkb" type="checkbox" name="' . $item['id'] . '" id="' . $item['id'] . '" >
+                        <label for="' . $item['id'] . '">' . $item['name'] . ' </label>
+                    </div>';
     }
 
     return $ret;
 
 }
 
-function displayUsersForEdit($connect){
+function displayUsersForEdit($connect)
+{
     $ret = "";
     $users = $connect->query("SELECT * FROM User ")->fetchAll();
     foreach ($users as $item) {
-        $ret .= ' <label for="'. $item['id'] .'-edit">'. $item['name'] . ' </label>
-                  <input class="user-checkb" type="checkbox" name="'. $item['id'] .'-edit" id="'. $item['id'] .'-edit" >';
+        $ret .= '   <div class="checkboxDialog">
+                        <input class="user-checkb" type="checkbox" name="' . $item['id'] . '-edit" id="' . $item['id'] . '-edit" >
+                        <label for="' . $item['id'] . '-edit">' . $item['name'] . ' </label>
+                    </div>';
     }
 
     return $ret;
@@ -137,96 +148,117 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 <body>
 
-<?php require 'modules/header.php'; ?>
+    <?php require 'modules/header.php'; ?>
 
-<main>
-    <?= displayProfil() ?>
-    <div>
-        <h2> Consulter les réponses de vos formulaires : </h2> <br>
-        <div id="all-forms">
-            <?= displayAllForm($connect)?>
+    <main id="DashBoard">
+        <?= displayProfil() ?>
+
+        <div id="dash_board_data">
+            <div class="dash_board_part">
+                <h2> Consulter les réponses de vos formulaires : </h2>
+                <div id="all-forms">
+                    <?= displayAllForm($connect) ?>
+                </div>
+
+            </div>
+
+            <div id="list-of-groups" class="dash_board_part">
+
+                <h2> Consulter vos groupes : </h2>
+                <img id="pannel-group-button" src="img/plus.png" alt="ajouter un groupe" title="Ajouter un groupe">
+                <img id="edit-group-button" alt="modifier/supprimer un groupe" src="img/edit.svg" title="Modifier/supprimer un groupe">
+                <hr>
+                <div id="all-groups">
+
+                </div>
+            </div>
         </div>
 
-    </div>
+        <div id="bgGrey">
+            <dialog id="pannel-group">
+                <div class="dialog-title">
+                    <h2>Ajouter un groupe</h2>
+                </div>
 
-    <div id="list-of-groups">
+                <h3>Titre</h3>
+                <input type="text" id="title-group" name="title-group">
 
-        <h2> Consulter vos groupes : </h2> <br>
-        <img id="pannel-group-button" style="width: 50px; height: 50px" src="img/plus.png" alt="ajouter un groupe">
-        <img id="edit-group-button" style="width: 50px; height: 50px" alt="supprimer un groupe" src="img/edit.svg">
-        <div id="all-groups">
+                <h3>Sélectionner Des utilisteurs</h3>
+                <div id="dash_list-checkbox">
+                    <div class="checkboxDialog">
+                        <input id="select-all-users" type="checkbox" name="select-all-users">
+                        <label for="select-all-users">Tout sélectionner</label>
+                    </div>
+                </div>
 
+                <?= displayUsersForAdd($connect) ?>
+
+
+                <div class="dialog-button">
+                    <button id="confirm" type="submit">Confirmer</button>
+                    <button id="cancel" type="reset">Annuler</button>
+                </div>
+
+            </dialog>
+
+            <dialog id="pannel-edit">
+                <div class="dialog-title">
+                    <h2>Modifier/Supprimer un groupe</h2>
+                </div>
+
+                <h3>Sélectionner un groupe</h3>
+
+                <select name="group-select" id="group-select">
+
+
+                </select>
+
+                <div class="dialog-button">
+                    <button id="confirm-delete" type="submit">Supprimer</button>
+                </div>
+
+                <?= displayUsersForEdit($connect) ?>
+
+                <div class="dialog-button">
+                    <button id="confirm-edit" type="submit">Confirmer</button>
+                    <button id="cancel-delete" type="reset">Annuler</button>
+                </div>
+
+
+            </dialog>
+
+            <dialog style="display: none " id="pannel-rights">
+
+                <h2>Sélectionner un groupe</h2>
+
+
+                <a style="border: 2px solid white"  id="show-users-rights">Utilisateurs</a>
+                <a style="border: 2px solid white"  id="show-groups-rights">Groupes</a>
+
+                <div id="groups-rights" style="display: none">
+                    <?= displayGroupsForRights($connect,$_SESSION['user']['id'])?>
+                </div>
+
+                <div id="users-rights" style="display: none">
+
+                    <?= displayUsersForRights($connect)?>
+                </div>
+
+                <div id="checkboxs-rights">
+                </div>
+
+
+                <button id="confirm-rights" type="submit">Confirmer</button>
+                <button id="cancel-rights" type="reset">Annuler</button>
+
+
+            </dialog>
         </div>
-    </div>
-
-    <div id="bgGrey">
-        <dialog style="display: none"  id="pannel-group" >
-            <h2>Titre</h2>
-            <input type="text" id="title-group" name="title-group">
-            <h2>Sélectionner Des utilisteurs</h2>
-
-            <label for="select-all-users">Tout sélectionner</label>
-            <input id="select-all-users" type="checkbox" name="select-all-users">
-
-            <?= displayUsersForAdd($connect) ?>
-
-
-            <button id="confirm" type="submit">Confirmer</button>
-            <button id="cancel" type="reset">Annuler</button>
-
-
-        </dialog>
-
-        <dialog style="display: none " id="pannel-edit" >
-
-            <h2>Sélectionner un groupe</h2>
-
-            <button id="confirm-delete" type="submit">Supprimer</button>
-            <select name="group-select" id="group-select">
-
-
-            </select>
-
-            <?= displayUsersForEdit($connect) ?>
-
-            <button id="confirm-edit" type="submit">Confirmer</button>
-            <button id="cancel-delete" type="reset">Annuler</button>
-
-
-        </dialog>
-
-        <dialog style="display: none " id="pannel-rights">
-
-            <h2>Sélectionner un groupe</h2>
-
-
-            <a style="border: 2px solid white"  id="show-users-rights">Utilisateurs</a>
-            <a style="border: 2px solid white"  id="show-groups-rights">Groupes</a>
-
-            <div id="groups-rights" style="display: none">
-                <?= displayGroupsForRights($connect,$_SESSION['user']['id'])?>
-            </div>
-
-            <div id="users-rights" style="display: none">
-
-                <?= displayUsersForRights($connect)?>
-            </div>
-
-            <div id="checkboxs-rights">
-            </div>
-
-
-            <button id="confirm-rights" type="submit">Confirmer</button>
-            <button id="cancel-rights" type="reset">Annuler</button>
-
-
-        </dialog>
-    </div>
 
 
 
 
-</main>
+    </main>
 
 <?php require 'modules/footer.php'; ?>
 
@@ -248,7 +280,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
         const xhttp = new XMLHttpRequest();
-        xhttp.onload = function () {
+        xhttp.onload = function() {
             document.getElementById('all-groups').innerHTML = "";
             document.getElementById('group-select').innerHTML = "";
             document.getElementById('groups-rights').innerHTML = "";
@@ -286,7 +318,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
         xhttp.open("POST", "/asyncRights.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
+        console.log("LE CURRENT FORM : " + idCurrentForm);
         xhttp.send("id-form=" + idCurrentForm + "&checked-rights="+stringCheck
             + "&todo=" + todoGlobal +"&owner=" + <?= $_SESSION['user']['id']?>);
 
@@ -295,7 +327,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     }
 
-</script> 
+</script>
 
 <script src="js/groupManagement.js"></script>
 <script src="js/rightsManagement.js"></script>

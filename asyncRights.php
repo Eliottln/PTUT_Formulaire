@@ -59,13 +59,12 @@ function stringRightsToTab($stringRights){
 function verifyStatus($connect,$idForm){
 
 
-
     try {
         $status = $connect->query("SELECT status FROM Form WHERE id=".$idForm." ")->fetch();
 
 
     }catch (PDOException $e){
-        echo "SQL ERROR : " . $e->getMessage();
+        echo "SQL ERROR : " .$e->getMessage(). "line : ". $e->getLine();
         exit;
     }
 
@@ -163,16 +162,19 @@ $idOwner = $_POST['owner'];
 $statusToSet = (explode("-",$_POST['todo'])[1]) ?? "null";
 
 
+
 switch ($todo){
 
     case "rights":
-        $status = verifyStatus($connect,$idForm); //Verifier si le formulaire est publique ou pas
+
+        verifyStatus($connect,$idForm); //Verifier si le formulaire est publique ou pas
         stringRightsToTab($stringCheckedRights);
+        setRights($connect,$stringCheckedRights,$idForm);
         break;
 
     case "status-private":
         echo " Le status que l'on souhaite mettre (private) : " . $statusToSet ;
-        
+
         if(verifyStatus($connect,$idForm)!="private"){
             setStatusForm($connect,$idForm,"private");
             createRights($connect,$stringCheckedRights,$idForm,$idOwner);

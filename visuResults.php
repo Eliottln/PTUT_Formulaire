@@ -12,26 +12,24 @@ if (empty($_GET['identity'])) {
 }
 
 
-function displayCheckboxsQuestions($connect){
+function displayCheckboxsQuestions($connect)
+{
 
     try {
         $ret = "";
         $questions = $connect->query("SELECT id,title
                             FROM Question
-                            WHERE id_form = " . $_GET['identity'] . "
-                            ")->fetchAll();
+                            WHERE id_form = " . $_GET['identity'] ."
+                            ORDER BY id_page,id")->fetchAll();
 
-        foreach($questions as $question){
+        foreach ($questions as $question) {
 
-            $ret .= '
-            <div id="div-check-'. $question['id'].'">
-                <label for="check-filter-'.$question['id'] .'"> '.$question['title']. '</label>
-                <input class="checks-filters" type="checkbox" id="check-filter-'.$question['id'] .'" name="check-filter-'.$question['id'] .'"> 
-            </div>';
-
+            $ret .= '<div id="div-check-' . $question['id'] . '">
+                        <input class="checks-filters" type="checkbox" id="check-filter-' . $question['id'] . '" name="check-filter-' . $question['id'] . '">
+                        <label for="check-filter-' . $question['id'] . '"> ' . $question['title'] . '</label> 
+                    </div>';
         }
-
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         $e->getMessage();
         exit;
     }
@@ -43,11 +41,11 @@ function displayCheckboxsQuestions($connect){
 function notSorted($connect)
 {
     return $connect->query("SELECT Q.title as 'title', U.name || ' ' || U.lastname AS 'name', Result.answer AS 'answer', Result.'update' AS 'date'
-                                FROM Result 
-                                INNER JOIN User AS U ON U.id = Result.id_user  
-                                INNER JOIN Question AS Q ON Q.id = Result.id_question
-                                WHERE Result.id_form = " . $_GET['identity'] . " AND Q.id_form = ".$_GET['identity']."
-                                ORDER BY Result.'update'")->fetchAll();
+                            FROM Result 
+                            INNER JOIN User AS U ON U.id = Result.id_user
+                            INNER JOIN Question AS Q ON Q.id_form = Result.id_form
+                            WHERE Result.id_form = " . $_GET['identity'] . " AND Result.id_question = Q.id
+                            ORDER BY Result.'update'")->fetchAll();
 }
 
 function displayResults($connect)
@@ -92,11 +90,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <h1>Les résultats du formulaire #<?= $_GET['identity'] ?></h1>
 
-        <label for="filter-question-select">Filtrer</label>
+        <div id="list-filters">
+            <button id="list-filters-button">Filtrer</button>
 
-        <div id="list-filters" style="display: flex; flex-direction: column">
-            <?=displayCheckboxsQuestions($connect)?>
+            <div>
+                <?= displayCheckboxsQuestions($connect) ?>
+            </div>
         </div>
+        
 
 
 
@@ -136,25 +137,26 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         $chartCategories = "['";
         $chartData = "[";
 
-        function getSeparator($_data, $value, $quote=null) {
+        function getSeparator($_data, $value, $quote = null)
+        {
 
-            for ($i=0; $i < count($_data); $i++) { 
-                if($_data[count($_data)-1] != $value){
+            for ($i = 0; $i < count($_data); $i++) {
+                if ($_data[count($_data) - 1] != $value) {
                     return "$quote, $quote";
                 }
             }
             return null;
         }
 
-        $_data = $connect->query("SELECT Q.title, COUNT(R.answer) as nbResponse
-        FROM Question as Q
-        INNER JOIN Result as R
-        ON Q.id = R.id_question
-        WHERE R.id_form = ".$_GET['identity']." AND Q.id_form = ".$_GET['identity']."
-        GROUP by Q.title")->fetchAll();
+        $_data = $connect->query("SELECT Q.title, COUNT(R.answer) as nbResponse, R.answer
+                                    FROM Form as F
+                                    INNER JOIN Question AS Q ON F.id = Q.id_form
+                                    INNER JOIN Result as R ON Q.id = R.id_question
+                                    WHERE F.id = " . $_GET['identity'] . " AND R.id_form = F.id AND R.answer NOT LIKE ''
+                                    Group by Q.id")->fetchAll();
 
         foreach ($_data as $value) {
-            $chartCategories .= $value['title'] . getSeparator($_data, $value,"'");
+            $chartCategories .= $value['title'] . getSeparator($_data, $value, "'");
             $chartData .= $value['nbResponse'] . getSeparator($_data, $value);
         }
 
@@ -163,10 +165,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         $chartData .= "]";
         ?>
 
-        function getAllSerieContent(...ArraySerie){
+        function getAllSerieContent(...ArraySerie) {
 
-            function getNameIfExist(name){
-                if(name != undefined){
+            function getNameIfExist(name) {
+                if (name != undefined) {
                     return name;
                 }
                 return null
@@ -179,7 +181,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                     name: getNameIfExist(ArraySerie[index][1]),
                     data: ArraySerie[index][0]
                 });
-                
+
             }
 
             return allSerieContent
@@ -206,10 +208,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             $('.highcharts-credits')[0].remove();
         }
         document.addEventListener('DOMContentLoaded', createChart('Nombre de réponses par question',
-            <?=$chartCategories?>,
+            <?= $chartCategories ?>,
             '',
-            [<?=$chartData?>,
-            'Nombre de réponses']));
+            [<?= $chartData ?>,
+                'Nombre de réponses'
+            ]));
     </script>
 
     <script>
@@ -233,7 +236,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
                 // name change into lastname and vice versa
                 if (sortValue == 'name' && asc_desc == 'DESC') {
-                    console.log(input)
+                    
                     sortValue = 'lastname'
                     input.innerHTML = 'Prénom'
                     input.id = 'th_lastname'
@@ -263,23 +266,23 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         }
 
-        function filtersCheckToString(){
+        function filtersCheckToString() {
             let tab = document.getElementsByClassName("checks-filters");
 
 
             let tabToString = "";
-            for(let i =0; i < tab.length; i++){
+            for (let i = 0; i < tab.length; i++) {
                 let id = tab[i].getAttribute("id").split("-")[2]
 
-                if(tab[i].checked === true){
+                if (tab[i].checked === true) {
                     tabToString += id + "/";
 
                 }
             }
 
-            tabToString = tabToString.substring(0,tabToString.length -1);
+            tabToString = tabToString.substring(0, tabToString.length - 1);
 
-            console.log(tabToString);
+            
 
             return tabToString;
 
@@ -296,8 +299,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 alreadySelected(this)
                 sortValue = this.id.split('_')[1];
             }
-            console.log(sortValue);
-            console.log(asc_desc)
+            
 
             //let filter = filterMenu.value;
             let sort = sortValue;
@@ -313,12 +315,22 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
 
         //sortMenu.addEventListener('change', send);
-        filtersCheckBoxs.forEach(box => box.addEventListener('change',send))
+        filtersCheckBoxs.forEach(box => box.addEventListener('change', send))
         sortButton.forEach(button => button.addEventListener('click', send));
 
+        let filterDiv = document.querySelector('#list-filters > div')
+        function toggleFilter(){
+            
+            if(filterDiv.style.height == '0px'){
+                filterDiv.removeAttribute('style');
+            }
+            else{
+                filterDiv.style.height = '0px'
+            }
+        }
 
-
-
+        filterDiv.style.height = '0px'
+        document.getElementById('list-filters-button').addEventListener('click',toggleFilter)
     </script>
 
 </body>

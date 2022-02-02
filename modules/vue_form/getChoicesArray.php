@@ -8,6 +8,10 @@ function getChoicesArray($_idQuestion, array $array_choices):array{
         
         if($choice['id_question'] === $_idQuestion){
             array_push($question_choices, $choice);
+            /*echo '<pre>';
+            var_dump($choice);
+            echo '---------------------------------------------------';
+            echo '</pre>';*/
         }
     }
 

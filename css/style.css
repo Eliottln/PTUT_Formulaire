@@ -27,6 +27,8 @@
   --c_font: #000;
   --c_inputBG: #fff;
 
+  --c_dialog:rgb(41, 41, 41);
+
   --c_page_crea: rgba(0, 0, 0, 0.8);
 
   --c_table_odd_visuResult:#EEEEEE;
@@ -756,10 +758,77 @@ dialog {
   top: 25vh;
   width: 50vw;
   border: none;
-  background: rgb(41, 41, 41);
+  background: var(--c_dialog);
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 15px;
   color: white;
-  max-height: 75.5vh;
+  /* max-height: 75.5vh; */
   transition: top 0.5s, height 0.5s;
+}
+
+dialog .dialog-title {
+  margin: 5px;
+  background-color: var(--first);
+}
+
+dialog .dialog-title h2 {
+  text-align: center;
+  color: var(--second);
+  font-family: 'LemonMilk';
+  font-size: x-large;
+  margin-block: 0.3rem;
+}
+
+dialog h3 {
+  text-align: center;
+  color: var(--second);
+  font-family: 'LemonMilk';
+  font-size: larger;
+  margin-block: 0.3rem;
+}
+
+dialog .dialog-button {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  margin-inline: 20%;
+  justify-content: space-evenly;
+}
+
+dialog .dialog-button button{
+  padding: 5px;
+  font-family: 'LemonMilk';
+  font-size: small;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--second);
+  color: var(--first);
+}
+
+dialog .dialog-button button:hover{
+  background-color: var(--first);
+  color: var(--second);
+  cursor: pointer;
+}
+
+dialog label {
+  font-family: monospace;
+  color: var(--second);
+  font-size: large;
+  margin-block: 0.2rem;
+}
+
+dialog input:not([type="checkbox"]),
+dialog select {
+  border: none;
+  font-family: monospace;
+  color: var(--c_dialog);
+  background-color: var(--second);
+  font-size: large;
+  margin-inline: 20px;
+  padding: 3px 10px;
 }
 
 dialog > form {
@@ -1042,6 +1111,13 @@ dialog[class="content"] pre {
 
 #form-content .selectedElement {
   border: 3px solid black;
+}
+
+#preview-mode{
+  display: none;
+  position: fixed;
+  z-index: 3;
+  width: 100vw;
 }
 
 /**Background bubble**/
@@ -1374,14 +1450,14 @@ dialog[class="content"] pre {
 /*VisuForm*/
 /*#################################################*/
 
-#VisuForm {
+#VisuForm, #preview-mode {
   font-family: LemonMilk, sans-serif;
   align-items: center;
   height: calc(100vh - 84px);
   background-color: var(--c_page);
 }
 
-#VisuForm #page {
+#VisuForm #page , #preview-mode #page {
   margin-block: 20px;
   width: 800px;
   display: flex;
@@ -1468,6 +1544,7 @@ dialog[class="content"] pre {
   border-radius: 5px;
   font-family: "Rockford";
   display: flex;
+  text-decoration: none;
 }
 
 .buttonVisuForm span{
@@ -1620,3 +1697,327 @@ dialog[class="content"] pre {
 #table-resultats thead .DESC::after {
   content: "▼";
 }
+
+#list-filters{
+  width: 100%;
+  margin-inline: 20px;
+  display: flex;
+  position: relative;
+}
+
+#list-filters-button{
+  background-color: var(--first);
+  color: var(--second);
+  font-size: large;
+  width: calc(100% - 40px);
+  border: 1px solid var(--first);
+  padding-block: 5px;
+  font-family: 'LemonMilk';
+}
+
+#list-filters-button:hover{
+  background-color: var(--second);
+  color: var(--first);
+  cursor: pointer;
+}
+
+#list-filters > div{
+  display: flex;
+  position: absolute;
+  top: 33px;
+  flex-direction: column;
+  border: 2px solid var(--first);
+  transition: height 0.5s;
+  z-index: 1;
+  background-color: var(--second);
+  width: calc(100% - 40px);
+}
+
+#list-filters > div[style="height: 0px;"] > div{
+  display: none;
+}
+
+#list-filters > div > div {
+  display: flex;
+  height: 35px;
+}
+#list-filters > div > div input[type="checkbox"] {
+  margin: 0;
+  visibility: hidden;
+  left: 1px;
+  top: 1px;
+}
+#list-filters > div > div label {
+  font-size: 20px;
+  line-height: 26px;
+  padding-left: 35px;
+  margin: 0;
+  display: block;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease 0s;
+}
+#list-filters > div > div label:before,
+#list-filters > div > div label:after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.25s;
+}
+#list-filters > div > div label:after {
+  height: 10px;
+  width: 16px;
+  border-radius: 0 0 0 4px;
+  border: 5px solid var(--c_font);
+  border-top: none;
+  border-right: none;
+  opacity: 0;
+  transform: rotate(-45deg);
+  top: 15px;
+  left: 6px;
+}
+#list-filters > div > div input[type="checkbox"]:checked + label {
+  font-weight: 600;
+}
+#list-filters > div > div input[type="checkbox"]:checked + label:before {
+  opacity: 0;
+  top: -10px;
+}
+#list-filters > div > div input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  top: 6px;
+}
+
+/*#################################################*/
+/*DashBoard*/
+/*#################################################*/
+
+#DashBoard {
+  display: flex;
+  flex-direction: column;
+}
+
+#DashBoard > div:first-child {
+  margin-block: 2rem;
+  text-align: center;
+}
+
+#DashBoard > div:first-child > h2 {
+  font-size: x-large;
+  font-family: 'LemonMilk';
+}
+
+#DashBoard > div:first-child > p {
+  font-size: large;
+  font-family: "Bebas-Regular";
+}
+
+#dash_board_data {
+  display: flex;
+  flex-direction: row;
+}
+
+#dash_board_data > div {
+  width: 50%;
+}
+
+.dash_board_part {
+  border: 0.2rem solid var(--first);
+}
+
+.dash_board_part > h2 {
+  background-color: var(--first);
+  color: var(--second);
+  font-size: large;
+  font-family: 'LemonMilk';
+  padding: 8px 3px;
+}
+
+.blocFormDashBoard {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5rem;
+  background-color: var(--first);
+  border: 0.2rem solid var(--first);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.blocFormDashBoard > div:first-child a{
+  padding: 5px;
+}
+
+.blocFormDashBoard > div:first-child img{
+  width: 70px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.blocFormDashBoard > div:last-child{
+  display: flex;
+  flex-direction: column;
+  padding: 7px;
+  background-color: var(--second);
+  width: 100%;
+}
+
+.blocFormDashBoard > div:last-child > p{
+  font-size: medium;
+  font-family: 'LemonMilk';
+}
+
+.blocFormDashBoard > div:last-child > div {
+  display: flex;
+  flex-direction:row;
+}
+
+.blocFormDashBoard > div:last-child > div > button,
+.blocFormDashBoard > div:last-child > div > a {
+  padding: 3px;
+  text-decoration: none;
+  border: 1px solid var(--first);
+  background-color: var(--first);
+  color: var(--second);
+  border-radius: 5px;
+  font-family: 'LemonMilk';
+  font-size: small;
+  margin-inline: 0.5rem;
+}
+
+.blocFormDashBoard > div:last-child > div > button:hover,
+.blocFormDashBoard > div:last-child > div > a:hover {
+  background-color: var(--second);
+  color: var(--first);
+  cursor: pointer;
+}
+
+#list-of-groups > img {
+  width: 50px;
+  object-fit: cover;
+  object-position: center;
+  margin: 0.2rem 0.5rem; 
+}
+
+#list-of-groups > hr {
+  margin: 1rem 3rem;
+  border: 0.2rem solid var(--first);
+}
+
+.blocGroup {
+  background-color: var(--first);
+  border: 0.2rem solid var(--first);
+  margin: 0.5rem;
+  border-radius: 10px;
+}
+
+.blocGroup div:first-child {
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  padding: 5px;
+}
+
+.blocGroup div:first-child img{
+  background-color: var(--second);
+  width: 70px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 0.1rem solid var(--second);
+}
+
+.blocGroup div:first-child h2{
+  color: var(--second);
+  font-size: medium;
+  font-family: 'LemonMilk';
+  margin-inline-start: 1rem;
+}
+
+.blocGroup div:last-child {
+  display: flex;
+  flex-direction:column;
+  background-color:var(--second);
+  border: 0.1rem solid var(--first);
+  border-end-start-radius: 7px;
+  border-end-end-radius: 7px;
+}
+
+.blocGroup div:last-child ul{
+  list-style: none;
+  padding:1rem;
+}
+
+.blocGroup div:last-child ul li {
+  color: var(--first);
+  font-size: small;
+  font-family: 'LemonMilk';
+  margin-inline-start: 1rem;
+}
+
+/*dialog checkbox*/
+.checkboxDialog {
+  display: flex;
+  height: 35px;
+}
+.checkboxDialog input[type="checkbox"] {
+  margin: 0;
+  visibility: hidden;
+  left: 1px;
+  top: 1px;
+}
+.checkboxDialog label {
+  font-size: 20px;
+  line-height: 26px;
+  padding-left: 35px;
+  margin: 0;
+  display: block;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease 0s;
+}
+.checkboxDialog label:before,
+.checkboxDialog label:after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--second);
+  border-radius: 4px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.25s;
+}
+.checkboxDialog label:after {
+  height: 10px;
+  width: 16px;
+  border-radius: 0 0 0 4px;
+  border: 5px solid var(--second);
+  border-top: none;
+  border-right: none;
+  opacity: 0;
+  transform: rotate(-45deg);
+  top: 15px;
+  left: 6px;
+}
+.checkboxDialog input[type="checkbox"]:checked + label {
+  font-weight: 600;
+}
+.checkboxDialog input[type="checkbox"]:checked + label:before {
+  opacity: 0;
+  top: -10px;
+}
+.checkboxDialog input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  top: 6px;
+}
+
+#dash_list-checkbox {
+  display: flex;
+  flex-direction: column;
+}
+

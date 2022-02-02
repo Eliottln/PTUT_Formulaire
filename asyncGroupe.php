@@ -97,8 +97,8 @@ function displayGroups($connect,$user){
         foreach ($groups as $group){
             $tabUsers = usersToTab($connect, $group['id']);
             $ret .= '
-                     <div>
-                        <div class="">
+                     <div class="blocGroup">
+                        <div>
                             <img class="img-of-group" id="img-group-'. $group['id'].'" style="width: 50px; height: 50px" src="img/groupe.png" alt="image form">
                             <h2>'.$group['title'] .'</h2>
                         </div>

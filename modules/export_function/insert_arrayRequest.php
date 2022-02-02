@@ -4,7 +4,7 @@ function insert_arrayRequest($pdo, $arraySQLRequest)
 {
     if (is_array($arraySQLRequest)) {
 
-
+        
         try {
 
             foreach ($arraySQLRequest as $value) {
@@ -12,6 +12,7 @@ function insert_arrayRequest($pdo, $arraySQLRequest)
 
                 $sth->execute();
             }
+            
             
         } catch (\PDOException $e) {
             die("Connection failed: " . $e->getLine() . "\n " . $e->getMessage());

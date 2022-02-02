@@ -3,13 +3,12 @@
 
 function setListenerOnRightsBut(){
 
-    let buttonRightsMenu = document.getElementsByClassName("button-rights");
-    console.log(buttonRightsMenu)
+    let buttonRightsMenu = document.getElementsByClassName("button-rights"); // Recup tous les boutons "Gerer les droits" positionnés à coté des formulaires.
     for(let i =0; i < buttonRightsMenu.length; i++){
 
         buttonRightsMenu[i].addEventListener("click",displayRightsMenu);
         buttonRightsMenu[i].addEventListener("click",setForm);
-        buttonRightsMenu[i].addEventListener("click",setTodo.bind(null,"rights"))
+        buttonRightsMenu[i].addEventListener("click",setTodo.bind(null,"rights"));
     }
 }
 
@@ -43,7 +42,7 @@ function setTodo(todo){
 function setForm(){
     let idForm = this.getAttribute("id").split("-")[1];
     idCurrentForm = idForm;
-    console.log(idCurrentForm);
+    console.log("Current form : " + idCurrentForm);
 
 } //Permet e modifier le fourmulaire visé lorsque l'on click (variable global idCurrentForm)
 
