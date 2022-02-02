@@ -109,6 +109,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 </body>
 
+
 <script>
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);

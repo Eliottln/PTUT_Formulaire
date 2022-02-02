@@ -27,6 +27,8 @@
   --c_font: #000;
   --c_inputBG: #fff;
 
+  --c_dialog:rgb(41, 41, 41);
+
   --c_page_crea: rgba(0, 0, 0, 0.8);
 
   --c_table_odd_visuResult:#EEEEEE;
@@ -756,10 +758,77 @@ dialog {
   top: 25vh;
   width: 50vw;
   border: none;
-  background: rgb(41, 41, 41);
+  background: var(--c_dialog);
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 15px;
   color: white;
-  max-height: 75.5vh;
+  /* max-height: 75.5vh; */
   transition: top 0.5s, height 0.5s;
+}
+
+dialog .dialog-title {
+  margin: 5px;
+  background-color: var(--first);
+}
+
+dialog .dialog-title h2 {
+  text-align: center;
+  color: var(--second);
+  font-family: 'LemonMilk';
+  font-size: x-large;
+  margin-block: 0.3rem;
+}
+
+dialog h3 {
+  text-align: center;
+  color: var(--second);
+  font-family: 'LemonMilk';
+  font-size: larger;
+  margin-block: 0.3rem;
+}
+
+dialog .dialog-button {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  margin-inline: 20%;
+  justify-content: space-evenly;
+}
+
+dialog .dialog-button button{
+  padding: 5px;
+  font-family: 'LemonMilk';
+  font-size: small;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--second);
+  color: var(--first);
+}
+
+dialog .dialog-button button:hover{
+  background-color: var(--first);
+  color: var(--second);
+  cursor: pointer;
+}
+
+dialog label {
+  font-family: monospace;
+  color: var(--second);
+  font-size: large;
+  margin-block: 0.2rem;
+}
+
+dialog input:not([type="checkbox"]),
+dialog select {
+  border: none;
+  font-family: monospace;
+  color: var(--c_dialog);
+  background-color: var(--second);
+  font-size: large;
+  margin-inline: 20px;
+  padding: 3px 10px;
 }
 
 dialog > form {
@@ -1880,3 +1949,66 @@ dialog[class="content"] pre {
   font-family: 'LemonMilk';
   margin-inline-start: 1rem;
 }
+
+/*dialog checkbox*/
+.checkboxDialog {
+  display: flex;
+  height: 35px;
+}
+.checkboxDialog input[type="checkbox"] {
+  margin: 0;
+  visibility: hidden;
+  left: 1px;
+  top: 1px;
+}
+.checkboxDialog label {
+  font-size: 20px;
+  line-height: 26px;
+  padding-left: 35px;
+  margin: 0;
+  display: block;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease 0s;
+}
+.checkboxDialog label:before,
+.checkboxDialog label:after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--second);
+  border-radius: 4px;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.25s;
+}
+.checkboxDialog label:after {
+  height: 10px;
+  width: 16px;
+  border-radius: 0 0 0 4px;
+  border: 5px solid var(--second);
+  border-top: none;
+  border-right: none;
+  opacity: 0;
+  transform: rotate(-45deg);
+  top: 15px;
+  left: 6px;
+}
+.checkboxDialog input[type="checkbox"]:checked + label {
+  font-weight: 600;
+}
+.checkboxDialog input[type="checkbox"]:checked + label:before {
+  opacity: 0;
+  top: -10px;
+}
+.checkboxDialog input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  top: 6px;
+}
+
+#dash_list-checkbox {
+  display: flex;
+  flex-direction: column;
+}
+

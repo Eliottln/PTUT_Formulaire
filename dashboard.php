@@ -54,8 +54,10 @@ function displayUsers($connect)
     $ret = "";
     $users = $connect->query("SELECT * FROM User ")->fetchAll();
     foreach ($users as $item) {
-        $ret .= ' <label for="' . $item['id'] . '">' . $item['name'] . ' </label>
-                  <input class="user-checkb" type="checkbox" name="' . $item['id'] . '" id="' . $item['id'] . '" >';
+        $ret .= '   <div class="checkboxDialog">
+                        <input class="user-checkb" type="checkbox" name="' . $item['id'] . '" id="' . $item['id'] . '" >
+                        <label for="' . $item['id'] . '">' . $item['name'] . ' </label>
+                    </div>';
     }
 
     return $ret;
@@ -66,8 +68,10 @@ function displayUsersForEdit($connect)
     $ret = "";
     $users = $connect->query("SELECT * FROM User ")->fetchAll();
     foreach ($users as $item) {
-        $ret .= ' <label for="' . $item['id'] . '-edit">' . $item['name'] . ' </label>
-                  <input class="user-checkb" type="checkbox" name="' . $item['id'] . '-edit" id="' . $item['id'] . '-edit" >';
+        $ret .= '   <div class="checkboxDialog">
+                        <input class="user-checkb" type="checkbox" name="' . $item['id'] . '-edit" id="' . $item['id'] . '-edit" >
+                        <label for="' . $item['id'] . '-edit">' . $item['name'] . ' </label>
+                    </div>';
     }
 
     return $ret;
@@ -95,18 +99,18 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <div id="dash_board_data">
             <div class="dash_board_part">
-                <h2> Consulter les réponses de vos formulaires : </h2> 
+                <h2> Consulter les réponses de vos formulaires : </h2>
                 <div id="all-forms">
                     <?= displayAllForm($connect) ?>
                 </div>
 
             </div>
 
-            <div id="list-of-groups"  class="dash_board_part">
+            <div id="list-of-groups" class="dash_board_part">
 
-                <h2> Consulter vos groupes : </h2> 
-                <img id="pannel-group-button" src="img/plus.png" alt="ajouter un groupe">
-                <img id="edit-group-button" alt="supprimer un groupe" src="img/edit.svg">
+                <h2> Consulter vos groupes : </h2>
+                <img id="pannel-group-button" src="img/plus.png" alt="ajouter un groupe" title="Ajouter un groupe">
+                <img id="edit-group-button" alt="modifier/supprimer un groupe" src="img/edit.svg" title="Modifier/supprimer un groupe">
                 <hr>
                 <div id="all-groups">
 
@@ -116,36 +120,54 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <div id="bgGrey">
             <dialog id="pannel-group">
-                <h2>Titre</h2>
+                <div class="dialog-title">
+                    <h2>Ajouter un groupe</h2>
+                </div>
+
+                <h3>Titre</h3>
                 <input type="text" id="title-group" name="title-group">
-                <h2>Sélectionner Des utilisteurs</h2>
 
-                <label for="select-all-users">Tout sélectionner</label>
-                <input id="select-all-users" type="checkbox" name="select-all-users">
+                <h3>Sélectionner Des utilisteurs</h3>
+                <div id="dash_list-checkbox">
+                    <div class="checkboxDialog">
+                        <input id="select-all-users" type="checkbox" name="select-all-users">
+                        <label for="select-all-users">Tout sélectionner</label>
+                    </div>
 
-                <?= displayUsers($connect) ?>
+                    <?= displayUsers($connect) ?>
+                </div>
 
 
-                <button id="confirm" type="submit">Confirmer</button>
-                <button id="cancel" type="reset">Annuler</button>
-
+                <div class="dialog-button">
+                    <button id="confirm" type="submit">Confirmer</button>
+                    <button id="cancel" type="reset">Annuler</button>
+                </div>
 
             </dialog>
 
             <dialog id="pannel-edit">
+                <div class="dialog-title">
+                    <h2>Modifier/Supprimer un groupe</h2>
+                </div>
 
-                <h2>Sélectionner un groupe</h2>
-
-                <button id="confirm-delete" type="submit">Supprimer</button>
+                <h3>Sélectionner un groupe</h3>
+                
                 <select name="group-select" id="group-select">
 
 
                 </select>
 
+                <div class="dialog-button">
+                    <button id="confirm-delete" type="submit">Supprimer</button>
+                </div>
+
                 <?= displayUsersForEdit($connect) ?>
 
-                <button id="confirm-edit" type="submit">Confirmer</button>
-                <button id="cancel-delete" type="reset">Annuler</button>
+                <div class="dialog-button">
+                    <button id="confirm-edit" type="submit">Confirmer</button>
+                    <button id="cancel-delete" type="reset">Annuler</button>
+                </div>
+                
 
 
             </dialog>
@@ -174,52 +196,52 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </main>
 
-    <?php require 'modules/footer.php'; ?>
 
-    <script>
-        function send(todo) {
-
-
-            let strSend = tabCheckToString(checkboxs);
-            let groupToEdit = document.getElementById("group-select").value;
-            let inputTitle = document.getElementById("title-group");
-            let titleGroup = inputTitle.value;
-
-
-            if (groupToEdit === "none" && menuEdit.style.display === "flex") {
-                return;
-            }
-
-
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function() {
-                document.getElementById('all-groups').innerHTML = "";
-                document.getElementById('group-select').innerHTML = "";
-
-                let $returnString = this.responseText.split("///");
-
-                document.getElementById('all-groups').innerHTML = $returnString[0];
-                document.getElementById('group-select').innerHTML = $returnString[1];
-                setEventListnerOnMembers()
-            }
-            xhttp.open("POST", "/asyncGroupe.php");
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('id-user=' + <?= $_SESSION['user']['id'] ?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage +
-                '&todo=' + todo + '&edited-group=' + groupToEdit + '&title-group=' + titleGroup);
-            if (isArrivedOnPage === 0) {
-                isArrivedOnPage = 1; //Savoir si on viens d'arriver sur la page ou pas
-
-            }
-
-
-        }
-    </script>
-
-    <script src="js/groupManagement.js"></script>
-    <script scr="js/rightsManagement.js"></script>
 
 
 </body>
+<?php require 'modules/footer.php'; ?>
 
+<script>
+    function send(todo) {
+
+
+        let strSend = tabCheckToString(checkboxs);
+        let groupToEdit = document.getElementById("group-select").value;
+        let inputTitle = document.getElementById("title-group");
+        let titleGroup = inputTitle.value;
+
+
+        if (groupToEdit === "none" && menuEdit.style.display === "flex") {
+            return;
+        }
+
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById('all-groups').innerHTML = "";
+            document.getElementById('group-select').innerHTML = "";
+
+            let $returnString = this.responseText.split("///");
+
+            document.getElementById('all-groups').innerHTML = $returnString[0];
+            document.getElementById('group-select').innerHTML = $returnString[1];
+            setEventListnerOnMembers()
+        }
+        xhttp.open("POST", "/asyncGroupe.php");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('id-user=' + <?= $_SESSION['user']['id'] ?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage +
+            '&todo=' + todo + '&edited-group=' + groupToEdit + '&title-group=' + titleGroup);
+        if (isArrivedOnPage === 0) {
+            isArrivedOnPage = 1; //Savoir si on viens d'arriver sur la page ou pas
+
+        }
+
+
+    }
+</script>
+
+<script src="js/groupManagement.js"></script>
+<script scr="js/rightsManagement.js"></script>
 
 </html>
