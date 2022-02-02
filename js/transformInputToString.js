@@ -46,7 +46,7 @@ function addInput() {
             case "number":
             case "range":
                 let minMax = document.querySelectorAll('#'+question.id+' .choice-input')
-                string += '/' + minMax[0].value + '/' + minMax[1].value
+                string += '/' + (minMax[0].value==''?0:minMax[0].value) + '/' + (minMax[1].value==''?0:minMax[1].value)
                 break;
 
             case "date":

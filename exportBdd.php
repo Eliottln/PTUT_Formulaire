@@ -93,6 +93,7 @@ try {
 
                 case "number":
                     $num_question++;
+                    
                     $min = $parties[4];
                     $max = $parties[5];
                     array_push($all_questions, questionToSQLRequest($connect, $num_question, $num_page_ok, $form_ID, $_SESSION['user']['id'], $typeOfInput, $titleOfInput, $isRequired, $min, $max));
