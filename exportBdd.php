@@ -83,7 +83,6 @@ try {
                         array_push($all_choices, choiceToSQLRequest($connect, ($j - 4), $num_page_ok, $num_question, $form_ID, $_SESSION['user']['id'], $parties[$j]));
                     }
                     break;
-
                 
                 case "range":
                     $num_question++;

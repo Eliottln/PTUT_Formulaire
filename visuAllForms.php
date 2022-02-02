@@ -33,13 +33,14 @@ function displayAllForm($connect): string
             $forms .=   '<div class="blocForm">
                             <div>
                                 <a href="/visuForm.php?identity=' . $value['id'] . '">
-                                    <p>ID #' . $value['id'] . '</p>
+                                    <p>Titre : ' . $value['title'] . '</p>
+                                    
                                     <div>
                                         <img src="img/formulaire.png" alt="image form">
                                     </div>
-                                    <p>Titre : ' . $value['title'] . '</p>'.
-                                    (!empty($value['expire'])?'<p>expire le ' . $value['expire']??NULL . '</p>':NULL)
-                                    .'<p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
+                                    <p class="formID">ID #' . $value['id'] . '</p>' .
+                (!empty($value['expire']) ? '<p>expire le ' . $value['expire'] ?? NULL . '</p>' : NULL)
+                . '<p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
                                     <p>' . $value['SUM(Page.nb_question)'] . ' question' . (($value['SUM(Page.nb_question)'] > 1) ? "s" : null) . '</p>
                                 </a>
                             </div>
@@ -73,7 +74,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         <div>
             <form class="search" action="/visuAllForms.php" method="get">
-                <input type="search" name="search" value="<?= $_GET["search"]??NULL ?>">
+                <input type="search" name="search" value="<?= $_GET["search"] ?? NULL ?>">
                 <button type="submit"><span class="gg-search"></span></button>
             </form>
         </div>
@@ -84,28 +85,29 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     </main>
 
+
     <?php require 'modules/footer.php'; ?>
 
+    <script src="/js/class_notification.js"></script>
+    <script>
+        <?php
+        if (isset($_SESSION['formNotFound'])) {
+            unset($_SESSION['formNotFound']);
+            echo 'alert("le form ' . $_SESSION['formNotFoundID'] . ' n\'est plus accessible")';
+            unset($_SESSION['formNotFoundID']);
+        }
+        ?>
+
+        function layoutVisuAllForms() {
+            let n = Math.round(window.innerWidth * 2 / 500)
+            document.documentElement.style.setProperty('--layoutVisuAllForms', n)
+        }
+
+        window.addEventListener('resize', layoutVisuAllForms)
+        layoutVisuAllForms()
+    </script>
+
 </body>
-
-<script src="/js/class_notification.js"></script>
-<script>
-    <?php
-    if (isset($_SESSION['formNotFound'])) {
-        unset($_SESSION['formNotFound']);
-        echo 'alert("le form ' . $_SESSION['formNotFoundID'] . ' n\'est plus accessible")';
-        unset($_SESSION['formNotFoundID']);
-    }
-    ?>
-
-    function layoutVisuAllForms() {
-        let n = Math.round(window.innerWidth * 2 / 500)
-        document.documentElement.style.setProperty('--layoutVisuAllForms', n)
-    }
-
-    window.addEventListener('resize', layoutVisuAllForms)
-    layoutVisuAllForms()
-</script>
 
 
 </html>

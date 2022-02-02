@@ -1876,15 +1876,24 @@ dialog[class="content"] pre {
   flex-direction:row;
 }
 
+.blocFormDashBoard > div:last-child > div > button,
 .blocFormDashBoard > div:last-child > div > a {
   padding: 3px;
   text-decoration: none;
+  border: 1px solid var(--first);
   background-color: var(--first);
   color: var(--second);
   border-radius: 5px;
   font-family: 'LemonMilk';
   font-size: small;
   margin-inline: 0.5rem;
+}
+
+.blocFormDashBoard > div:last-child > div > button:hover,
+.blocFormDashBoard > div:last-child > div > a:hover {
+  background-color: var(--second);
+  color: var(--first);
+  cursor: pointer;
 }
 
 #list-of-groups > img {
