@@ -52,38 +52,9 @@ function stringRightsToTab($stringRights){
 
 }
 
-function setStatus($connect,$status, $form){
-    $connect->beginTransaction();
-    try {
-        //modifier le status
-        $sql = "UPDATE Form
-                SET status = ".$status ."
-                WHERE condition";
-
-        $stmt = $connect->prepare($sql);
-
-        $stmt->execute();
-
-        $connect->commit();
-    }catch(PDOException $e){
-        "ERROR SQL : " . $e->getLine() . "   ". $e->getMessage();
-        $connect->rollback();
-        exit;
-    }
-}
 
 
 
-
-function prepareInsertionSql($tabRights,$user,$idForm){
-    $tabSql = Array();
-
-
-    //foreach($tabKey as $key){
-        //array_push($tabSql,"INSERT INTO Rights(id_form, id_owner,`read`,id_guest,modify,`delete`)
-        //                                  VALUES(".$idForm .",".$user .",". .")");
-    //}
-}
 
 function verifyStatus($connect,$idForm){
 
@@ -93,17 +64,62 @@ function verifyStatus($connect,$idForm){
         $status = $connect->query("SELECT status FROM Form WHERE id=".$idForm." ")->fetch();
 
 
-
-
     }catch (PDOException $e){
         echo "SQL ERROR : " . $e->getMessage();
         exit;
     }
 
-    return "Le formulaire : " . $idForm . " Le status actuel : ".$status['status'] . "   ";
+    return " \n Le formulaire : " . $idForm . " \n Le status actuel : ".$status['status'] . "   ";
 }
 
-function setRights($connect,$stringRights){
+
+function deleteRights($connect,$idForm){
+
+    $connect->beginTransaction();
+    try {
+
+        $stmt = $connect->prepare("DELETE FROM Rights WHERE id_form = ".$idForm." ");
+        $stmt->execute();
+
+        $connect->commit();
+    }catch(PDOException $e){
+        echo "SQL ERROR : " . $e->getLine() . "   " . $e->getMessage();
+        $connect->rollback();
+        exit;
+    }
+}
+
+function createRights($connect,$stringRights,$idForm,$idOwner){
+
+    $tabRights = stringRightsToTab($stringRights);
+    $tabKeys= array_keys($tabRights);
+
+    $connect->beginTransaction();
+    try {
+
+
+        foreach ($tabKeys as $user){
+            $stmt = $connect->prepare("INSERT INTO Rights(id_form, id_owner,id_guest,to_read,to_modify,to_delete)
+                                       VALUES(". $idForm .",
+                                              ". $idOwner .",
+                                              ". $user .",
+                                              ". $tabRights[$user]['file'] .",
+                                              ". $tabRights[$user]['modify'] .",
+                                              ". $tabRights[$user]['delete'] .")
+                                              ");
+            $stmt->execute();
+        }
+
+        $connect->commit();
+    }catch(PDOException $e){
+        echo "SQL ERROR : " . $e->getLine() . "   " . $e->getMessage();
+        $connect->rollback();
+        exit;
+    }
+
+}
+
+function setRights($connect,$stringRights, $idForm){
 
     $tabRights = stringRightsToTab($stringRights);
 
@@ -111,7 +127,6 @@ function setRights($connect,$stringRights){
 
     try {
 
-        //$stmt = $connect->prepare("INSERT INTO Rights ")
 
 
         $connect->commit();
@@ -122,21 +137,55 @@ function setRights($connect,$stringRights){
     }
 }
 
+function setStatusForm($connect,$idForm, $status){
+    $connect->beginTransaction();
+    try {
+
+        $stmt = $connect->prepare("UPDATE Form 
+                                   SET status = ". $connect->quote($status). " 
+                                   WHERE id = ".$idForm." ");
+        $stmt->execute();
+
+        $connect->commit();
+    }catch(PDOException $e){
+        echo "SQL ERROR : " . $e->getLine() . "   " . $e->getMessage();
+        $connect->rollback();
+        exit;
+    }
+}
+
+
+
 $idForm = $_POST['id-form'];
 $stringCheckedRights = $_POST['checked-rights'];
 $todo = $_POST['todo'];
-$statusToSet = $_POST['todo'];
+$idOwner = $_POST['owner'];
+$statusToSet = (explode("-",$_POST['todo'])[1]) ?? "null";
 
 
+switch ($todo){
 
-if($todo === "rights"){
-    $status = verifyStatus($connect,$idForm); //Verifier si le formulaire est publique ou pas
-    stringRightsToTab($stringCheckedRights);
-}else if($todo === "status"){
-    echo verifyStatus($connect,$idForm);
+    case "rights":
+        $status = verifyStatus($connect,$idForm); //Verifier si le formulaire est publique ou pas
+        stringRightsToTab($stringCheckedRights);
+        break;
 
+    case "status-private":
+        echo " Le status que l'on souhaite mettre (private) : " . $statusToSet ;
+        
+        if(verifyStatus($connect,$idForm)!="private"){
+            setStatusForm($connect,$idForm,"private");
+            createRights($connect,$stringCheckedRights,$idForm,$idOwner);
+        }
+        break;
+
+    case "status-public":
+        echo " Le status que l'on souhaite mettre (public) : " . $statusToSet ;
+        echo verifyStatus($connect,$idForm);
+        setStatusForm($connect,$idForm,"public");
+        deleteRights($connect, $idForm);
+        break;
 }
-
 
 
 $finalString = "";

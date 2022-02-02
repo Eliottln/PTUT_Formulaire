@@ -24,7 +24,7 @@ function displayAllForm($connect){
                             </a> 
                             <p> Titre : '. $value['title'] .'</p>
                             <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
-                            <a style="border:3px solid black" id="rights-'.$value['id'] .'" class="buttonRights" >Gérer les droits</a>
+                            <a style="border:3px solid black" id="rights-'.$value['id'] .'" class="button-rights" >Gérer les droits</a>
                             <a class="button-public" id="public-'. $value['id'].'" style="border: 3px solid red"> Publique </a>
                             <a class="button-private" id="private-'. $value['id'].'" style="border: 3px solid blue"> Private </a>
                         </div>';
@@ -233,7 +233,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 <script>
 
 
-    function sendForGroups(todo){
+    function sendForGroups(_todo){
 
 
         let strSend = tabCheckToString(checkboxs);
@@ -263,7 +263,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         xhttp.open("POST", "/asyncGroupe.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send('id-user=' + <?= $_SESSION['user']['id']?> + '&tabcheck=' + strSend + '&state-page=' + isArrivedOnPage
-            + '&todo=' + todo + '&edited-group=' + groupToEdit + '&title-group=' + titleGroup);
+            + '&todo=' + _todo + '&edited-group=' + groupToEdit + '&title-group=' + titleGroup);
         if(isArrivedOnPage === 0){
             isArrivedOnPage = 1; //Savoir si on viens d'arriver sur la page ou pas
 
@@ -272,8 +272,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     }
 
-    function sendForRights(todo, status){
-        console.log("Todo --> " + todo + "   status :  " + status);
+    function sendForRights(){
+        console.log("Todo --> " + todoGlobal );
         let stringCheck = getCheckedBox();
 
         const xhttp = new XMLHttpRequest();
@@ -287,7 +287,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         xhttp.open("POST", "/asyncRights.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        xhttp.send("id-form=" + idCurrentForm + "&checked-rights="+stringCheck + "&todo=" + todo + "&status="+status);
+        xhttp.send("id-form=" + idCurrentForm + "&checked-rights="+stringCheck
+            + "&todo=" + todoGlobal +"&owner=" + <?= $_SESSION['user']['id']?>);
 
 
 

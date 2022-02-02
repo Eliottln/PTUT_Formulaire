@@ -3,11 +3,13 @@
 
 function setListenerOnRightsBut(){
 
-    let buttonRightsMenu = document.getElementsByClassName("buttonRights");
+    let buttonRightsMenu = document.getElementsByClassName("button-rights");
     console.log(buttonRightsMenu)
     for(let i =0; i < buttonRightsMenu.length; i++){
+
         buttonRightsMenu[i].addEventListener("click",displayRightsMenu);
-        buttonRightsMenu[i].addEventListener("click",setFormOnClick);
+        buttonRightsMenu[i].addEventListener("click",setForm);
+        buttonRightsMenu[i].addEventListener("click",setTodo.bind(null,"rights"))
     }
 }
 
@@ -20,16 +22,30 @@ function setListenerOnStatusBut(){
         let idPublicBut = buttonPublics[i].id;
         let idPrivateBut = buttonPrivates[i].id;
 
-        buttonPublics[i].addEventListener("click",setFormOnClick);
-        buttonPrivates[i].addEventListener("click",setFormOnClick);
+        buttonPublics[i].addEventListener("click",setForm);
+        buttonPublics[i].addEventListener("click",setTodo.bind(null,"status-public"));
+        buttonPublics[i].addEventListener("click",sendForRights);
 
-        buttonPublics[i].addEventListener("click",sendForRights.bind(null,"status","public"));
-        buttonPrivates[i].addEventListener("click",sendForRights.bind(null,"status","private"));
+
+        buttonPrivates[i].addEventListener("click",displayRightsMenu);
+        buttonPrivates[i].addEventListener("click",setTodo.bind(null,"status-private"));
+        buttonPrivates[i].addEventListener("click",setForm);
     }
 
 
 }
 
+function setTodo(todo){
+    let taskTodo = todo;
+    todoGlobal = taskTodo;
+
+} // Permet de modifier l'action a faire (variable global todoGlobal)
+function setForm(){
+    let idForm = this.getAttribute("id").split("-")[1];
+    idCurrentForm = idForm;
+    console.log(idCurrentForm);
+
+} //Permet e modifier le fourmulaire visé lorsque l'on click (variable global idCurrentForm)
 
 function displayRightsMenu(){
     menuRights.style.display = "flex";
@@ -41,13 +57,6 @@ function exitRightsMenu(){
     document.getElementById('bgGrey').style.display = "none"
 }
 
-function setFormOnClick(){
-    let idForm = this.getAttribute("id").split("-")[1];
-    idCurrentForm = idForm;
-    console.log(idCurrentForm);
-
-}
-
 function displayGroups(){
     listOfUsers.style.display = "none";
     listOfGroups.style.display = "flex";
@@ -57,7 +66,6 @@ function displayUsers(){
     listOfGroups.style.display = "none";
     listOfUsers.style.display = "flex";
 }
-
 
 function getCheckedBox(){
     let ret = "";
@@ -81,7 +89,8 @@ function getCheckedBox(){
 
 
 
-idCurrentForm = 0;
+idCurrentForm = 0; //
+todoGlobal = "none";
 
 menuRights = document.getElementById("pannel-rights");
 listOfGroups = document.getElementById("groups-rights");
@@ -95,7 +104,8 @@ let confirmRightsButton = document.getElementById("confirm-rights");
 
 
 exitRightsButton.addEventListener("click",exitRightsMenu);
-confirmRightsButton.addEventListener("click",sendForRights.bind(null,"rights",null));
+
+confirmRightsButton.addEventListener("click",sendForRights);
 confirmRightsButton.addEventListener("click",exitRightsMenu);
 
 showUsersButton.addEventListener("click",displayUsers);
