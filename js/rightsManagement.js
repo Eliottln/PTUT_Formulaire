@@ -62,16 +62,24 @@ function displayRightsMenu(){
 function exitRightsMenu(){
     menuRights.style.display = "none";
     document.getElementById('bgGrey').style.display = "none"
+    listOfUsers.style.display = "none";
+    listOfGroups.style.display = "none";
+    reinitCheckBox();
 }
 
 function displayGroups(){
     listOfUsers.style.display = "none";
     listOfGroups.style.display = "flex";
+
+    groupOrUsers = "group";
 }
 
 function displayUsers(){
     listOfGroups.style.display = "none";
     listOfUsers.style.display = "flex";
+
+    groupOrUsers = "users";
+
 }
 
 function getCheckedBox(){
@@ -93,11 +101,19 @@ function getCheckedBox(){
     return ret;
 }
 
+function reinitCheckBox(){
+    for(let i =0; i<checkboxRights.length;i++){
+        checkboxRights[i].checked = false;
+
+    }
+}
+
 
 
 
 idCurrentForm = 0; //
 todoGlobal = "start";
+groupOrUsers = "start";
 
 menuRights = document.getElementById("pannel-rights");
 listOfGroups = document.getElementById("groups-rights");

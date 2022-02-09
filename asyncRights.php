@@ -14,6 +14,7 @@ function displayUsersForRights($connect){
 }
 
 function createTabUsers($tabRights){
+
     $tabUsers = Array();
     foreach ($tabRights as $right){
 
@@ -30,6 +31,7 @@ function createTabUsers($tabRights){
 
 
 function stringRightsToTab($stringRights){
+
     $finalTabRights = Array();
     $tabStringRights = explode("/",$stringRights);
     $tabUsers = createTabUsers($tabStringRights);
@@ -145,19 +147,24 @@ $idForm = $_POST['id-form'];
 $stringCheckedRights = $_POST['checked-rights'];
 $todo = $_POST['todo'];
 $idOwner = $_POST['owner'];
+$groupOrUsers = $_POST['group-or-users'] ?? "null";
 $statusToSet = (explode("-",$_POST['todo'])[1]) ?? "null";
+
 
 $finalString = "";
 
 switch ($todo){
-
+    //TODO Si c'est un groupe, la variable groupOrUsers sera egale à groupe --> gérer ce cas
+    //TODO De plus, si on click sur comfirmer sans rien cocher, il y'aura une erreur --> la gerer
     case "rights":
 
-        if(verifyStatus($connect,$idForm) == "private"){
-            echo " Nous voulons modifier les droits !!!!! :   " ;
+        if(verifyStatus($connect,$idForm) == "private" && $groupOrUsers == "users"){
+            //echo " Nous voulons modifier les droits !!!!! :   " ;
             stringRightsToTab($stringCheckedRights);
             deleteRights($connect, $idForm);
             createRights($connect,$stringCheckedRights,$idForm,$idOwner);
+        }elseif (verifyStatus($connect,$idForm) == "private" && $groupOrUsers == "users"){
+
         }
 
         break;
@@ -190,4 +197,4 @@ switch ($todo){
 }
 
 
-echo $finalString;
+echo $finalString; //on retourne seulement un status
