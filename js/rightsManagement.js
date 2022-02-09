@@ -16,10 +16,12 @@ function setListenerOnStatusBut(){
     //button-public
     let buttonPublics = document.getElementsByClassName("button-public");
     let buttonPrivates = document.getElementsByClassName("button-private");
+    let buttonUnreferenced = document.getElementsByClassName("button-unreferenced")
 
     for(let i =0; i < buttonPublics.length; i++){
         let idPublicBut = buttonPublics[i].id;
         let idPrivateBut = buttonPrivates[i].id;
+        let idUnreferencedBut = buttonUnreferenced[i].id;
 
         buttonPublics[i].addEventListener("click",setForm);
         buttonPublics[i].addEventListener("click",setTodo.bind(null,"status-public"));
@@ -29,6 +31,11 @@ function setListenerOnStatusBut(){
         buttonPrivates[i].addEventListener("click",displayRightsMenu);
         buttonPrivates[i].addEventListener("click",setTodo.bind(null,"status-private"));
         buttonPrivates[i].addEventListener("click",setForm);
+
+        buttonUnreferenced[i].addEventListener("click",setForm);
+        buttonUnreferenced[i].addEventListener("click",setTodo.bind(null,"status-unreferenced"));
+        buttonUnreferenced[i].addEventListener("click",sendForRights);
+
     }
 
 
@@ -39,6 +46,7 @@ function setTodo(todo){
     todoGlobal = taskTodo;
 
 } // Permet de modifier l'action a faire (variable global todoGlobal)
+
 function setForm(){
     let idForm = this.getAttribute("id").split("-")[1];
     idCurrentForm = idForm;
@@ -89,7 +97,7 @@ function getCheckedBox(){
 
 
 idCurrentForm = 0; //
-todoGlobal = "none";
+todoGlobal = "start";
 
 menuRights = document.getElementById("pannel-rights");
 listOfGroups = document.getElementById("groups-rights");

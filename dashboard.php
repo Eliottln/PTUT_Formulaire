@@ -29,8 +29,7 @@ function displayAllForm($connect){
                                 <div>
                                     <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
                                     <button id="rights-' . $value['id'] . '" class="button-rights" type="button">Gérer les droits</button>
-                                      <a class="button-public" id="public-'. $value['id'].'" style="border: 3px solid red"> Publique </a>
-                                      <a class="button-private" id="private-'. $value['id'].'" style="border: 3px solid blue"> Private </a>
+                                    '.displayButtonsStatus($connect,$value['id']) .'
                                 </div>
                             </div>
                         </div>';
@@ -42,6 +41,39 @@ function displayAllForm($connect){
     }
     return $forms;
 }
+
+function displayButtonsStatus($connect,$idForm){
+    $finalString = "";
+    $tabStatus = Array();
+    try {
+        $status = $connect->query("SELECT status FROM Form WHERE id =". $idForm ." ")->fetch()['status'];
+
+        var_dump($status);
+        if($status == "unreferenced"){
+            array_push($tabStatus,"block","block","none");
+        }else if($status == "public"){
+            array_push($tabStatus,"none","block","block");
+        }else if($status == "private"){
+            array_push($tabStatus,"block","none","block");
+        }
+
+
+
+        $finalString .= '<a class="button-public" id="public-'. $idForm.'" style="border: 3px solid red; display:'. $tabStatus[0].' " > Publique </a>
+                         <a class="button-private" id="private-'. $idForm.'" style="border: 3px solid blue; display:'. $tabStatus[1].' "> Private </a>
+                         <a class="button-unreferenced" id="unreferenced-'. $idForm.'" style="border: 3px solid green; display:'. $tabStatus[2].' "> Unreferenced </a>';
+
+
+
+    }catch(PDOException $e){
+        echo 'Erreur sql : (line : '. $e->getLine() . ") " . $e->getMessage();
+    }
+
+    return $finalString;
+}
+
+
+
 
 function displayProfil(){
     $profil = " <div>
@@ -312,6 +344,26 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         xhttp.onload = function () {
 
             let returnString = this.responseText;
+            switch (returnString){
+                case "private":
+                    document.getElementById('public-'+idCurrentForm).style.display = "block" ;// public-'. $value['id'].'
+                    document.getElementById('private-'+idCurrentForm).style.display = "none";
+                    document.getElementById('unreferenced-'+idCurrentForm).style.display = "block";
+                    break;
+
+                case "public":
+                    document.getElementById('public-'+idCurrentForm).style.display = "none";
+                    document.getElementById('private-'+idCurrentForm).style.display = "block";
+                    document.getElementById('unreferenced-'+idCurrentForm).style.display = "block";
+                    break;
+
+                case "unreferenced":
+                    document.getElementById('public-'+idCurrentForm).style.display = "block";
+                    document.getElementById('private-'+idCurrentForm).style.display = "block";
+                    document.getElementById('unreferenced-'+idCurrentForm).style.display = "none";
+                    break;
+
+            }
             console.log(returnString);
 
 

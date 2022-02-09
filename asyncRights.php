@@ -5,7 +5,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 function displayUsersForRights($connect){
     $ret = "";
 
-
     try {
 
     }catch (PDOException $e){
@@ -22,7 +21,7 @@ function createTabUsers($tabRights){
         if(!(in_array($user, $tabUsers))){
             array_push($tabUsers,$user);
         }
-        echo $user;
+        //echo $user;
 
     }
 
@@ -47,7 +46,7 @@ function stringRightsToTab($stringRights){
 
     }
 
-    var_dump($finalTabRights);
+    //var_dump($finalTabRights);
     return $finalTabRights;
 
 }
@@ -68,7 +67,7 @@ function verifyStatus($connect,$idForm){
         exit;
     }
 
-    return " \n Le formulaire : " . $idForm . " \n Le status actuel : ".$status['status'] . "   ";
+    return $status['status'];
 }
 
 
@@ -118,24 +117,9 @@ function createRights($connect,$stringRights,$idForm,$idOwner){
 
 }
 
-function setRights($connect,$stringRights, $idForm){
-
-    $tabRights = stringRightsToTab($stringRights);
-
-    $connect->beginTransaction();
-
-    try {
 
 
-
-        $connect->commit();
-    }catch(PDOException $e){
-        echo "SQL ERROR : " . $e->getLine() . "   " . $e->getMessage();
-        $connect->rollback();
-        exit;
-    }
-}
-
+//TODO GERER LES CONFLITS ENTRE LES DIFFERENTS BOUTONS ET RACCOURCIR LES FONCTIONS
 function setStatusForm($connect,$idForm, $status){
     $connect->beginTransaction();
     try {
@@ -151,6 +135,8 @@ function setStatusForm($connect,$idForm, $status){
         $connect->rollback();
         exit;
     }
+
+    return $status;
 }
 
 
@@ -161,35 +147,47 @@ $todo = $_POST['todo'];
 $idOwner = $_POST['owner'];
 $statusToSet = (explode("-",$_POST['todo'])[1]) ?? "null";
 
-
+$finalString = "";
 
 switch ($todo){
 
     case "rights":
 
-        verifyStatus($connect,$idForm); //Verifier si le formulaire est publique ou pas
-        stringRightsToTab($stringCheckedRights);
-        setRights($connect,$stringCheckedRights,$idForm);
+        if(verifyStatus($connect,$idForm) == "private"){
+            echo " Nous voulons modifier les droits !!!!! :   " ;
+            stringRightsToTab($stringCheckedRights);
+            deleteRights($connect, $idForm);
+            createRights($connect,$stringCheckedRights,$idForm,$idOwner);
+        }
+
         break;
 
     case "status-private":
-        echo " Le status que l'on souhaite mettre (private) : " . $statusToSet ;
+        //echo " Le status que l'on souhaite mettre (private) :     " . $statusToSet ;
 
         if(verifyStatus($connect,$idForm)!="private"){
-            setStatusForm($connect,$idForm,"private");
+            //echo verifyStatus($connect,$idForm);
+            $finalString.= setStatusForm($connect,$idForm,"private");
             createRights($connect,$stringCheckedRights,$idForm,$idOwner);
         }
         break;
 
     case "status-public":
-        echo " Le status que l'on souhaite mettre (public) : " . $statusToSet ;
-        echo verifyStatus($connect,$idForm);
-        setStatusForm($connect,$idForm,"public");
-        deleteRights($connect, $idForm);
+        //echo " Le status que l'on souhaite mettre (public) :     " . $statusToSet ;
+        if(verifyStatus($connect,$idForm)!="public"){
+            //echo verifyStatus($connect,$idForm);
+            $finalString.= setStatusForm($connect,$idForm,"public");
+            deleteRights($connect, $idForm);
+        }
         break;
+
+    case "status-unreferenced":
+        if(verifyStatus($connect,$idForm)!="unreferenced"){
+            //echo verifyStatus($connect,$idForm);
+            $finalString.= setStatusForm($connect,$idForm,"unreferenced");
+            deleteRights($connect, $idForm);
+        }
 }
 
 
-$finalString = "";
-
-echo "" ;
+echo $finalString;

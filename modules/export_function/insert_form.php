@@ -12,7 +12,7 @@ function insert_form($pdo, $id, $id_owner, $nb_page = null, $title = null, $expi
                                                         ', ' . $pdo->quote($nb_page) . 
                                                         ', ' . $pdo->quote($title) .
                                                         ', ' . $pdo->quote($expire) .
-                                                        ', ' . $pdo->quote("not referenced") .
+                                                        ', ' . $pdo->quote("unreferenced") .
                                                         ', ' . $pdo->quote($date) . ');';
             $sth = $pdo->prepare($sql);
 
