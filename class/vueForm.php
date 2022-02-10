@@ -7,9 +7,9 @@ class VueForm
     private $pdo;
 
     private $id;
-    private string $title;
+    private $title;
     private $ownerID;
-    private string $owner;
+    private $owner;
     private $page;
     private $nb_page;
     private $pageTitle;
@@ -61,10 +61,23 @@ class VueForm
     {
 
         try {
-            $_questions = $this->pdo->query("SELECT q.id,q.type,q.title,q.required, q.min, q.max,q.format 
-                                            FROM Question as q INNER JOIN 'Page' as p ON q.id_page = p.id
-                                            WHERE q.id_form = " . $this->id ." AND p.id = " . $this->page." GROUP BY q.id")->fetchAll();
-
+            $_questions = $this->pdo->query("SELECT q.id,q.type,q.title,q.required, q.min, q.max,q.format,r.answer
+                                            FROM Question as q 
+                                            INNER JOIN 'Page' as p ON q.id_page = p.id
+                                            INNER JOIN Result as r ON r.id_form = q.id_form
+                                            WHERE q.id_form = " . $this->id ." 
+                                            AND p.id = " . $this->page." 
+                                            AND r.id_user = " . $_SESSION['user']['id']." 
+                                            AND r.id_question = q.id
+                                            GROUP BY q.id")->fetchAll();
+            if(empty($_questions)){
+                $_questions = $this->pdo->query("SELECT q.id,q.type,q.title,q.required, q.min, q.max,q.format
+                                            FROM Question as q 
+                                            INNER JOIN 'Page' as p ON q.id_page = p.id
+                                            WHERE q.id_form = " . $this->id ." 
+                                            AND p.id = " . $this->page."
+                                            GROUP BY q.id")->fetchAll();
+            }
             $_choices = $this->pdo->query("SELECT c.* 
                                         FROM Choice as c INNER JOIN 'Page' as p ON c.id_page = p.id
                                         WHERE c.id_form = " . $this->id ." AND p.id = " . $this->page ." Group by c.id, c.id_question")->fetchAll();
@@ -85,15 +98,15 @@ class VueForm
 
                     case 'range':
                     case 'number':
-                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['min'], $value['max']));
+                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['answer']??NULL, $value['min'], $value['max']));
                         break;
 
                     case 'date':
-                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['format']));
+                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['answer']??NULL, $value['format']));
                         break;
 
                     default:
-                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required']));
+                        array_push($this->questions, $this->addQuestion($i, $value['title'], $value['type'], $value['required'], $value['answer']??NULL));
                         break;
                 }
                 $i++;
@@ -171,24 +184,24 @@ class VueForm
         return $resultat;
     }
 
-    private function addQuestion($_id, $_title, $_type, $_require, $option1 = null, $option2 = null):string{
+    private function addQuestion($_id, $_title, $_type, $_require, $_answer, $option1 = null, $option2 = null):string{
 
         switch ($_type) {
         case 'textarea':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <textarea id="question-' . $_id  . '" name="question-' . $_id . '"  '.$this->getRequirement($_require).'></textarea>
+                        <textarea id="question-' . $_id  . '" name="question-' . $_id . '"  '.$this->getRequirement($_require).'>'.$_answer.'</textarea>
                     </div>';
         case 'range':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" '.$this->getRequirement($_require).'>
+                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $_answer??$option1 . '" '.$this->getRequirement($_require).'>
                         <span id="question-' . $_id  . '-counter">' . $option1 . '</span>
                     </div>';
         case 'number':
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $option1 . '" '.$this->getRequirement($_require).'>
+                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" min="' . $option1 . '" max="' . $option2 . '" value="' . $_answer??$option1 . '" '.$this->getRequirement($_require).'>
                     </div>';
 
         case 'date':
@@ -203,14 +216,15 @@ class VueForm
             }
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $option1 . '" name="question-' . $_id . '" '.$this->getRequirement($_require).'>
+                        <input id="question-' . $_id  . '" type="' . $option1 . '" name="question-' . $_id . '" value="' . $_answer . '" '.$this->getRequirement($_require).'>
                     </div>';
 
         default:
             return '<div id="question-' . $_id . '-' . $_type . '">
                         <label for="question-' . $_id . '"  class="questionTitle"> ' . $_title . '</label>
-                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" '.$this->getRequirement($_require).'>
+                        <input id="question-' . $_id  . '" type="' . $_type . '" name="question-' . $_id . '" value="' . $_answer . '" '.$this->getRequirement($_require).'>
                     </div>';
+                    
         }
     }
 
@@ -232,7 +246,7 @@ class VueForm
 
     public function getPrecedentButton(){
         return '<a id="PrecedentButton" class="buttonVisuForm" href="/visuForm.php?identity='.$this->id.'&page='.($this->page-1).'">
-                    <span id="span-submit">&laquo; Précédent</span>
+                    <span>&laquo; Précédent</span>
                 </a>';
     }
 
@@ -250,7 +264,7 @@ class VueForm
         $string .= '<div>
                         '.($this-> page == 1 ? NULL : $this->getPrecedentButton()).'
                         <button id="SubmitButton" class="buttonVisuForm" type="submit">
-                            <span id="span-submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
+                            <span>'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
                         </button>
                     </div>
                 </form>';
