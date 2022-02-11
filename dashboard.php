@@ -280,8 +280,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 </div>
 
 
-                <button id="confirm-rights" type="submit">Confirmer</button>
-                <button id="cancel-rights" type="reset">Annuler</button>
+                <button id="confirm-rights" type="submit" style="display: none">Confirmer</button>
+                <button id="cancel-rights" type="reset" >Annuler</button>
 
 
             </dialog>
@@ -337,16 +337,30 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     }
 
     function sendForRights(){
+
+        let listOfGroups = document.getElementById("groups-rights");
+        let listOfUsers = document.getElementById("users-rights");
+
+        if(listOfGroups.style.display === "none" && listOfUsers.style.display === "none" && todoGlobal=="rights"){
+            console.log("Pas d'envoie");
+            return;
+        }
+
         console.log("Todo --> " + todoGlobal );
         console.log("user ou groupe : " + groupOrUsers);
+        //console.log("Le current form : " + idCurrentForm);
+
         let stringCheck = getCheckedBox();
-        console.log(stringCheck);
+        console.log("Valeurs des valeurs des check bxox : " + stringCheck);
+
+
+
 
         const xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
 
             let returnString = this.responseText;
-            console.log(this.responseText);
+            console.log("Retour de la page asynchrone : "+ returnString);
             switch (returnString){
                 case "private":
                     document.getElementById('public-'+idCurrentForm).style.display = "block" ;// public-'. $value['id'].'
@@ -367,13 +381,13 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                     break;
 
             }
-            console.log(returnString);
+            //console.log(returnString);
 
 
         }
         xhttp.open("POST", "/asyncRights.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        console.log("LE CURRENT FORM : " + idCurrentForm);
+
         xhttp.send("id-form=" + idCurrentForm + "&checked-rights="+stringCheck
             + "&todo=" + todoGlobal +"&owner=" + <?= $_SESSION['user']['id']?> +"&group-or-users=" +groupOrUsers);
 

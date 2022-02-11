@@ -50,13 +50,13 @@ function setTodo(todo){
 function setForm(){
     let idForm = this.getAttribute("id").split("-")[1];
     idCurrentForm = idForm;
-    console.log("Current form : " + idCurrentForm);
 
 } //Permet e modifier le fourmulaire visé lorsque l'on click (variable global idCurrentForm)
 
 function displayRightsMenu(){
     menuRights.style.display = "flex";
     document.getElementById('bgGrey').style.display = "flex";
+
 }
 
 function exitRightsMenu(){
@@ -64,21 +64,26 @@ function exitRightsMenu(){
     document.getElementById('bgGrey').style.display = "none"
     listOfUsers.style.display = "none";
     listOfGroups.style.display = "none";
+    confirmRightsButton.style.display = "none";
+
     reinitCheckBox();
+
 }
 
 function displayGroups(){
     listOfUsers.style.display = "none";
     listOfGroups.style.display = "flex";
-
+    confirmRightsButton.style.display = "flex";
     groupOrUsers = "group";
+
 }
 
 function displayUsers(){
     listOfGroups.style.display = "none";
     listOfUsers.style.display = "flex";
-
+    confirmRightsButton.style.display = "flex";
     groupOrUsers = "users";
+
 
 }
 
@@ -111,19 +116,23 @@ function reinitCheckBox(){
 
 
 
+
+
 idCurrentForm = 0; //
 todoGlobal = "start";
 groupOrUsers = "start";
+
 
 menuRights = document.getElementById("pannel-rights");
 listOfGroups = document.getElementById("groups-rights");
 listOfUsers = document.getElementById("users-rights");
 checkboxRights = document.getElementsByClassName("right-checkbox");
+confirmRightsButton = document.getElementById("confirm-rights");
 
 let showGroupsButton = document.getElementById("show-groups-rights");
 let showUsersButton = document.getElementById("show-users-rights");
 let exitRightsButton = document.getElementById("cancel-rights");
-let confirmRightsButton = document.getElementById("confirm-rights");
+
 
 
 exitRightsButton.addEventListener("click",exitRightsMenu);
