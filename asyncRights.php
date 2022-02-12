@@ -16,6 +16,7 @@ function displayUsersForRights($connect){
 function createTabUsers($tabRights){
 
     $tabUsers = Array();
+
     foreach ($tabRights as $right){
 
         $user = explode("-",$right)[4];
@@ -33,6 +34,7 @@ function createTabUsers($tabRights){
 
 function stringRightsToTab($stringRights){
 
+
     $finalTabRights = Array();
     $tabStringRights = explode("/",$stringRights);
     $tabUsers = createTabUsers($tabStringRights);
@@ -49,7 +51,7 @@ function stringRightsToTab($stringRights){
 
     }
 
-    //var_dump($finalTabRights);
+
     return $finalTabRights;
 
 }
@@ -91,6 +93,7 @@ function deleteRights($connect,$idForm){
 }
 
 function createRights($connect,$stringRights,$idForm,$idOwner){
+
 
     $tabRights = stringRightsToTab($stringRights);
     $tabKeys= array_keys($tabRights);
@@ -145,29 +148,34 @@ function setStatusForm($connect,$idForm, $status){
 //Transforme la chaine de caracteres designant les groupes en chaine de caracteres designats que des users
 
 function transformStringGroupToUsers($connect, $stringCheckedRights){
-    //check-right-u-file-2/check-right-u-modify-2/check-right-u-delete-2
     $finalTabRightsGroups = explode("/",$stringCheckedRights);
     $finalStringRights = "";
+    $finalTabRights = Array();
     try {
         foreach ($finalTabRightsGroups as $groupRights){
             $idGroup = explode("-",$groupRights)[4];
             $right = explode("-",$groupRights)[3]; //id_user
             $stmt = $connect->query("SELECT id_user FROM isMember WHERE id_group = ".$idGroup)->fetchAll();
-            foreach($stmt as $user){
 
-                //TODO faire les chaines ici comme ça : $finalStringRights .= check-right-u-($right)-($user)
+            foreach ($stmt as $user){
+                if(!in_array("check-right-u-".$right."-".$user['id_user'],$finalTabRights)){
+                    array_push($finalTabRights,"check-right-u-".$right."-".$user['id_user']);
+                    $finalStringRights .= "/check-right-u-".$right."-".$user['id_user'];
+                }
 
-                //TODO faudra encore gerer les doublons par groupes
-                //TODO (genre supprimer toutes les chaines de droits en double avant de renvoyer la chaine)
             }
-            var_dump($stmt);
+
         }
+
+        $finalStringRights = substr($finalStringRights,1);
 
 
     }catch(PDOException $e){
         echo "SQL ERROR : " . $e->getLine() . "   " . $e->getMessage();
         exit;
     }
+
+    return $finalStringRights;
 
     //TODO pour chaque personne du groupe, créer une chaine du mm exemple de ci-dessus avec le droit indiqué
 
@@ -186,7 +194,7 @@ $statusToSet = (explode("-",$_POST['todo'])[1]) ?? "null";
 
 $finalString = "none";
 
-echo "COUCOU : " . empty($stringCheckedRights) . "<br>";
+
 
 switch ($todo){
     //TODO Bug lorsque : formulaire en privée, click sur user + aucune check box cochée
@@ -198,13 +206,17 @@ switch ($todo){
         //On verifi bien qu'il y'a des checkbox de chekcé, sinon BUG
         if(verifyStatus($connect,$idForm) == "private" && $groupOrUsers == "users" && !empty($stringCheckedRights)){
             //echo " Nous voulons modifier les droits !!!!! :   " ;
+            var_dump($stringCheckedRights);
             deleteRights($connect, $idForm);
             createRights($connect,$stringCheckedRights,$idForm,$idOwner);
             $finalString = "changement des droits";
         }
         else if (verifyStatus($connect,$idForm) == "private" && $groupOrUsers == "group" && !empty($stringCheckedRights)){
-            //deleteRights($connect, $idForm);
-            transformStringGroupToUsers($connect,$stringCheckedRights);
+
+            $stringCheckedRights = transformStringGroupToUsers($connect,$stringCheckedRights);
+            deleteRights($connect, $idForm);
+            createRights($connect,$stringCheckedRights,$idForm,$idOwner);
+            $finalString = "changements des droits (groupes)";
 
         }
         else if(empty($stringCheckedRights)){//On ouvre le menu d'utilisateurs ou de grp mais on choche rien
