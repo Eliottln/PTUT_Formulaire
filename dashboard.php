@@ -39,12 +39,12 @@ function displayAllForm($connect){
 }
 
 function displaySelectStatus($connect,$idForm){
+
     $finalString = '<select id="status-'.$idForm .'-select" class="status-select"> ';
     $tabStatus = Array();
     try {
         $status = $connect->query("SELECT status FROM Form WHERE id =". $idForm ." ")->fetch()['status'];
 
-        var_dump($status);
         if($status == "unreferenced"){
             array_push($tabStatus,"","","selected");
         }else if($status == "public"){
@@ -52,7 +52,6 @@ function displaySelectStatus($connect,$idForm){
         }else if($status == "private"){
             array_push($tabStatus,"","selected","");
         }
-
 
 
         $finalString .= '<option class="button-public" id="public-'. $idForm.'" '. $tabStatus[0].' value="public" " > Publique </option>
@@ -332,7 +331,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     function sendForRights(){
         //TODO Optimisation pour plus tard:
-        //TODO Enlever la plupart des id et classe mis au <option> des <select>
+        //TODO Enlever la plupart des id et classe mis au <option> des <select>.
+        //TODO Lorsque l'on click sur private, puis annuler, la valeur du <select> reste en private.
         if(todoGlobal === "start"){
             console.log("Initialisation des listeners");
             setListenerOnRightsBut();

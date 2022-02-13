@@ -227,6 +227,7 @@ switch ($todo){
         else{
             $finalString = "pas de modification";
         }
+
         break;
 
     case "status-public":
