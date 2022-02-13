@@ -10,11 +10,7 @@ if(empty($_SESSION['user']) || empty($_SESSION['user']['id'])){
 function displayAllForm($connect){
     $forms ="";
     try {
-
-
         $sql = $connect->query("SELECT * FROM Form WHERE id_owner =". $_SESSION['user']['id'] ." ")->fetchAll();
-
-
         foreach ($sql as $value){
 
             $forms .=   '<div class="blocFormDashBoard">
@@ -29,7 +25,7 @@ function displayAllForm($connect){
                                 <div>
                                     <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
                                     <button id="rights-' . $value['id'] . '" class="button-rights" type="button">Gérer les droits</button>
-                                    '.displayButtonsStatus($connect,$value['id']) .'
+                                    '.displaySelectStatus($connect,$value['id']) .'
                                 </div>
                             </div>
                         </div>';
@@ -42,28 +38,28 @@ function displayAllForm($connect){
     return $forms;
 }
 
-function displayButtonsStatus($connect,$idForm){
-    $finalString = "";
+function displaySelectStatus($connect,$idForm){
+    $finalString = '<select id="status-'.$idForm .'-select" class="status-select"> ';
     $tabStatus = Array();
     try {
         $status = $connect->query("SELECT status FROM Form WHERE id =". $idForm ." ")->fetch()['status'];
 
         var_dump($status);
         if($status == "unreferenced"){
-            array_push($tabStatus,"block","block","none");
+            array_push($tabStatus,"","","selected");
         }else if($status == "public"){
-            array_push($tabStatus,"none","block","block");
+            array_push($tabStatus,"selected","","");
         }else if($status == "private"){
-            array_push($tabStatus,"block","none","block");
+            array_push($tabStatus,"","selected","");
         }
 
 
 
-        $finalString .= '<a class="button-public" id="public-'. $idForm.'" style="border: 3px solid red; display:'. $tabStatus[0].' " > Publique </a>
-                         <a class="button-private" id="private-'. $idForm.'" style="border: 3px solid blue; display:'. $tabStatus[1].' "> Private </a>
-                         <a class="button-unreferenced" id="unreferenced-'. $idForm.'" style="border: 3px solid green; display:'. $tabStatus[2].' "> Unreferenced </a>';
+        $finalString .= '<option class="button-public" id="public-'. $idForm.'" '. $tabStatus[0].' value="public" " > Publique </option>
+                         <option class="button-private" id="private-'. $idForm.'" '. $tabStatus[1].' value="private" "> Private </option>
+                         <option class="button-unreferenced" id="unreferenced-'. $idForm.'" '. $tabStatus[2].' value="unreferenced" "> Unreferenced </option>';
 
-
+        $finalString .= '</select> ';
 
     }catch(PDOException $e){
         echo 'Erreur sql : (line : '. $e->getLine() . ") " . $e->getMessage();
@@ -71,8 +67,6 @@ function displayButtonsStatus($connect,$idForm){
 
     return $finalString;
 }
-
-
 
 
 function displayProfil(){
@@ -337,7 +331,14 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     }
 
     function sendForRights(){
-
+        //TODO Optimisation pour plus tard:
+        //TODO Enlever la plupart des id et classe mis au <option> des <select>
+        if(todoGlobal === "start"){
+            console.log("Initialisation des listeners");
+            setListenerOnRightsBut();
+            setListenerOnStatusSlct();
+            return;
+        }
         let listOfGroups = document.getElementById("groups-rights");
         let listOfUsers = document.getElementById("users-rights");
 
@@ -348,12 +349,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
         console.log("Todo --> " + todoGlobal );
         console.log("user ou groupe : " + groupOrUsers);
-        //console.log("Le current form : " + idCurrentForm);
 
         let stringCheck = getCheckedBox();
         console.log("Valeurs des valeurs des check bxox : " + stringCheck);
-
-
 
 
         const xhttp = new XMLHttpRequest();
@@ -361,29 +359,6 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
             let returnString = this.responseText;
             console.log("Retour de la page asynchrone : "+ returnString);
-            switch (returnString){
-                case "private":
-                    document.getElementById('public-'+idCurrentForm).style.display = "block" ;// public-'. $value['id'].'
-                    document.getElementById('private-'+idCurrentForm).style.display = "none";
-                    document.getElementById('unreferenced-'+idCurrentForm).style.display = "block";
-                    break;
-
-                case "public":
-                    document.getElementById('public-'+idCurrentForm).style.display = "none";
-                    document.getElementById('private-'+idCurrentForm).style.display = "block";
-                    document.getElementById('unreferenced-'+idCurrentForm).style.display = "block";
-                    break;
-
-                case "unreferenced":
-                    document.getElementById('public-'+idCurrentForm).style.display = "block";
-                    document.getElementById('private-'+idCurrentForm).style.display = "block";
-                    document.getElementById('unreferenced-'+idCurrentForm).style.display = "none";
-                    break;
-
-            }
-            //console.log(returnString);
-
-
         }
         xhttp.open("POST", "/asyncRights.php");
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

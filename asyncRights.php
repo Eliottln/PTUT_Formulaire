@@ -29,9 +29,6 @@ function createTabUsers($tabRights){
     return $tabUsers;
 }
 
-
-
-
 function stringRightsToTab($stringRights){
 
 
@@ -56,10 +53,6 @@ function stringRightsToTab($stringRights){
 
 }
 
-
-
-
-
 function verifyStatus($connect,$idForm){
 
 
@@ -74,7 +67,6 @@ function verifyStatus($connect,$idForm){
 
     return $status['status'];
 }
-
 
 function deleteRights($connect,$idForm){
 
@@ -94,7 +86,7 @@ function deleteRights($connect,$idForm){
 
 function createRights($connect,$stringRights,$idForm,$idOwner){
 
-
+    //echo("StringRights :    " . $stringRights.)
     $tabRights = stringRightsToTab($stringRights);
     $tabKeys= array_keys($tabRights);
 
@@ -123,10 +115,8 @@ function createRights($connect,$stringRights,$idForm,$idOwner){
 
 }
 
-
-
-//TODO GERER LES CONFLITS ENTRE LES DIFFERENTS BOUTONS ET RACCOURCIR LES FONCTIONS
 function setStatusForm($connect,$idForm, $status){
+
     $connect->beginTransaction();
     try {
 
@@ -145,9 +135,8 @@ function setStatusForm($connect,$idForm, $status){
     return $status;
 }
 
-//Transforme la chaine de caracteres designant les groupes en chaine de caracteres designats que des users
-
 function transformStringGroupToUsers($connect, $stringCheckedRights){
+
     $finalTabRightsGroups = explode("/",$stringCheckedRights);
     $finalStringRights = "";
     $finalTabRights = Array();
@@ -177,7 +166,6 @@ function transformStringGroupToUsers($connect, $stringCheckedRights){
 
     return $finalStringRights;
 
-    //TODO pour chaque personne du groupe, créer une chaine du mm exemple de ci-dessus avec le droit indiqué
 
 
 }
@@ -189,7 +177,6 @@ $stringCheckedRights = $_POST['checked-rights'];
 $todo = $_POST['todo'];
 $idOwner = $_POST['owner'];
 $groupOrUsers = $_POST['group-or-users'] ?? "null";
-$statusToSet = (explode("-",$_POST['todo'])[1]) ?? "null";
 
 
 $finalString = "none";
@@ -197,15 +184,10 @@ $finalString = "none";
 
 
 switch ($todo){
-    //TODO Bug lorsque : formulaire en privée, click sur user + aucune check box cochée
-    //TODO astuce, créer un nouvel etat dans lequel on a pas afficher les groupe et pas afficher les users donc pas faire de traitement
-    //TODO faire un select et pas des boutons
 
     case "rights":
 
-        //On verifi bien qu'il y'a des checkbox de chekcé, sinon BUG
         if(verifyStatus($connect,$idForm) == "private" && $groupOrUsers == "users" && !empty($stringCheckedRights)){
-            //echo " Nous voulons modifier les droits !!!!! :   " ;
             var_dump($stringCheckedRights);
             deleteRights($connect, $idForm);
             createRights($connect,$stringCheckedRights,$idForm,$idOwner);
@@ -219,40 +201,47 @@ switch ($todo){
             $finalString = "changements des droits (groupes)";
 
         }
-        else if(empty($stringCheckedRights)){//On ouvre le menu d'utilisateurs ou de grp mais on choche rien
+        else if(verifyStatus($connect,$idForm) == "private" && empty($stringCheckedRights) ){//On ouvre le menu d'utilisateurs ou de grp mais on choche rien
             $finalString = "Pas de checkbox checké";
             deleteRights($connect, $idForm);
         }
-
+        else{
+            $finalString = "Le formulaire n'est pas en privé";
+        }
 
         break;
 
     case "status-private":
-        //echo " Le status que l'on souhaite mettre (private) :     " . $statusToSet ;
 
-        if(verifyStatus($connect,$idForm)!="private"){
-            //echo verifyStatus($connect,$idForm);
+        if(verifyStatus($connect,$idForm)!="private" && $groupOrUsers == "users" && !empty($stringCheckedRights)){
             $finalString = setStatusForm($connect,$idForm,"private");
             createRights($connect,$stringCheckedRights,$idForm,$idOwner);
-        }else{
+            $finalString = "Passage private selection de users";
+        }
+        else if (verifyStatus($connect,$idForm)!="private" && $groupOrUsers == "group" && !empty($stringCheckedRights)) {
+            $finalString = setStatusForm($connect,$idForm,"private");
+            $stringCheckedRights = transformStringGroupToUsers($connect,$stringCheckedRights);
+            createRights($connect,$stringCheckedRights,$idForm,$idOwner);
+            $finalString = "Passage private selection de groupes";
+        }
+        else{
             $finalString = "pas de modification";
         }
         break;
 
     case "status-public":
-        //echo " Le status que l'on souhaite mettre (public) :     " . $statusToSet ;
+
         if(verifyStatus($connect,$idForm)!="public"){
-            //echo verifyStatus($connect,$idForm);
             $finalString = setStatusForm($connect,$idForm,"public");
             deleteRights($connect, $idForm);
-        }else{
+        }
+        else{
             $finalString = "pas de modification";
         }
         break;
 
     case "status-unreferenced":
         if(verifyStatus($connect,$idForm)!="unreferenced"){
-            //echo verifyStatus($connect,$idForm);
             $finalString = setStatusForm($connect,$idForm,"unreferenced");
             deleteRights($connect, $idForm);
         }else{

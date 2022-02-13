@@ -12,38 +12,21 @@ function setListenerOnRightsBut(){
     }
 }
 
-function setListenerOnStatusBut(){
-    //button-public
-    let buttonPublics = document.getElementsByClassName("button-public");
-    let buttonPrivates = document.getElementsByClassName("button-private");
-    let buttonUnreferenced = document.getElementsByClassName("button-unreferenced")
-
-    for(let i =0; i < buttonPublics.length; i++){
-        let idPublicBut = buttonPublics[i].id;
-        let idPrivateBut = buttonPrivates[i].id;
-        let idUnreferencedBut = buttonUnreferenced[i].id;
-
-        buttonPublics[i].addEventListener("click",setForm);
-        buttonPublics[i].addEventListener("click",setTodo.bind(null,"status-public"));
-        buttonPublics[i].addEventListener("click",sendForRights);
-
-
-        buttonPrivates[i].addEventListener("click",displayRightsMenu);
-        buttonPrivates[i].addEventListener("click",setTodo.bind(null,"status-private"));
-        buttonPrivates[i].addEventListener("click",setForm);
-
-        buttonUnreferenced[i].addEventListener("click",setForm);
-        buttonUnreferenced[i].addEventListener("click",setTodo.bind(null,"status-unreferenced"));
-        buttonUnreferenced[i].addEventListener("click",sendForRights);
-
-    }
-
-
-}
 
 function setTodo(todo){
-    let taskTodo = todo;
-    todoGlobal = taskTodo;
+
+    if(todo==="select"){
+        todoGlobal = "status-"+statusGlobal;
+        if(statusGlobal!== "private"){
+
+        }
+    }
+    else{
+        todoGlobal = todo;
+    }
+
+    console.log(todoGlobal);
+
 
 } // Permet de modifier l'action a faire (variable global todoGlobal)
 
@@ -113,14 +96,40 @@ function reinitCheckBox(){
     }
 }
 
+function setListenerOnStatusSlct(){
 
 
+    for(let i =0; i < selectStatus.length; i++){
 
+        selectStatus[i].addEventListener("change",setForm);
+        selectStatus[i].addEventListener("change",setStatus);
+        selectStatus[i].addEventListener("change",setTodo.bind(null,"select"));
+        selectStatus[i].addEventListener("change",validationStatus); //Regarde si on doit directement envoyer les données ou afficher la gestion des droits (si on veut mettre en privé)
+
+    }
+
+
+}
+
+function validationStatus(){
+    if(this.value !== "private"){
+        sendForRights();
+    }
+    else{
+        displayRightsMenu();
+    }
+}
+
+function setStatus(){
+    statusGlobal = this.value;
+
+}
 
 
 idCurrentForm = 0; //
 todoGlobal = "start";
 groupOrUsers = "start";
+statusGlobal = "none";
 
 
 menuRights = document.getElementById("pannel-rights");
@@ -129,10 +138,11 @@ listOfUsers = document.getElementById("users-rights");
 checkboxRights = document.getElementsByClassName("right-checkbox");
 confirmRightsButton = document.getElementById("confirm-rights");
 
+selectStatus = document.getElementsByClassName("status-select");
+
 let showGroupsButton = document.getElementById("show-groups-rights");
 let showUsersButton = document.getElementById("show-users-rights");
 let exitRightsButton = document.getElementById("cancel-rights");
-
 
 
 exitRightsButton.addEventListener("click",exitRightsMenu);
@@ -145,9 +155,8 @@ showGroupsButton.addEventListener("click",displayGroups);
 
 
 
+sendForRights();
 
-setListenerOnRightsBut();
-setListenerOnStatusBut();
 
 
 
