@@ -167,7 +167,7 @@ function displayGroupsForRights($connect, $user){
 <html lang="fr">
 
 <?php
-$pageName = "Tous les Forms";
+$pageName = "Tableau de bord";
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 ?>
 
