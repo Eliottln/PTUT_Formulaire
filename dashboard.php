@@ -199,6 +199,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             </div>
         </div>
 
+
         <div id="bgGrey">
             <dialog id="pannel-group">
                 <div class="dialog-title">
