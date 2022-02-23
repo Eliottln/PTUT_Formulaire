@@ -7,55 +7,6 @@ if (empty($_SESSION['user']) || empty($_SESSION['user']['id'])) {
     exit();
 }
 
-function displayAllForm($connect): string
-{
-    $forms = "";
-    try {
-
-        $date = $connect->quote(date("Y-m-d"));
-        if (!empty($_GET['search'])) {
-            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,Form.expire,SUM(Page.nb_question)
-            FROM Form INNER JOIN Page ON Page.id_form = Form.id 
-            WHERE (expire >= " . $date . " OR expire = '')  AND LOWER(Form.title) LIKE '%" . strtolower($_GET['search']) . "%'
-            Group BY Form.id
-            ORDER BY Form.expire NOT LIKE '' DESC, Form.expire")->fetchAll();
-        } else {
-            $sql = $connect->query("SELECT DISTINCT Form.id,Form.title,Form.nb_page,Form.expire,SUM(Page.nb_question) 
-            FROM Form INNER JOIN Page ON Page.id_form = Form.id 
-            WHERE expire >= " . $date . " OR expire = '' 
-            Group BY Form.id 
-            ORDER BY Form.expire NOT LIKE '' DESC, Form.expire")->fetchAll();
-        }
-
-
-        foreach ($sql as $value) {
-
-            $forms .=   '<div class="blocForm">
-                            <div>
-                                <a href="/visuForm.php?identity=' . $value['id'] . '">
-                                    <p>Titre : ' . $value['title'] . '</p>
-                                    
-                                    <div>
-                                        <img src="img/formulaire.png" alt="image form">
-                                    </div>
-                                    <p class="formID">ID #' . $value['id'] . '</p>' .
-                (!empty($value['expire']) ? '<p>expire le ' . $value['expire'] ?? NULL . '</p>' : NULL)
-                . '<p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
-                                    <p>' . $value['SUM(Page.nb_question)'] . ' question' . (($value['SUM(Page.nb_question)'] > 1) ? "s" : null) . '</p>
-                                </a>
-                            </div>
-                        </div>';
-        }
-    } catch (PDOException $e) {
-        if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 1) {
-            echo 'Erreur sql : (line : ' . $e->getLine() . ") " . $e->getMessage();
-        } else if (!empty($_SESSION['user']) && $_SESSION['user']['admin'] == 0) {
-            echo 'Il semblerait que les formulaires ne sont pas accessible';
-        }
-    }
-    return $forms;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -77,10 +28,18 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 <input type="search" name="search" value="<?= $_GET["search"] ?? NULL ?>">
                 <button type="submit"><span class="gg-search"></span></button>
             </form>
+
+            <div id="btn-grid-view" class="btn_view" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="body" title="vue Grille">
+                <img src="/img/grid_view_white_24dp.svg" alt="grid view">
+            </div>
+
+            <div id="btn-list-view" class="btn_view" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Vue Liste">
+                <img src="/img/view_list_white_24dp.svg" alt="list view">
+            </div>
         </div>
 
-        <div>
-            <?= displayAllForm($connect) ?>
+        <div id="allFormsDiv" class="displayBloc">
+            <!-- All Forms -->
         </div>
 
     </main>
@@ -88,8 +47,16 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <?php require 'modules/footer.php'; ?>
 
-    <script src="/js/class_notification.js"></script>
+
+
+    <script src="/js/visuAllForms.js"></script>
     <script>
+        try {
+            let allFormsDiv = document.getElementById('allFormsDiv');
+        } catch (error) {
+            //console.error("var already exist");
+        }
+
         <?php
         if (isset($_SESSION['formNotFound'])) {
             unset($_SESSION['formNotFound']);
@@ -98,13 +65,37 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         }
         ?>
 
-        function layoutVisuAllForms() {
-            let n = Math.round(window.innerWidth * 2 / 500)
-            document.documentElement.style.setProperty('--layoutVisuAllForms', n)
-        }
+        function getForms() {
 
-        window.addEventListener('resize', layoutVisuAllForms)
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                allFormsDiv.innerHTML = ""
+                allFormsDiv.innerHTML = this.responseText;
+                set()
+            }
+            xhttp.open("POST", "/asyncAllForms.php");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send('display=' + viewMode + '&user_id=' + <?= $_SESSION['user']['admin'] . (!empty($_GET['search']) ? " + '&search=" . $_GET['search'] . "'" : null) ?>);
+
+        }
+        window.addEventListener('load', getForms)
+
+
         layoutVisuAllForms()
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script>
+        function set() {
+            let existToolTips = document.querySelectorAll('div[class^="tooltip "]')
+            existToolTips.forEach(element => element.remove())
+            let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            let tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        }
+        set()
     </script>
 
 </body>
