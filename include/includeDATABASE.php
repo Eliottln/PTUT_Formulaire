@@ -11,9 +11,11 @@
 //}
 
 
-/**
- * REQUEST METHODS
- */
+/*******************
+ * REQUEST METHODS *
+ *******************/
+
+//TODO private case 
 
 function getSQL_AllForms($date,$user_id){
     return 
@@ -23,7 +25,7 @@ function getSQL_AllForms($date,$user_id){
                 FROM Form 
                 INNER JOIN Page ON Page.id_form = Form.id 
                 INNER JOIN User ON User.id = Form.id_owner 
-                WHERE expire >= " . $date . " OR expire = '' 
+                WHERE (expire >= " . $date . " OR expire = '') AND Form.status != 'unreferenced' 
                 Group BY Form.id 
                 ORDER BY Form.expire NOT LIKE '' DESC, Form.expire
     ) AS t1
@@ -45,7 +47,7 @@ function getSQL_AllForms_Search($date,$user_id,$search){
                 FROM Form 
                 INNER JOIN Page ON Page.id_form = Form.id 
                 INNER JOIN User ON User.id = Form.id_owner 
-                WHERE (expire >= " . $date . " OR expire = '' ) AND LOWER(Form.title) LIKE '%" . strtolower($search) . "%'
+                WHERE (expire >= " . $date . " OR expire = '' ) AND Form.status != 'unreferenced' AND LOWER(Form.title) LIKE '%" . strtolower($search) . "%'
                 Group BY Form.id 
                 ORDER BY Form.expire NOT LIKE '' DESC, Form.expire
     ) AS t1

@@ -196,6 +196,36 @@ main {
   filter: invert(1);
 }
 
+/*Tooltip*/
+
+.tooltip.show {
+  opacity: .9;
+}
+
+.bs-tooltip-auto[data-popper-placement^=bottom], .bs-tooltip-bottom {
+  padding: 0.4rem 0;
+}
+
+.bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow, .bs-tooltip-bottom .tooltip-arrow {
+  top: 0;
+}
+
+.tooltip .tooltip-arrow {
+  position: absolute;
+  display: block;
+  width: 0.8rem;
+  height: 0.4rem;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 0.25rem;
+}
+
 /*#################################################*/
 /*HEADER*/
 /*#################################################*/
@@ -1404,6 +1434,33 @@ dialog[class="content"] pre {
   width: 200px;
 }
 
+.blocListForm, .blocListForm a, .blocListForm a > div{
+  display: flex;
+  flex-direction: row;
+}
+
+.blocListForm{
+  justify-content: start;
+  margin-inline: 40px;
+  margin-block: 0.5rem;
+  background-color: var(--first);
+  padding: 5px;
+  border-radius: 7px;
+}
+
+.blocListForm a{
+  text-decoration: none;
+}
+
+.blocListForm a > div{
+  align-items: center;
+}
+
+.blocListForm a > div > *{
+  margin-inline-end: 10px;
+  color: var(--second);
+}
+
 .search {
   display: flex;
   flex-direction: row;
@@ -1459,6 +1516,30 @@ dialog[class="content"] pre {
   transform: rotate(-45deg);
   top: 10px;
   left: 12px;
+}
+
+.btn_view{
+  background-color: var(--first);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: 10px;
+  margin-inline: 10px;
+}
+
+.btn_view img{
+  width: 30px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.btn_view:hover {
+  background-color: var(--second);
+  cursor: pointer;
+}
+
+.btn_view:hover img {
+  filter: invert();
 }
 
 /*#################################################*/
