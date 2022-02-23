@@ -79,8 +79,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             </form>
         </div>
 
-        <div>
-            <?= displayAllForm($connect) ?>
+        <div id="allFormsDiv" class="displayBloc">
+            <?= 1 //displayAllForm($connect) 
+            ?>
         </div>
 
     </main>
@@ -88,8 +89,9 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
     <?php require 'modules/footer.php'; ?>
 
-    <script src="/js/class_notification.js"></script>
     <script>
+        let allFormsDiv = document.getElementById('allFormsDiv');
+
         <?php
         if (isset($_SESSION['formNotFound'])) {
             unset($_SESSION['formNotFound']);
@@ -99,11 +101,28 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         ?>
 
         function layoutVisuAllForms() {
-            let n = Math.round(window.innerWidth * 2 / 500)
-            document.documentElement.style.setProperty('--layoutVisuAllForms', n)
+            if (allFormsDiv.classList.item(0) === "displayBloc") {
+                let n = Math.round(window.innerWidth * 2 / 500)
+                document.documentElement.style.setProperty('--layoutVisuAllForms', n)
+            }
         }
-
         window.addEventListener('resize', layoutVisuAllForms)
+
+        function getForms() {
+      
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                allFormsDiv.innerHTML = this.responseText;
+            }
+            xhttp.open("POST", "/asyncAllForms.php");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send('display=' + 'bloc' + '&user_id=' + <?= $_SESSION['user']['admin'] . (!empty($_GET['search'])?" + '&search=" . $_GET['search']."'" : null )?>);
+            console.log('display=' + 'bloc' + '&user_id=' + <?= $_SESSION['user']['admin'] . (!empty($_GET['search'])?" + '&search=" . $_GET['search']."'" : null )?>)
+
+        }
+        window.addEventListener('load', getForms)
+
+        
         layoutVisuAllForms()
     </script>
 

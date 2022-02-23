@@ -1379,6 +1379,21 @@ dialog[class="content"] pre {
   width: 200px;
 }
 
+.blocForm > div div:first-child {
+  background-color: var(--first);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.blocForm > div div:first-child img {
+  position: absolute;
+  width: 24px;
+  object-fit: cover;
+  object-position: center;
+  left: 10px;
+}
+
 .blocForm > div div {
   background-color: var(--second);
 }
