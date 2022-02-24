@@ -2,7 +2,7 @@
 
     <nav>
         <ul>
-            <li><div><img src="/img/favicon.png" alt="UwUniForm logo" id="headerlogo"></div><span></span></li>
+            <li><div><img src="/img/favicon.png" alt="FillNForm logo" id="headerlogo"></div><span></span></li>
             <li><a href="/visuAllForms.php"><img src="/img/feed_black_24dp.svg" alt="all forms">Tous les forms</a><span></span></li>
             <li><a href="/CreateForm.php"><img src="/img/edit_black_24dp.svg" alt="create form">Créer un nouveau form</a><span></span></li>
             <li><a href="/dashboard.php"><img src="/img/dashboard_black_24dp.svg" alt="manage forms">Gestion de vos forms</a><span></span></li>
@@ -10,5 +10,10 @@
 
         </ul>
     </nav>
+
+    <script>
+        let currentURL = document.querySelector('a[href="<?=$_SERVER['PHP_SELF']?>"]')
+        currentURL.setAttribute('style','font-weight: bold;')
+    </script>
 
 </header>
