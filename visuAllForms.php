@@ -24,8 +24,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
     <main id="visuAll">
 
         <div>
+            <div id="btn-filter" class="btn_view" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="body" title="Filtrer les forms">
+                <img src="/img/filter_list_white_24dp.svg" alt="filter">
+            </div>
+
             <form class="search" action="/visuAllForms.php" method="get">
-                <input type="search" name="search" value="<?= $_GET["search"] ?? NULL ?>">
+                <input type="search" name="search" value="<?= $_GET["search"] ?? NULL ?>" placeholder="Rechercher un titre de form...">
                 <button type="submit"><span class="gg-search"></span></button>
             </form>
 
@@ -36,6 +40,10 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             <div id="btn-list-view" class="btn_view" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Vue Liste">
                 <img src="/img/view_list_white_24dp.svg" alt="list view">
             </div>
+        </div>
+
+        <div id="filter-panel">
+
         </div>
 
         <div id="allFormsDiv" class="displayBloc">
@@ -66,10 +74,12 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         ?>
 
         function getForms() {
+            allFormsDiv.innerHTML = ""
+            allFormsDiv.appendChild(getWaitingAnimation())
 
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
-                allFormsDiv.innerHTML = ""
+                
                 allFormsDiv.innerHTML = this.responseText;
                 set()
             }

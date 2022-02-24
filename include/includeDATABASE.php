@@ -21,7 +21,7 @@ function getSQL_AllForms($date,$user_id){
     return 
     "SELECT * 
     FROM (
-        SELECT DISTINCT Form.*,User.name,SUM(Page.nb_question) as 'nb_question' 
+        SELECT DISTINCT Form.*,User.name|| ' ' ||User.lastname AS name,SUM(Page.nb_question) as 'nb_question' 
                 FROM Form 
                 INNER JOIN Page ON Page.id_form = Form.id 
                 INNER JOIN User ON User.id = Form.id_owner 
@@ -43,7 +43,7 @@ function getSQL_AllForms_Search($date,$user_id,$search){
     return 
     "SELECT * 
     FROM (
-        SELECT DISTINCT Form.*,User.name,SUM(Page.nb_question) as 'nb_question' 
+        SELECT DISTINCT Form.*,User.name|| ' ' ||User.lastname AS name,SUM(Page.nb_question) as 'nb_question' 
                 FROM Form 
                 INNER JOIN Page ON Page.id_form = Form.id 
                 INNER JOIN User ON User.id = Form.id_owner 
