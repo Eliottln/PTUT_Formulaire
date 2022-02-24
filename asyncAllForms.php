@@ -83,7 +83,7 @@ function formatHTML($format, $query)
         foreach ($query as $value) {
 
             $allFormsString .=   '<div class=" blocForm">
-                                    <div>
+                                    <div data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-container="body" data-bs-html="true" title="'.getTextInfo($value).'">
                                         <a href="/visuForm.php?identity=' . $value['id'] . '">
                                             <div>
                                                 ' . getProgress($value) . '
@@ -93,10 +93,7 @@ function formatHTML($format, $query)
                                             <div>
                                                 <img src="img/formulaire.png" alt="image form">
                                             </div>
-                                            <p class="formID">Créé par ' . $value['name'] . '</p>' .
-                                            (!empty($value['expire']) ? '<p>expire le ' . $value['expire'] ?? NULL . '</p>' : NULL). '
-                                            <p>' . $value['nb_page'] . ' page' . (($value['nb_page'] > 1) ? "s" : null) . '</p>
-                                            <p>' . $value['nb_question'] . ' question' . (($value['nb_question'] > 1) ? "s" : null) . '</p>
+                                            <p class="formID">Créé par ' . $value['name'] . '</p>
                                         </a>
                                     </div>
                                 </div>';
