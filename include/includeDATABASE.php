@@ -54,12 +54,10 @@ function getFilters($filter)
     return $filter_request.' ';
 }
 
-//TODO private case 
-
 function getSQL_AllForms($date, $user_id, $sort, $asc_desc, $filter, $search = null)
 {
     if ($search) {
-        $search = "AND LOWER(Form.title) LIKE '%" . strtolower($search) . "%'";
+        $search = "WHERE LOWER(Forms.title) LIKE '%" . strtolower($search) . "%'";
     }
 
     switch ($sort) {
@@ -81,12 +79,22 @@ function getSQL_AllForms($date, $user_id, $sort, $asc_desc, $filter, $search = n
     return
         "SELECT * 
     FROM (
-        SELECT DISTINCT Form.*,User.name|| ' ' ||User.lastname AS name,SUM(Page.nb_question) as 'nb_question' 
-                FROM Form 
-                INNER JOIN Page ON Page.id_form = Form.id 
-                INNER JOIN User ON User.id = Form.id_owner 
-                WHERE (expire >= " . $date . " OR expire = '') AND Form.status != 'unreferenced' " . $search . "
-                Group BY Form.id
+        SELECT DISTINCT Forms.*,User.name|| ' ' ||User.lastname AS name,SUM(Page.nb_question) as 'nb_question' 
+                FROM (
+                        SELECT f.*
+  	                    FROM Form f
+  	                    LEFT JOIN Rights r ON f.id = r.id_form
+  	                    WHERE r.id_owner = " . $user_id . " OR r.id_guest = " . $user_id . "
+  	                    Group BY f.id
+                    UNION
+  	                    SELECT f.*
+  	                    FROM Form f
+  	                    WHERE (f.expire >= '2022-02-26' OR f.expire = '') AND f.status = 'public' 
+                ) AS Forms 
+                INNER JOIN Page ON Page.id_form = Forms.id 
+                INNER JOIN User ON User.id = Forms.id_owner 
+                " . $search . "
+                Group BY Forms.id
     ) AS t1
     LEFT JOIN (
         SELECT COUNT(*) as 'nb_response' ,Form.id as id2
