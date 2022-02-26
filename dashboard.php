@@ -190,8 +190,8 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
             <div id="list-of-groups" class="dash_board_part">
 
                 <h2> Consulter vos groupes : </h2>
-                <img id="pannel-group-button" src="img/plus.png" alt="ajouter un groupe" title="Ajouter un groupe">
-                <img id="edit-group-button" alt="modifier/supprimer un groupe" src="img/edit.svg" title="Modifier/supprimer un groupe">
+                <img id="pannel-group-button" src="img/add_box_black_24dp.svg" alt="ajouter un groupe" title="Ajouter un groupe">
+                <img id="edit-group-button" alt="modifier/supprimer un groupe" src="img/edit_note_black_24dp.svg" title="Modifier/supprimer un groupe">
                 <hr>
                 <div id="all-groups">
 

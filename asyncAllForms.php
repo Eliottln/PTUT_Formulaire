@@ -3,19 +3,16 @@
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 
 //Query
-function query($connect,$user_id,$search=null)
+function query($connect,$user_id,$sort,$asc_desc,$filter,$search=null)
 {
     // get user progress
 
     try {
         $date = $connect->quote(date("Y-m-d"));
-    if (!empty($search)) {
-        $query = $connect->query(getSQL_AllForms_Search($date,$user_id,$search))->fetchAll();
-    } else {
-        $query = $connect->query(getSQL_AllForms($date,$user_id))->fetchAll();
-    }
+        $query = $connect->query(getSQL_AllForms($date,$user_id,$sort,$asc_desc,$filter,$search))->fetchAll();
+        //echo getSQL_AllForms($date,$user_id,$sort,$asc_desc,$filter,$search);
     } catch (\Throwable $th) {
-        //throw $th;
+        throw $th;
         $query = [];
     }
     
@@ -46,6 +43,7 @@ function getTextInfo($data){
 
 function getProgress($data){
     $res = $data['nb_response'] / $data['nb_question'];
+    
     if($res == 0){
         return '<img src="/img/empty_circle.svg" alt="empty_circle">';
     }
@@ -110,9 +108,12 @@ function formatHTML($format, $query)
  */
 $display = $_POST["display"];  //  grid/column
 $user_id = $_POST["user_id"];
+$sort = $_POST["sort"];
+$asc_desc = $_POST["asc_desc"];
+$filter = $_POST["filter"];
 $search = $_POST["search"]??null;
 
-$query = query($connect,$user_id,$search);
+$query = query($connect,$user_id,$sort,$asc_desc,$filter,$search);
 
 if(!empty($query)){
     $result = formatHtml($display,$query);

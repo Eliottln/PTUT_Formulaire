@@ -33,7 +33,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
                 <button type="submit"><span class="gg-search"></span></button>
             </form>
 
-            <div id="btn-grid-view" class="btn_view" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="body" title="vue Grille">
+            <div id="btn-grid-view" class="btn_view" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="body" title="Vue Grille">
                 <img src="/img/grid_view_white_24dp.svg" alt="grid view">
             </div>
 
@@ -43,11 +43,65 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         </div>
 
         <div id="filter-panel">
+            <form action="" onsubmit="return false">
+                <!-- Sort -->
+                <div id="divSort">
+                    <h3>Trier par...</h3>
+                    <div>
+                        <select name="sort" id="sort_select">
+                            <option value="s1">Titre</option>
+                            <option value="s2">Auteur</option>
+                            <option value="s3">Progression</option>
+                            <option value="s4" selected>Date d'expiration</option>
+                        </select>
 
+
+                        <button id="btn-asc" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="body" title="Trie croissant">
+                            <img src="/img/sort_white_invert_24dp.svg" alt="ascending">
+                        </button>
+                        <button id="btn-desc" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="body" title="Trie décroissant">
+                            <img src="/img/sort_white_24dp.svg" alt="descending">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div id="filters-list">
+                    <div>
+                        <h3>Ajouter des filtres</h3>
+                        <div>
+                            <button id="btn-addFilter" type="button">
+                                <img src="/img/add_box_white_24dp.svg" alt="add filter">
+                            </button>
+                            <select name="filter" id="filter_selected">
+                                <option value="f0" selected>-----</option>
+                                <option value="f1">Titre</option>
+                                <option value="f2">Auteur</option>
+                                <option value="f3">Progression</option>
+                                <option value="f4">Publique</option>
+                                <option value="f5">Privé</option>
+                            </select>
+                        </div>
+
+                        <hr>
+                        <div id="div-filters-list">
+                            <!-- Filters Here -->
+                            
+                        </div>
+
+                    </div>
+                </div>
+
+                <div>
+                    <button id="btn-confirm-filter" type="button">
+                        Trier et Filtrer !
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div id="allFormsDiv" class="displayBloc">
-            <!-- All Forms -->
+            <!-- All Forms Here -->
         </div>
 
     </main>
@@ -57,6 +111,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
 
+    <script src="/js/class_Sort.js"></script>
     <script src="/js/visuAllForms.js"></script>
     <script>
         try {
@@ -79,17 +134,26 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
-                
-                allFormsDiv.innerHTML = this.responseText;
+                if(this.responseText.length != 0){
+                    allFormsDiv.innerHTML = this.responseText;
+                }
+                else{
+                    allFormsDiv.firstChild.innerHTML += '<p class="error-message">FORMS NOT FOUND</p>'
+                }
                 set()
             }
             xhttp.open("POST", "/asyncAllForms.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send('display=' + viewMode + '&user_id=' + <?= $_SESSION['user']['admin'] . (!empty($_GET['search']) ? " + '&search=" . $_GET['search'] . "'" : null) ?>);
-
+            xhttp.send('display=' + viewMode + '&' + sortNFilter.toString() + '&user_id=' + <?= $_SESSION['user']['admin'] . (!empty($_GET['search']) ? " + '&search=" . $_GET['search'] . "'" : null) ?>);
+            
         }
         window.addEventListener('load', getForms)
 
+        let btn_confirm = document.getElementById('btn-confirm-filter');
+        btn_confirm.addEventListener('click', function(){
+            setfilters()
+            getForms()
+        })
 
         layoutVisuAllForms()
     </script>
