@@ -200,6 +200,7 @@ main {
 
 .tooltip.show {
   opacity: .9;
+  z-index: 99;
 }
 
 .bs-tooltip-auto[data-popper-placement^=bottom], .bs-tooltip-bottom {
@@ -256,7 +257,7 @@ header nav ul {
 
 header nav ul li {
   font-size: larger;
-  width: 30%;
+  width: calc(80% / 3);
   text-align: center;
   transition: background-color 0.5s;
   display: flex;
@@ -277,6 +278,11 @@ header nav ul li a {
   width: 100%;
   height: 100%;
   padding-block: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'LemonMilk';
+  font-size: medium;
 }
 
 header nav ul li:hover a {
@@ -286,6 +292,20 @@ header nav ul li:hover a {
 header nav ul li:first-child {
   width: 10%;
   align-items: center;
+}
+
+header nav ul li:last-child {
+  width: 10%;
+  align-items: center;
+}
+
+header nav ul li img{
+  object-fit: cover;
+  object-position: center;
+}
+
+header nav ul li:not(:first-child):hover img{
+  filter: invert();
 }
 
 header nav ul li span {
@@ -1368,6 +1388,7 @@ dialog[class="content"] pre {
 #visuAll {
   width: 100vw;
   align-items: center;
+  position: relative;
 }
 
 /*SEARCH*/
@@ -1525,6 +1546,8 @@ dialog[class="content"] pre {
   align-items: center;
   margin-block: 10px;
   margin-inline: 10px;
+  padding-inline: 5px;
+  border-radius: 10px;
 }
 
 .btn_view img{
@@ -1540,6 +1563,251 @@ dialog[class="content"] pre {
 
 .btn_view:hover img {
   filter: invert();
+}
+
+/*Loading*/
+/*by Ahmad Emran https://codepen.io/ahmadbassamemran/pen/bXRPdr */
+.WaitingAnimation{
+  width:200px;
+  height:60px;
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+}
+.circle{
+  width:20px;
+  height:20px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--first);
+  left:15%;
+  transform-origin: 50%;
+  animation: circle .5s alternate infinite ease;
+}
+
+@keyframes circle{
+  0%{
+      top:60px;
+      height:5px;
+      border-radius: 50px 50px 25px 25px;
+      transform: scaleX(1.7);
+  }
+  40%{
+      height:20px;
+      border-radius: 50%;
+      transform: scaleX(1);
+  }
+  100%{
+      top:0%;
+  }
+}
+.circle:nth-child(2){
+  left:45%;
+  animation-delay: .2s;
+}
+.circle:nth-child(3){
+  left:auto;
+  right:15%;
+  animation-delay: .3s;
+}
+.shadow{
+  width:20px;
+  height:4px;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,.5);
+  position: absolute;
+  top:62px;
+  transform-origin: 50%;
+  z-index: -1;
+  left:15%;
+  filter: blur(1px);
+  animation: shadow .5s alternate infinite ease;
+}
+
+@keyframes shadow{
+  0%{
+      transform: scaleX(1.5);
+  }
+  40%{
+      transform: scaleX(1);
+      opacity: .7;
+  }
+  100%{
+      transform: scaleX(.2);
+      opacity: .4;
+  }
+}
+.shadow:nth-child(4){
+  left: 45%;
+  animation-delay: .2s
+}
+.shadow:nth-child(5){
+  left:auto;
+  right:15%;
+  animation-delay: .3s;
+}
+
+.error-message{
+  position: absolute;
+  color: var(--first);
+  transform: translateX(12%);
+  bottom: -37px;
+  font-weight: bold;
+  font-family: 'LemonMilk';
+}
+
+/*Filter-Panel*/
+#filter-panel{
+  position: absolute;
+  display: flex;
+  width: 100%;
+  background-color: var(--first);
+  overflow: hidden;
+  height: 0px;
+  transition: height 0.5s;
+  top: 55px;
+}
+
+#filter-panel form{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--first);
+  color: var(--second);
+  align-items: center;
+  z-index: 3;
+  width: 100%;
+}
+
+#filter-panel form > h3{
+  font-family: 'LemonMilk';
+  font-size: medium;
+}
+
+#filter-panel form > div{
+  margin-block: 1rem;
+  display: flex;
+  justify-content:center;
+}
+
+#filter-panel form > #divSort{
+  display: flex;
+  flex-direction: column;
+}
+
+#filter-panel form > #divSort > div {
+  display: flex;
+  flex-direction: row;
+}
+
+#filter-panel form input,
+#filter-panel form button{
+  background-color: var(--first);
+  color: var(--second);
+  border: 2px solid var(--second);
+  padding: 2px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  margin-inline: 0.2rem;
+}
+
+#filter-panel form select {
+  background-color: var(--second);
+  color: var(--first);
+  border:none;
+  border-radius: 8px;
+  margin-inline: 5px;
+  font-family: 'LemonMilk';
+  padding: 5px;
+}
+
+#filter-panel form option{
+  font-family: 'LemonMilk';
+  font-size:smaller;
+  padding: 3px;
+}
+
+#filter-panel form button:hover{
+  cursor: pointer;
+}
+
+#filter-panel form > #divSort > button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  object-position: center;
+}
+
+.btn-sortSelect {
+  filter: invert();
+}
+
+#filter-panel form > #filters-list > div:first-child > div {
+  display: flex;
+}
+
+#filter-panel form > #filters-list > div:first-child > div:first-child{
+  align-items: center;
+  justify-content: center;
+}
+
+#filter-panel form > #filters-list > div:first-child > div:last-child{
+  flex-direction: column;
+  overflow-x: auto;
+  max-height: 93px;
+} 
+
+#filter-panel form > #filters-list > div:first-child > hr{
+  border: none;
+  background-color: var(--second);
+  height: 2px;
+  margin-block: 0.5rem;
+}
+
+#filter-panel form #btn-addFilter{
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  object-position: center;
+  overflow-y: auto;
+}
+
+#filter-panel form #div-filters-list .filterBloc{
+  border: none;
+  background-color: var(--second);
+  color: var(--first);
+  margin-block: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.filterBloc button{
+  padding-inline: 5px;
+}
+
+.filterBloc > div p{
+  font-family: 'LemonMilk';
+  font-size: small;
+}
+
+#filter-panel form #btn-confirm-filter {
+  border-radius: 5px;
+  background-color: var(--first);
+  color: var(--second);
+  padding:5px;
+  font-family: 'LemonMilk';
+}
+
+#filter-panel form #btn-confirm-filter:hover {
+  background-color: var(--second);
+  color: var(--first);
+  cursor: pointer;
 }
 
 /*#################################################*/
@@ -2035,7 +2303,7 @@ dialog[class="content"] pre {
 }
 
 .blocGroup div:last-child {
-  display: flex;
+  display: none;
   flex-direction:column;
   background-color:var(--second);
   border: 0.1rem solid var(--first);

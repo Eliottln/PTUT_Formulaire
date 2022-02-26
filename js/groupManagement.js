@@ -109,10 +109,15 @@ function showMembers(){
 
     let list = document.getElementById(id);
 
-    if(list.style.display === "flex")
+    if(list.style.display === "flex"){
         list.style.display = "none";
-    else
+        list.parentElement.style.display = "none";
+    }
+    else{
         list.style.display = "flex";
+        list.parentElement.style.display = "flex";
+    }
+        
 
 }
 
