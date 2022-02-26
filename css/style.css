@@ -1469,6 +1469,11 @@ dialog[class="content"] pre {
   border-radius: 7px;
 }
 
+.blocListForm > div,
+.blocListForm a{
+  width:100%;
+}
+
 .blocListForm a{
   text-decoration: none;
 }
@@ -1506,6 +1511,7 @@ dialog[class="content"] pre {
   position: relative;
   top: -1px;
   height: calc(100% - -1px);
+  cursor: pointer;
 }
 
 .search button span {
