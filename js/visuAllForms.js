@@ -136,7 +136,7 @@ function addFilter() {
                     '</button>' +
                     '<div>' +
                     '<p>' + textSelect + '</p>' +
-                    '<input type="text">' +
+                    '<input type="text" placeholder="Titre de form...">' +
                     '</div>';
 
                 break;
@@ -147,7 +147,7 @@ function addFilter() {
                     '</button>' +
                     '<div>' +
                     '<p>' + textSelect + '</p>' +
-                    '<input type="text">' +
+                    '<input type="text" placeholder="Auteur de form...">' +
                     '</div>';
 
                 break;

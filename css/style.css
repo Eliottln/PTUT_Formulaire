@@ -1758,7 +1758,10 @@ dialog[class="content"] pre {
 #filter-panel form > #filters-list > div:first-child > div:last-child{
   flex-direction: column;
   overflow-x: auto;
-  max-height: 93px;
+  height: 93px;
+  background-color: #222;
+  padding: 5px;
+  border-radius: 10px;
 } 
 
 #filter-panel form > #filters-list > div:first-child > hr{
@@ -1789,6 +1792,12 @@ dialog[class="content"] pre {
 
 .filterBloc button{
   padding-inline: 5px;
+}
+
+.filterBloc > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .filterBloc > div p{
