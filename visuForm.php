@@ -3,6 +3,11 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/include/config.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/include/includeDATABASE.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/vue_form/sendMyResponse.php");
 
+if (empty($_SESSION['user']) || empty($_SESSION['user']['id'])) {
+    header('Location: index.php');
+    exit();
+}
+
 if (empty($_GET['identity'])) {
 
     header("Location: visuAllForms.php");
@@ -64,7 +69,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <div id="page">
 
             <div>
-                <h1><?= '#' . $form->getID() ?></h1>
+                <progress max="<?= $form->getNBPage() ?>" value="<?= $form->getPage() ?>"></progress>
             </div>
 
             <div>

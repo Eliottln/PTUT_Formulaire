@@ -1871,6 +1871,38 @@ dialog[class="content"] pre {
   font-family: "LemonMilk";
 }
 
+/*progress bar*/
+#VisuForm progress {
+  display: block;
+  width: 300px;
+  margin: 1em auto;
+  padding: 4px;
+  border: 0 none;
+  background: var(--first);
+  border-radius: 14px;
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+}
+#VisuForm progress::-moz-progress-bar {
+  border-radius: 12px;
+  background: var(--second);
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
+  
+}
+/* webkit */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  progress {
+    height: 25px;
+  }
+}
+#VisuForm progress::-webkit-progress-bar {
+    background: transparent;
+}  
+#VisuForm progress::-webkit-progress-value {  
+  border-radius: 12px;
+  background: var(--second);
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3); 
+} 
+
 #VisuForm #page h2 {
   font-size: xx-large;
   font-family: "LemonMilk";

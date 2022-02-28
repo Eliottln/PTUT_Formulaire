@@ -244,6 +244,10 @@ class VueForm
         return $this->nb_page;
     }
 
+    public function getPage(){
+        return $this->page;
+    }
+
     public function getPrecedentButton(){
         return '<a id="PrecedentButton" class="buttonVisuForm" href="/visuForm.php?identity='.$this->id.'&page='.($this->page-1).'">
                     <span>&laquo; Précédent</span>
