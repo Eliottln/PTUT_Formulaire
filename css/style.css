@@ -942,6 +942,7 @@ dialog[class="content"] pre {
   display: flex;
   flex-direction: column;
   justify-content: start;
+  height: 57vh;
 }
 /*########################################*/
 /*Form export*/
@@ -2305,6 +2306,18 @@ dialog[class="content"] pre {
   background-color: var(--second);
   color: var(--first);
   cursor: pointer;
+}
+
+.blocFormDashBoard form button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blocFormDashBoard form button img{
+  width: 20px;
+  object-fit: cover;
+  object-position: center;
 }
 
 #list-of-groups > img {

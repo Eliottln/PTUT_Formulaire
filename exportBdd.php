@@ -136,6 +136,6 @@ try {
 }
 
 
-header("Location: CreateForm.php?id_form=" . $form_ID);
+header("Location: /dashboard.php ");
 exit();
 // Message d'alerte d'enregistrement : echo '<script type="text/javascript">window.alert("'.$message.'");</script>';

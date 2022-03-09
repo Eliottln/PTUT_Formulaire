@@ -1,10 +1,12 @@
 
 <?php
-// Ce module doit être placé dans la balise "script" et après avoir inclue "ImportFile.php"
+
+include_once($_SERVER["DOCUMENT_ROOT"]."/modules/ImportFile.php");
 include_once($_SERVER["DOCUMENT_ROOT"]."/class/input.php");
 
 if(!empty($arrayObjectInput)){
     echo "let arrayValues;\n";
+    echo "FormCreation.newPage()\n";
     for($i=0;$i<count($arrayObjectInput);$i++){
         switch($arrayObjectInput[$i]->getType()){
             
@@ -27,16 +29,15 @@ if(!empty($arrayObjectInput)){
                 echo "\naddRadioOrCheckboxFromObject(\"".$arrayObjectInput[$i]->getName()."\",\"".$arrayObjectInput[$i]->getType()."\",arrayValues);\n";
                 break;
             
-            case "range":
+            /*case "range":
                 echo "arrayValues = ".$arrayObjectInput[$i]->valueToString();
                 echo "\naddRangeFromObject(\"".$arrayObjectInput[$i]->getName()."\",arrayValues);\n";
-                break;
+                break;*/
 
             default:
                 echo "addQuestionFromObject(\"".$arrayObjectInput[$i]->getName()."\",\"".$arrayObjectInput[$i]->getType()."\");\n";
         }
         
     }
-    echo "button.removeAttribute('disabled')";
 }
 ?>

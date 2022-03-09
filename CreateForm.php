@@ -296,6 +296,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
     <script src="/js/class_FormCreation.js"></script>
+    <script src="/js/addInputFromObject.js"></script>
     <script>
         <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
 
