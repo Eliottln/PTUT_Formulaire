@@ -26,6 +26,12 @@ function displayAllForm($connect){
                                     <a href="CreateForm.php?identity=' . $value['id'] . '">Modifier</a>
                                     <button id="rights-' . $value['id'] . '" class="button-rights" type="button">Gérer les droits</button>
                                     '.displaySelectStatus($connect,$value['id']) .'
+                                    <form action="/modules/deleteFormByID.php" method="post" onsubmit="return confirm(\'Voulez-vous vraiment supprimer ce formulaire ?\');">
+                                        <input type="hidden" name="deleteID" value="'.$value['id'].'">
+                                        <button type="submit">
+                                            <img src="/img/deletePage.svg" alt="delete form">
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>';
@@ -55,8 +61,8 @@ function displaySelectStatus($connect,$idForm){
 
 
         $finalString .= '<option class="button-public" id="public-'. $idForm.'" '. $tabStatus[0].' value="public" " > Publique </option>
-                         <option class="button-private" id="private-'. $idForm.'" '. $tabStatus[1].' value="private" "> Private </option>
-                         <option class="button-unreferenced" id="unreferenced-'. $idForm.'" '. $tabStatus[2].' value="unreferenced" "> Unreferenced </option>';
+                         <option class="button-private" id="private-'. $idForm.'" '. $tabStatus[1].' value="private" "> Privé </option>
+                         <option class="button-unreferenced" id="unreferenced-'. $idForm.'" '. $tabStatus[2].' value="unreferenced" "> Non référencé </option>';
 
         $finalString .= '</select> ';
 
@@ -370,6 +376,24 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
 
 
 
+    }
+
+    function toggleRightPanel(select) {
+        console.log(select.value)
+        if(select.value !== "private"){
+            select.parentNode.children[1].style.display = "none";
+        }
+        else{
+            select.parentNode.children[1].removeAttribute('style');
+        }
+    }
+    let selectRight = document.querySelectorAll('div.blocFormDashBoard select[id^="status"]')
+    console.log(selectRight)
+    
+    selectRight.forEach(s=> s.addEventListener('change',toggleRightPanel.bind(null,s)))
+    for (let index = 0; index < selectRight.length; index++) {
+        console.log(selectRight[index])
+        toggleRightPanel(selectRight[index])
     }
 
 </script>

@@ -94,7 +94,7 @@ class FormCreation {
     }
 
 
-    static newBloc(qValue, choiceArray){ //create a question input
+    static newBloc(qValue, choiceArray, imported=false){ //create a question input
 
         FormCreation.button.removeAttribute('disabled')
 
@@ -173,7 +173,12 @@ class FormCreation {
         document.querySelector('#'+bloc+' .question').value = title
         let div = document.querySelector('#'+bloc+' .content')
 
-        FormCreation.createElement(id,div,choiceArray)
+        if(imported){
+            FormCreation.createElementFromImport(id,div,choiceArray)
+        }else{
+            FormCreation.createElement(id,div,choiceArray)
+        }
+        
 
         FormCreation.verification()
     }
@@ -599,7 +604,173 @@ class FormCreation {
 
     }
 
+    static createElementFromImport(id,div,choiceArray){
+        if (id !== undefined && div !== undefined) {
+            let type = id.split('-')[1]
+            switch (id) {
+                case 'new-number':
+                    let divN = document.createElement("div");
+                    divN.innerHTML =
+                        '<label>Min<input id="choice-' + FormCreation.numQuestion + '1" class="choice-input" type="number" name="choice-' + FormCreation.numQuestion + '1"></label>' +
+                        '<label>Max<input id="choice-' + FormCreation.numQuestion + '2" class="choice-input" type="number" name="choice-' + FormCreation.numQuestion + '2"></label>'
+
+                    div.appendChild(divN)
+                    break
+
+                case 'new-range':
+                    let divR = document.createElement("div");
+                    divR.innerHTML =
+                        '<input id="choice-'+FormCreation.numQuestion+'1" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+'1">'+
+                        '<input type="range">'+
+                        '<input id="choice-'+FormCreation.numQuestion+'2" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+'2">'
+
+                    div.appendChild(divR)
+                    break
+
+                case 'new-radio':
+                case 'new-checkbox':
+
+                    let divRC = document.createElement("div")
+
+                    if (choiceArray !== undefined) {
+                        let i=1
+                        choiceArray.forEach(c => {
+
+                            
+                                let tmp =
+                                    '<div class="choice">' +
+                                    '<input type="' + type + '" disabled>' +
+                                    '<label for="choice-' + FormCreation.numQuestion +'-'+ i + '">Option ' + i + '</label>' +
+                                    '<input id="choice-' + FormCreation.numQuestion +'-'+ i + '" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion +'-'+ i + '" value="' + c + '">' +
+                                    '<button id="trash-' + FormCreation.numQuestion +'-'+ i + '" type="button">Supprimer</button>' +
+                                    '</div>'
+
+                                divRC.insertAdjacentHTML("beforeend", tmp);
+                                i++
+                            
+                        })
+
+                        divRC.insertAdjacentHTML("beforeend", '<button class="add-' + type + '" type="button">Ajouter</button>')
+                        div.appendChild(divRC)
+                        for (let j=1;j<i;j++) {
+                            document.getElementById('trash-' + FormCreation.numQuestion +'-'+ j).addEventListener('click', FormCreation.delChoice)
+                        }
+                    }
+                    else{
+                        divRC.innerHTML =
+                            '<div class="choice">' +
+                            '<input type="' + type + '" disabled>' +
+                            '<label for="choice-' + FormCreation.numQuestion + '1">Option 1</label>' +
+                            '<input id="choice-' + FormCreation.numQuestion + '1" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '1">' +
+                            '<button id="trash-' + FormCreation.numQuestion + '1" type="button">Supprimer</button>' +
+                            '</div>' +
+                            '<div class="choice">' +
+                            '<input type="' + type + '" disabled>' +
+                            '<label for="choice-' + FormCreation.numQuestion + '2">Option 2</label>' +
+                            '<input id="choice-' + FormCreation.numQuestion + '2" class="choice-input" type="text" name="choice-' + FormCreation.numQuestion + '2">' +
+                            '<button id="trash-' + FormCreation.numQuestion + '2" type="button">Supprimer</button>' +
+                            '</div>' +
+                            '<button class="add-' + type + '" type="button">Ajouter</button>'
+
+                        div.appendChild(divRC)
+
+                        document.getElementById('trash-'+FormCreation.numQuestion+'1').addEventListener('click',FormCreation.delChoice)
+                        document.getElementById('trash-'+FormCreation.numQuestion+'2').addEventListener('click',FormCreation.delChoice)
+                    }
+                    document.querySelector('#'+div.parentElement.id+' .add-'+type).addEventListener('click',FormCreation.newChoice)
+                    break
+
+                case 'new-select':
+                    let divS = document.createElement("div");
+                    let i=1
+
+                    function add(divS,index,value){
+                        divS.insertAdjacentHTML("beforeend",
+                            '<div class="choice">' +
+                            '<input id="choice-'+FormCreation.numQuestion+'-'+index+'" class="choice-input" type="text" name="choice-'+FormCreation.numQuestion+'-'+index+'" value="'+value+'">' +
+                            '<button id="trash-'+FormCreation.numQuestion+'-'+index+'" type="button">Supprimer</button>' +
+                            '</div>')
+                    }
+
+                    if (choiceArray !== undefined) {
+                        divS.insertAdjacentHTML("beforeend", '<select><option>Options...</option></select>')
+
+                        choiceArray.forEach(c => {
+                            
+                                add(divS,i,c)
+                                i++
+                            
+                        })
+
+                        divS.insertAdjacentHTML("beforeend", '<button class="add-select" type="button">Ajouter</button>')
+                    }
+                    else {
+                        divS.insertAdjacentHTML("beforeend",'<select><option>Choisir...</option></select>')
+
+                        add(divS,1,'')
+                        add(divS,2,'')
+
+                        divS.insertAdjacentHTML("beforeend",'<button class="add-select" type="button">Ajouter</button>')
+                        i++
+                    }
+
+                    div.appendChild(divS)
+
+                    for (let j=1;j<i;j++){
+                        document.getElementById('trash-' + FormCreation.numQuestion +'-'+ j).addEventListener('click', FormCreation.delChoice)
+                        FormCreation.listenerSelect(FormCreation.numQuestion,j)
+                    }
+                    document.querySelector('#'+div.parentElement.id+' .add-select').addEventListener('click', FormCreation.newChoice)
+                    break
+
+                case 'new-date':
+                    let divD = document.createElement("div");
+
+                    divD.innerHTML =
+                        '<select id="select-date-' + FormCreation.numQuestion + '" name="select-date-' + FormCreation.numQuestion + '">' +
+                        '<option value="date">Date</option>' +
+                        '<option value="time">Heure</option>' +
+                        '<option value="datetime-local">Date-heure</option>' +
+                        '<option value="duration">Durée</option>' +
+                        '</select>' +
+                        '<div id="date-' + FormCreation.numQuestion + '">' +
+                        '<input type="date" disabled>' +
+                        '</div>'
+
+                    div.appendChild(divD)
+                    document.getElementById('select-date-' + FormCreation.numQuestion).addEventListener('change', function () {
+                        let question = Number.parseInt(this.id.split("-")[2])
+                        let div = document.getElementById('date-' + question)
+                        let value = this.value
+
+                        if (value === 'duration') {
+                            div.innerHTML = '<label>Du :<input type="datetime-local" disabled></label>' +
+                                '<label>Au :<input type="datetime-local" disabled></label>'
+                        } else {
+                            div.innerHTML = '<input type="' + value + '" disabled>'
+                        }
+                    })
+                    break
+
+                case 'new-textarea':
+                    let divT = document.createElement("div")
+                    divT.innerHTML =
+                        '<textarea disabled placeholder="Écrire ici..."></textarea>'
+
+                    div.appendChild(divT)
+                    break
+
+                default:
+                    let defaultDiv = document.createElement("div");
+                    defaultDiv.innerHTML =
+                        '<input type="'+type+'" placeholder="Écrire ici..." disabled>'+
+                        '</label>'
+
+                    div.appendChild(defaultDiv)
+                    break
+
+            }
+        }
+    }
+
 }
-
-
-// let obj=new FormCreation()
