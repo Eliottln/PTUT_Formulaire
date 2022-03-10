@@ -66,9 +66,11 @@ class VueForm
                                             INNER JOIN 'Page' as p ON q.id_page = p.id
                                             INNER JOIN Result as r ON r.id_form = q.id_form
                                             WHERE q.id_form = " . $this->id ." 
-                                            AND p.id = " . $this->page." 
+                                            AND ( p.id = " . $this->page." 
                                             AND r.id_user = " . $_SESSION['user']['id']." 
                                             AND r.id_question = q.id
+                                            OR q.type = 'radio'
+                                            OR q.type = 'checkbox')
                                             GROUP BY q.id")->fetchAll();
             if(empty($_questions)){
                 $_questions = $this->pdo->query("SELECT q.id,q.type,q.title,q.required, q.min, q.max,q.format
@@ -162,7 +164,7 @@ class VueForm
     
         $resultat .= '    </div>
                     </div>';
-    
+        
         return $resultat;
     }
 
@@ -180,7 +182,7 @@ class VueForm
     
         $resultat .= '    </div>
                     </div>';
-    
+        
         return $resultat;
     }
 
@@ -268,7 +270,7 @@ class VueForm
         $string .= '<div>
                         '.($this-> page == 1 ? NULL : $this->getPrecedentButton()).'
                         <button id="SubmitButton" class="buttonVisuForm" type="submit">
-                            <span>'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
+                            <span id="span-submit">'.($this-> page == $this->nb_page ? 'Finish' : 'Suivant').' &raquo;</span>
                         </button>
                     </div>
                 </form>';

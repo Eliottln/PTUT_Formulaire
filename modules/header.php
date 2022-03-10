@@ -13,7 +13,9 @@
 
     <script>
         let currentURL = document.querySelector('a[href="<?=$_SERVER['PHP_SELF']?>"]')
-        currentURL.setAttribute('style','font-weight: bold;')
+        if(currentURL){
+           currentURL.setAttribute('style','font-weight: bold;') 
+        }
     </script>
 
 </header>
