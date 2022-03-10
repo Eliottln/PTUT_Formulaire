@@ -301,18 +301,7 @@ include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/head.php");
         <?php include_once($_SERVER["DOCUMENT_ROOT"] . "/modules/createInputFromObject.php"); ?>
 
         <?php
-        if (isset($_SESSION['exportSucces'])) {
-            unset($_SESSION['exportSucces']);
-            echo 'alert("export réussi")';
-        }
-        else if (isset($_SESSION['exportWrongExpiredDate'])) {
-            unset($_SESSION['exportWrongExpiredDate']);
-            echo 'alert("export echec mauvaise date d\'expiration")';
-        }
-        else if (isset($_SESSION['exportFailed'])) {
-            unset($_SESSION['exportFailed']);
-            echo 'alert("export echec")';
-        }
+        
 
 
         if (idFormExist($connect, $_GET['identity'])) {
