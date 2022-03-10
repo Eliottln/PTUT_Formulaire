@@ -66,11 +66,11 @@ class VueForm
                                             INNER JOIN 'Page' as p ON q.id_page = p.id
                                             INNER JOIN Result as r ON r.id_form = q.id_form
                                             WHERE q.id_form = " . $this->id ." 
-                                            AND p.id = " . $this->page." 
+                                            AND ( p.id = " . $this->page." 
                                             AND r.id_user = " . $_SESSION['user']['id']." 
                                             AND r.id_question = q.id
                                             OR q.type = 'radio'
-                                            OR q.type = 'checkbox'
+                                            OR q.type = 'checkbox')
                                             GROUP BY q.id")->fetchAll();
             if(empty($_questions)){
                 $_questions = $this->pdo->query("SELECT q.id,q.type,q.title,q.required, q.min, q.max,q.format
